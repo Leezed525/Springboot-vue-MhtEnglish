@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 public interface AdminUserDao {
     AdminUser getAdminUserbyUsername(String username);
+
+    Boolean login(String username, String password);
 }

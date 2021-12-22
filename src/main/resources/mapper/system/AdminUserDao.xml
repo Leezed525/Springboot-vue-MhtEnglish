@@ -14,4 +14,9 @@
     <select id="getAdminUserbyUsername" parameterType="String" resultMap="baseResultMap">
         SELECT * FROM admin_user WHERE username = #{username}
     </select>
+
+    <select id="login" resultType="Boolean">
+        SELECT count(*) FROM admin_user
+        WHERE username = #{username} and password = #{password}
+    </select>
 </mapper>
