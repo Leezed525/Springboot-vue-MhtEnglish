@@ -17,8 +17,5 @@ public class ResultObj {
 
     private Integer code;
     private String msg;
-
-    public static final ResultObj LOGIN_SUCCESS = new ResultObj(Constants.OK,"登陆成功");
-    public static final ResultObj LOGIN_ERROR = new ResultObj(Constants.ERROR,"登陆失败");
-    public static final ResultObj LOGIN_FAIL = new ResultObj(Constants.ERROR,"用户名或密码错误");
+    private Object data;
 }
