@@ -19,4 +19,9 @@
         SELECT count(*) FROM admin_user
         WHERE username = #{username} and password = #{password}
     </select>
+
+    <select id="getpasswordByUsername" parameterType="String"   resultType="String">
+        SELECT password FROM admin_user
+        WHERE username = #{username}
+    </select>
 </mapper>
