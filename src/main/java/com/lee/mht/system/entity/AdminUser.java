@@ -19,10 +19,13 @@ import java.util.Date;
 public class AdminUser implements Serializable {
     private Integer id;
     private String username;
+    private String nickname;
     private String password;
     private Integer roleId;
     private Boolean available;
 
     @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss a")
     private Date createtime;
+
+    private String salt;
 }

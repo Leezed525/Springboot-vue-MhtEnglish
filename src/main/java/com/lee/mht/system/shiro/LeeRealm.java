@@ -1,6 +1,8 @@
-package com.lee.mht.system.config;
+package com.lee.mht.system.shiro;
 
 import com.lee.mht.system.dao.AdminUserDao;
+import com.lee.mht.system.entity.AdminUser;
+import com.lee.mht.system.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -33,18 +35,22 @@ public class LeeRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("开始用户验证");
-        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        //从token中获取用户名
-        String username = token.getUsername();
-        //根据用户名去数据库中查询结果
-        String password = adminUserDao.getpasswordByUsername(username);
-        //如果查不到说明没有该用户，如果不一致说明密码错误，抛出异常
-        if(password == null || !password.equals(new String(token.getPassword()))){
-            throw new AuthenticationException("用户名或密码错误");
+        String token = (String) authenticationToken.getCredentials();
+        //验证token 有效性
+        String username = TokenUtils.getUsername(token);
+        log.info(username);
+        if (username == null || username.trim().isEmpty()) {
+            throw new AuthenticationException("token非法无效");
         }
-        //没有抛出异常，返回结果
-        //组合一个验证信息
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(token.getPrincipal(),password,getName());
-        return info;
+        AdminUser user = adminUserDao.getAdminUserByUsername(username);
+        //判断用户是否存在
+        if(user == null){
+            throw new AuthenticationException("用户不存在");
+        }
+        //判断用户是否可用
+        if(!user.getAvailable()){
+            throw new AuthenticationException("用户已被禁用");
+        }
+        return new SimpleAuthenticationInfo(user,user.getPassword(),getName());
     }
 }

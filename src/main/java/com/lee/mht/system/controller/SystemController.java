@@ -3,10 +3,7 @@ package com.lee.mht.system.controller;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author FucXing
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/admin/system")
 @RestController
+@CrossOrigin
 public class SystemController {
 
     @Autowired

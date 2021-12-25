@@ -5,19 +5,22 @@
     <resultMap id="baseResultMap" type="AdminUser">
         <id column="id" property="id"/>
         <result column="username" property="username" javaType="string"/>
+        <result column="nickname" property="nickname" javaType="string"/>
         <result column="password" property="password" javaType="string"/>
         <result column="role_id" property="roleId"/>
         <result column="available" property="available" javaType="Boolean"/>
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="salt" property="salt" javaType="string"/>
     </resultMap>
 
-    <select id="getAdminUserbyUsername" parameterType="String" resultMap="baseResultMap">
-        SELECT * FROM admin_user WHERE username = #{username}
+    <select id="getAdminUserByUsername" parameterType="String" resultMap="baseResultMap">
+        SELECT id,username,nickname,role_id,available FROM admin_user WHERE username = #{username}
     </select>
 
-    <select id="login" resultType="Boolean">
-        SELECT count(*) FROM admin_user
-        WHERE username = #{username} and password = #{password}
+    <select id="login" parameterType="String" resultMap="baseResultMap">
+        <!-- IFNULL(MAX( id ),0) 用来防止mybatis查询查不到结果时报错的问题 -->
+        SELECT IFNULL(MAX( id ),0) AS id,username,password,nickname,role_id,available ,salt FROM admin_user
+        WHERE username = #{username}
     </select>
 
     <select id="getpasswordByUsername" parameterType="String"   resultType="String">

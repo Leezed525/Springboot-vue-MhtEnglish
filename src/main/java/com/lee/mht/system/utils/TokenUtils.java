@@ -1,9 +1,10 @@
 package com.lee.mht.system.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
@@ -20,45 +21,56 @@ public class TokenUtils {
     //获取token的key，一般token存在请求头和响应投中
     public static final String tokenHead = "mhtTokenHead";
     //token有效时间
-    private static final Long expTime = 24*60*60*1000L;
+    private static final Long EXPIRE_TIME = 24*60*60*1000L;
 
-    public static String getToken(String username,String password){
-        JwtBuilder builder = Jwts.builder();
-        //设置加密方式
-        builder.signWith(SignatureAlgorithm.HS256,secret)
-                //设置关键信息
-                .setSubject(username)
-                //防止密码（暂不确定能不能取就不放了）
-                //.setSubject(password)
-                //设置签发时间
-                .setIssuedAt(new Date())
-                //设置有效时间
-                .setExpiration(new Date(System.currentTimeMillis() + expTime));
-        //生成
-        String token = builder.compact();
-        log.info("token = " + token);
-        return token;
+    /**
+     * 校验token是否正确
+     * @param token  密钥
+     * @param secret 用户的密码
+     * @return 是否正确
+     */
+    public static boolean verify(String token, String username, String secret) {
+        try {
+            // 根据密码生成JWT效验器
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            JWTVerifier verifier = JWT.require(algorithm).withClaim("username", username).build();
+            // 效验TOKEN
+            DecodedJWT jwt = verifier.verify(token);
+            log.info(jwt+":-token is valid");
+            return true;
+        } catch (Exception e) {
+            log.info("The token is invalid{}",e.getMessage());
+            return false;
+        }
     }
 
     /**
-     * 查看并解析token
-     * 这个方法会在token异常的时候自动抛出异常,不用自定异常,
-     * 只需要在验证的时候进行捕获即可
-     * @param token
-     * @return
+     * 生成签名,5min(分钟)后过期
+     * @param username 用户名
+     * @return 加密的token
      */
-    public static Claims getTokenBody(String token){
-        //这里得到是token中的载荷部分,也是具体信息的所在
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token).getBody();
-        return claims;
+    public static String sign(String username) {
+        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        //用固定的密钥生成token
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        // 附带username信息
+        return JWT.create()
+                .withClaim("username", username)
+                .withExpiresAt(date)
+                .sign(algorithm);
     }
 
+    /**
+     * 获得token中的信息无需secret解密也能获得
+     * @return token中包含的用户名
+     */
     public static String getUsername(String token) {
-        String username = getTokenBody(token).getSubject();
-        log.info(username);
-        return username;
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("username").asString();
+        } catch (JWTDecodeException e) {
+            log.error("error：{}", e.getMessage());
+            return null;
+        }
     }
-
 }
