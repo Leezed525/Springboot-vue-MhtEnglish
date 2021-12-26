@@ -27,4 +27,22 @@
         SELECT password FROM admin_user
         WHERE username = #{username}
     </select>
+
+    <select id="getAllAdminUser"  resultMap="baseResultMap">
+        SELECT id,username,nickname,role_id,available
+        FROM admin_user
+        <where>
+            <if test="username != null and ! &quot;&quot;.equals(username)">
+                <bind name="myUsername" value="'%' + username + '%'"/>
+                username like #{myUsername}
+            </if>
+            <if test="nickname != null and ! &quot;&quot;.equals(nickname)">
+                <bind name="myNickname" value="'%' + nickname + '%'"/>
+                nickname like #{myNickname}
+            </if>
+            <if test="role_id != null">
+                role_id = #{role_id}
+            </if>
+        </where>
+    </select>
 </mapper>

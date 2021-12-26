@@ -10,8 +10,12 @@ public class Constant {
     public static final int OK = 200;
     public static final int ERROR = -1;
 
+    public static final String LOGIN_SUCCESS = "登陆成功";
     public static final String USERNAME_PASSWORD_ERROR = "用户名或密码错误";
     public static final String ADMINUSER_NOT_AVAILABLE = "用户不可用";
 
     public static final String JWT_USER_NAME = "jwt-user-name-key";
+
+    public static final String QUERY_SUCCESS = "查询成功";
+    public static final String QUERY_ERROR = "查询成功";
 }

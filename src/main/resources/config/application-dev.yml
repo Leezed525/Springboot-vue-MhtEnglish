@@ -49,9 +49,20 @@ spring:
         login-username: admin
         login-password: admin
         allow: 127.0.0.1
+
+#mybatis配置
 mybatis:
   mapper-locations: classpath:/mapper/*/*.xml
   type-aliases-package: com.lee.mht.*.entity
-#  configuration:
-#    map-underscore-to-camel-case: true
+  configuration:
+    map-underscore-to-camel-case: true
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #用于控制台打印sql语句
+
+#pagehelper配置
+
+pagehelper:
+#  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+

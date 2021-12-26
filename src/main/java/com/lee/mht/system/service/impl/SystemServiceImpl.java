@@ -62,6 +62,6 @@ public class SystemServiceImpl implements SystemService {
         //输出登录ip(为功能升级做准备)
         String ip = WebUtils.getRequest().getRemoteAddr();
         log.info("登录人" + username + "的IP为" + ip);
-        return new ResultObj(Constant.OK, "登陆成功", accessToken);
+        return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, accessToken);
     }
 }
