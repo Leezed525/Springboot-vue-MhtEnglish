@@ -1,54 +1,46 @@
 package com.lee.mht;
 
-import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
+import com.lee.mht.system.service.AdminUserService;
+import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.PasswordEncoder;
 import com.lee.mht.system.utils.PasswordUtils;
-import com.lee.mht.system.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
 class MhtApplicationTests {
 
-    @Autowired(required = false)
-    AdminUserDao adminUserDao;
+    @Autowired
+    AdminUserService adminUserService;
+
+    @Autowired
+    SystemService systemService;
 
     @Test
-    void getsalt(){
-        log.info(PasswordUtils.getSalt());
+    void testUpdateAdminUser(){
+        AdminUser user = new AdminUser();
+        user.setId(15);
+        user.setUsername("test13");
+        user.setNickname("test13n");
+        user.setRoleId(10);
+        log.info(String.valueOf(adminUserService.updateAdminUser(user)));
+
     }
 
     @Test
-    void getEncode(){
-        String salt = "15bf0de2f2cb41eaad2d";
-        String password = "123456";
-        log.info(new PasswordEncoder(salt).encode(password));
-    }
+    void testDeleteAdminUser(){
+        List<Integer> ids = new ArrayList<>();
+        ids.add(15);
+        ids.add(14);
 
-    @Test
-    void matchPassword(){
-        String salt = "15bf0de2f2cb41eaad2d";
-        String password = "123456";
-        String encPassword = "f0e3bf64472734614e10072df5996f8c";
-
-        log.info(String.valueOf(PasswordUtils.matches(salt, password,encPassword)));
-    }
-
-    @Test
-    void testloginUSer(){
-        String username = "123";
-        AdminUser user = adminUserDao.login(username);
-        log.info(user.toString());
-        String user_username = user.getUsername();
-        log.info(String.valueOf(user_username == null));
+        log.info(String.valueOf(adminUserService.deleteAdminUserByIds(ids)));
 
     }
 }

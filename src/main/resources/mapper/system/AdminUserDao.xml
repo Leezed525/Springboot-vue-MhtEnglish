@@ -28,6 +28,7 @@
         WHERE username = #{username}
     </select>
 
+    <!--查-->
     <select id="getAllAdminUser"  resultMap="baseResultMap">
         SELECT id,username,nickname,role_id,available
         FROM admin_user
@@ -45,4 +46,45 @@
             </if>
         </where>
     </select>
+    <!--改-->
+    <update id="updateAdminUser" parameterType="AdminUser">
+        UPDATE admin_user
+        <set>
+            <if test="adminUser.nickname != null and ! &quot;&quot;.equals(adminUser.nickname)">
+                nickname = #{adminUser.nickname},
+            </if>
+            <if test="adminUser.roleId != null">
+                role_id = #{adminUser.roleId},
+            </if>
+        </set>
+        WHERE
+        id = #{adminUser.id};
+    </update>
+
+    <!--删-->
+    <delete id="deleteAdminUserByIds">
+        DELETE FROM admin_user
+        WHERE id in
+        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--增-->
+    <insert id="addAdminUser" parameterType="AdminUser">
+        INSERT INTO admin_user (username,nickname,password,role_id,createtime,salt)
+        VALUES (#{user.username},#{user.nickname},#{user.password},#{user.roleId},NOW(),#{user.salt})
+    </insert>
+
+    <!--重置密码-->
+    <update id="restPassword" >
+        update admin_user
+        <set>
+            password = #{password},
+            salt = #{salt}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>
