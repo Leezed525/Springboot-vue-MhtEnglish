@@ -5,16 +5,10 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.SystemService;
-import com.lee.mht.system.shiro.LeeToken;
 import com.lee.mht.system.utils.JwtUtils;
 import com.lee.mht.system.utils.PasswordUtils;
-import com.lee.mht.system.utils.TokenUtils;
 import com.lee.mht.system.utils.WebUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +42,10 @@ public class SystemServiceImpl implements SystemService {
         }
         //到这里就算登录通过，生成accessToken
         Map<String, Object> claims = new HashMap<>();
+
         //这里要加权限信息 加载claim中
         //留空
+
         claims.put(Constant.JWT_USER_NAME, user.getUsername());
 
         //accessToken 中传入adminuser的id和claims

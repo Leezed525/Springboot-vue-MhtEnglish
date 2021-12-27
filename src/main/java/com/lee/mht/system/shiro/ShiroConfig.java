@@ -1,5 +1,7 @@
 package com.lee.mht.system.shiro;
 
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -7,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author FucXing
@@ -16,11 +20,21 @@ import java.util.LinkedHashMap;
 
 @Configuration
 public class ShiroConfig {
+
+    @Bean
+    public LeeMatcher leeMatcher(){
+        return new LeeMatcher();
+    }
+
     /**
      * 创建自定义的验证规则
      */
     @Bean
     public Realm myRealm() {
+        LeeRealm leeRealm = new LeeRealm();
+        //设置校验器
+        leeRealm.setCredentialsMatcher(leeMatcher());
+        //设置缓存(还没设)
         return new LeeRealm();
     }
 
@@ -31,6 +45,13 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         manager.setRealm(myRealm());
+
+        //关闭shiro自带的session
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        manager.setSubjectDAO(subjectDAO);
         return manager;
     }
 
@@ -38,36 +59,27 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-
         //SecurityManager 安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        //登录，为后台接口名，非前台页面名, 未登录跳转到这里
-        shiroFilterFactoryBean.setLoginUrl("/pub/login");
-        //登录成功后跳转的地址，为后台接口名，非前台页面名
-        shiroFilterFactoryBean.setSuccessUrl("/api/index");
-        //无权限跳转
-        shiroFilterFactoryBean.setUnauthorizedUrl("/pub/unauthorized");
-        // 过滤链定义，从上向下顺序执行,必须保证是有序的，所以用linked
-        LinkedHashMap<String, String> filterMap = new LinkedHashMap<String, String>();
-        //公开的接口，都能访问
-        //filterMap.put("/", "anon");
-        //filterMap.put("/pub/**", "anon");
-        ////api下的接口需要认证后才能访问
-        //filterMap.put("/api/**", "autch");
-        ////roles表示需要特定的角色才能访问
-        //filterMap.put("/user/**", "roles[user]");
-        //filterMap.put("/admin/**", "roles[admin]");
-        //filterMap.put("/root/**", "roles[root]");
-        //防止有忘记写的接口，剩下的都需要认证才能访问
-        //filterMap.put("/**", "autch");
-        //logout是shiro提供的过滤器
-        //filterMap.put("/logout", "logout");
+        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();//拦截器, 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionMap.put("/admin/system/login","anon");
+        filterChainDefinitionMap.put("/**", "authc");    //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
+        //filterChainDefinitionMap.put("/**", "user");   //user表示配置记住我或认证通过可以访问的地址
 
+        // 添加自己的过滤器并且取名为jwt
+        LinkedHashMap<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("jwt", jwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+        // 过滤链定义，从上向下顺序执行，一般将放在最为下边
+        filterChainDefinitionMap.put("/**", "jwt");
 
-        //先放行所有接口，虽然现在就没写多少接口
-        filterMap.put("/**","anon");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
     }
 }

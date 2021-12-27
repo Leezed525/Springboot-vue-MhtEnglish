@@ -6,10 +6,10 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @author FucXing
  * @date 2021/12/24 17:00
  **/
-public class LeeToken implements AuthenticationToken {
+public class JwtToken implements AuthenticationToken {
     private String token;
 
-    public LeeToken(String token){
+    public JwtToken(String token){
         this.token = token;
     }
 
@@ -23,4 +23,5 @@ public class LeeToken implements AuthenticationToken {
     public Object getCredentials() {
         return token;
     }
+
 }

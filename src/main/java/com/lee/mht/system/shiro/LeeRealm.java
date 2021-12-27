@@ -25,6 +25,12 @@ public class LeeRealm extends AuthorizingRealm {
     @Lazy
     private AdminUserDao adminUserDao;
 
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof JwtToken;
+    }
+
+
     //用户授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -35,22 +41,7 @@ public class LeeRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("开始用户验证");
-        String token = (String) authenticationToken.getCredentials();
-        //验证token 有效性
-        String username = TokenUtils.getUsername(token);
-        log.info(username);
-        if (username == null || username.trim().isEmpty()) {
-            throw new AuthenticationException("token非法无效");
-        }
-        AdminUser user = adminUserDao.getAdminUserByUsername(username);
-        //判断用户是否存在
-        if(user == null){
-            throw new AuthenticationException("用户不存在");
-        }
-        //判断用户是否可用
-        if(!user.getAvailable()){
-            throw new AuthenticationException("用户已被禁用");
-        }
-        return new SimpleAuthenticationInfo(user,user.getPassword(),getName());
+        JwtToken token = (JwtToken) authenticationToken;
+        return new SimpleAuthenticationInfo(token.getPrincipal(),token.getPrincipal(),getName());
     }
 }

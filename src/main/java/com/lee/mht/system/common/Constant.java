@@ -11,6 +11,7 @@ public class Constant {
     public static final int ERROR = -1;
 
     public static final String JWT_USER_NAME = "jwt-user-name-key";
+    public static final String HEADER_TOKEN_KEY = "AccessToken";
 
 
     //业务常量
