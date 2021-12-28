@@ -4,6 +4,7 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class AdminUserController {
     }
 
     //通过查询条件获取所有用户
+    @RequiresPermissions("adminUser:query")
     @RequestMapping("/getAllAdminUser")
     public ResultObj getAllAdminUser(@RequestParam(required=false,defaultValue="",name = "username") String username,
                                      @RequestParam(required=false,defaultValue="",name ="nickname") String nickname,
@@ -47,24 +49,28 @@ public class AdminUserController {
     }
 
     //改
+    @RequiresPermissions("adminUser:update")
     @RequestMapping("/updateAdminUser")
     public ResultObj updateAdminUser(@RequestBody AdminUser user){
         return adminUserService.updateAdminUser(user);
     }
 
     //删
+    @RequiresPermissions("adminUser:delete")
     @RequestMapping("/deleteAdminUserByIds")
     public ResultObj deleteAdminUserByIds(@RequestBody ArrayList<Integer> ids){
         return adminUserService.deleteAdminUserByIds(ids);
     }
 
     //增
+    @RequiresPermissions("adminUser:create")
     @RequestMapping("/addAdminUser")
     public ResultObj addAdminUser(@RequestBody AdminUser user){
         return adminUserService.addAdminUser(user);
     }
 
     //重置密码
+    @RequiresPermissions("adminUser:reset")
     @RequestMapping("/restPassword")
     public ResultObj restPassword(Integer id){
         log.info(String.valueOf(id));

@@ -2,7 +2,11 @@ package com.lee.mht.system.service.impl;
 
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.dao.AdminPermissionDao;
+import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
+import com.lee.mht.system.entity.AdminPermission;
+import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.JwtUtils;
@@ -12,8 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author FucXing
@@ -25,6 +28,12 @@ public class SystemServiceImpl implements SystemService {
 
     @Autowired(required = false)
     AdminUserDao adminUserDao;
+
+    @Autowired(required = false)
+    AdminRoleDao adminRoleDao;
+
+    @Autowired(required = false)
+    AdminPermissionDao adminPermissionDao;
 
     @Override
     public ResultObj login(String username, String password) {
@@ -45,7 +54,22 @@ public class SystemServiceImpl implements SystemService {
 
         //这里要加权限信息 加载claim中
         //留空
+        //获取该用户所有角色
+        List<AdminRole> roles = adminRoleDao.getAllRolesByUserId(user_id);
+        //用Set来去重用户所有权限
+        Set<String> permissions = new HashSet<>();
 
+        for(AdminRole role : roles){
+            //查询用户所拥有的每个角色所拥有的权限
+            List<AdminPermission> permissionList = adminPermissionDao.getAllPermissionsByRoleId(role.getId());
+            for (AdminPermission permission : permissionList){
+                permissions.add(permission.getPercode());
+            }
+        }
+        //将set转成string
+        List<String> permissionsToClaims = new ArrayList<String>(permissions);
+
+        claims.put(Constant.JWT_PERMISSIONS_KEY, permissionsToClaims);
         claims.put(Constant.JWT_USER_NAME, user.getUsername());
 
         //accessToken 中传入adminuser的id和claims

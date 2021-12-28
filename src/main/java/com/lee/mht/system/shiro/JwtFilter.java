@@ -43,6 +43,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         String token = req.getHeader(Constant.HEADER_TOKEN_KEY);
         if(StringUtils.hasLength(token)){
             //如果存在,则进入executeLogin方法执行登入,检查token 是否正确
+            //从redis中去查看这个token是否已经验证通过了
+            //如果通过了直接返回true
+            //否则去验证进入login方法
             try {
                 executeLogin(request, response);
                 return true;

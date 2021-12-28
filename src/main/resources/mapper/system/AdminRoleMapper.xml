@@ -10,8 +10,13 @@
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getAllRoles" resultMap="baseResultMap">
-        SELECT * FROM admin_role
+    <select id="getAllRolesByUserId" resultMap="baseResultMap">
+        SELECT r.id as id,r.rolename as rolename,r.comment as comment,
+               r.available as available ,r.createtime as createtime
+        FROM admin_user_role	as ur
+        LEFT JOIN `admin_role` as r
+        on r.id = ur.r_id
+        where ur.u_id = #{id}
     </select>
 
 </mapper>

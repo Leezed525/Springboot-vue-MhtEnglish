@@ -73,6 +73,20 @@ public class JwtUtils {
     }
 
     /**
+     * 获取用户id
+     */
+    public static String getUserId(String token) {
+        String userId = null;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            userId = claims.getSubject();
+        } catch (Exception e) {
+            log.error("error={}", e);
+        }
+        return userId;
+    }
+
+    /**
      * 从令牌中获取数据声明
      */
     public static Claims getClaimsFromToken(String token) {
@@ -88,7 +102,7 @@ public class JwtUtils {
     }
 
     /**
-     * 获取用户名
+     * 从claim中获取用户名
      */
     public static String getUserName(String token) {
 
@@ -97,7 +111,7 @@ public class JwtUtils {
             Claims claims = getClaimsFromToken(token);
             username = (String) claims.get(Constant.JWT_USER_NAME);
         } catch (Exception e) {
-            log.error("eror={}", e);
+            log.error("error={}", e);
         }
         return username;
     }

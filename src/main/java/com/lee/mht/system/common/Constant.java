@@ -10,7 +10,11 @@ public class Constant {
     public static final int OK = 200;
     public static final int ERROR = -1;
 
+    //jwtToken中获取username的key
     public static final String JWT_USER_NAME = "jwt-user-name-key";
+    //jwtToken中获取所有权限的的key
+    public static final String JWT_PERMISSIONS_KEY = "jwt-permissions-key";
+
     public static final String HEADER_TOKEN_KEY = "AccessToken";
 
 

@@ -1,6 +1,7 @@
 package com.lee.mht.system.dao;
 
 import com.lee.mht.system.entity.AdminRole;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,5 +11,6 @@ import java.util.List;
  **/
 public interface AdminRoleDao {
 
-    List<AdminRole> getAllRoles();
+    List<AdminRole> getAllRolesByUserId(@Param("id")int userId);
+
 }

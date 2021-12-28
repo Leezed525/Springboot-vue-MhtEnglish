@@ -7,19 +7,18 @@
         <result column="username" property="username" javaType="string"/>
         <result column="nickname" property="nickname" javaType="string"/>
         <result column="password" property="password" javaType="string"/>
-        <result column="role_id" property="roleId"/>
         <result column="available" property="available" javaType="Boolean"/>
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
         <result column="salt" property="salt" javaType="string"/>
     </resultMap>
 
     <select id="getAdminUserByUsername" parameterType="String" resultMap="baseResultMap">
-        SELECT id,username,nickname,role_id,available FROM admin_user WHERE username = #{username}
+        SELECT id,username,nickname,available FROM admin_user WHERE username = #{username}
     </select>
 
     <select id="login" parameterType="String" resultMap="baseResultMap">
         <!-- IFNULL(MAX( id ),0) 用来防止mybatis查询查不到结果时报错的问题 -->
-        SELECT IFNULL(MAX( id ),0) AS id,username,password,nickname,role_id,available ,salt FROM admin_user
+        SELECT IFNULL(MAX( id ),0) AS id,username,password,nickname,available ,salt FROM admin_user
         WHERE username = #{username}
     </select>
 
@@ -30,7 +29,7 @@
 
     <!--查-->
     <select id="getAllAdminUser"  resultMap="baseResultMap">
-        SELECT id,username,nickname,role_id,available
+        SELECT id,username,nickname,available
         FROM admin_user
         <where>
             <if test="username != null and ! &quot;&quot;.equals(username)">
@@ -41,9 +40,6 @@
                 <bind name="myNickname" value="'%' + nickname + '%'"/>
                 nickname like #{myNickname}
             </if>
-            <if test="role_id != null">
-                role_id = #{role_id}
-            </if>
         </where>
     </select>
     <!--改-->
@@ -52,9 +48,6 @@
         <set>
             <if test="adminUser.nickname != null and ! &quot;&quot;.equals(adminUser.nickname)">
                 nickname = #{adminUser.nickname},
-            </if>
-            <if test="adminUser.roleId != null">
-                role_id = #{adminUser.roleId},
             </if>
         </set>
         WHERE
@@ -72,8 +65,8 @@
 
     <!--增-->
     <insert id="addAdminUser" parameterType="AdminUser">
-        INSERT INTO admin_user (username,nickname,password,role_id,createtime,salt)
-        VALUES (#{user.username},#{user.nickname},#{user.password},#{user.roleId},NOW(),#{user.salt})
+        INSERT INTO admin_user (username,nickname,password,createtime,salt)
+        VALUES (#{user.username},#{user.nickname},#{user.password},NOW(),#{user.salt})
     </insert>
 
     <!--重置密码-->
