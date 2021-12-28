@@ -35,7 +35,7 @@ public class ShiroConfig {
         //设置校验器
         leeRealm.setCredentialsMatcher(leeMatcher());
         //设置缓存(还没设)
-        return new LeeRealm();
+        return leeRealm;
     }
 
     /**

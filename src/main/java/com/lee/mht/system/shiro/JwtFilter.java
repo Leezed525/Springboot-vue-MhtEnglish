@@ -6,9 +6,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.util.AntPathMatcher;
 import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -36,12 +34,10 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        log.info("JwtFilter-->>>isAccessAllowed-Method:init()");
         //是否是尝试登录，如果尝试登陆直接返回true
         if (isLoginAttempt(request, response)) {
             return true;
         }
-
         //如果不是访问登录api，正常的情况下HEADER中应该有token
         HttpServletRequest req = (HttpServletRequest) request;
         String token = req.getHeader(Constant.HEADER_TOKEN_KEY);
@@ -51,7 +47,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
                 return true;
             } catch (Exception e) {
-                throw new AuthenticationException(e.getMessage());
+                throw new AuthenticationException("Token非法，请登出后重新登陆，请勿篡改Token");
             }
         }
         else{
@@ -72,13 +68,11 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         return false;
         //String token = req.getHeader(Constant.HEADER_TOKEN_KEY);
     }
-
     /**
-     * 重写AuthenticatingFilter的executeLogin方法丶执行登陆操作
+     * 重写AuthenticatingFilter的executeLogin方法执行登陆操作
      */
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        log.info("JwtFilter-->>>executeLogin-Method:init()");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(Constant.HEADER_TOKEN_KEY);//Access-Token获取token
         JwtToken jwtToken = new JwtToken(token);

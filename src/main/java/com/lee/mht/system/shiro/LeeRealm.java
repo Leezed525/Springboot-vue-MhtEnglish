@@ -40,8 +40,9 @@ public class LeeRealm extends AuthorizingRealm {
     //用户登入
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        log.info("开始用户验证");
+        //log.info("开始用户验证");
         JwtToken token = (JwtToken) authenticationToken;
-        return new SimpleAuthenticationInfo(token.getPrincipal(),token.getPrincipal(),getName());
+        //log.info(String.valueOf(token.getCredentials()));
+        return new SimpleAuthenticationInfo(token.getPrincipal(),token.getCredentials(),getName());
     }
 }

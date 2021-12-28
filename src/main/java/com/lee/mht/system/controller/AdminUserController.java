@@ -32,10 +32,10 @@ public class AdminUserController {
     //通过查询条件获取所有用户
     @RequestMapping("/getAllAdminUser")
     public ResultObj getAllAdminUser(@RequestParam(required=false,defaultValue="",name = "username") String username,
-                                           @RequestParam(required=false,defaultValue="",name ="nickname") String nickname,
-                                           @RequestParam(required=false,defaultValue="",name ="roleId")String roleId,
-                                           @RequestParam(required=false,defaultValue="5",name ="limit")String pageSize,
-                                           @RequestParam(required=false,defaultValue="1",name ="page")String pageNum){
+                                     @RequestParam(required=false,defaultValue="",name ="nickname") String nickname,
+                                     @RequestParam(required=false,defaultValue="",name ="roleId")String roleId,
+                                     @RequestParam(required=false,defaultValue="5",name ="limit")String pageSize,
+                                     @RequestParam(required=false,defaultValue="1",name ="page")String pageNum){
         Integer role_id;
         if(StringUtils.hasLength(roleId)){
             role_id = Integer.parseInt(roleId);
