@@ -35,9 +35,59 @@
         VALUES
         <foreach collection="rIds"  item="r_id" index="index" separator=",">
             (#{u_id},#{r_id})
-
         </foreach>
-
     </insert>
 
+    <select id="getAllAdminRole" resultMap="baseResultMap">
+        SELECT id,rolename,comment,available,createtime from admin_role
+        <where>
+            <if test="rolename != null and !&quot;&quot;.equals(rolename)">
+                <bind name="myRolename" value="'%' + rolename + '%'"/>
+                rolename LIKE #{myRolename}
+            </if>
+            <if test="comment != null and !&quot;&quot;.equals(comment)">
+                <bind name="myComment" value="'%' + comment + '%'"/>
+                AND comment LIKE #{myComment}
+            </if>
+            AND available = 1 AND visible = 1
+        </where>
+    </select>
+
+    <update id="updateAdminRole" >
+        UPDATE admin_role
+        <set>
+            <if test="adminRole.roleName != null and ! &quot;&quot;.equals(adminRole.roleName)">
+                rolename = #{adminRole.roleName},
+            </if>
+            <if test="adminRole.comment != null and ! &quot;&quot;.equals(adminRole.comment)">
+                comment = #{adminRole.comment},
+            </if>
+            <if test="adminRole.available != null">
+                available = #{adminRole.available}
+            </if>
+        </set>
+        WHERE
+        id = #{adminRole.id};
+    </update>
+
+    <!--检查角色名是否唯一-->
+    <select id="checkRolenameUnique" resultType="Integer">
+        SELECT COUNT(0) FROM admin_role
+        WHERE rolename = #{rolename}
+    </select>
+
+    <!--增-->
+    <insert id="addAdminRole" parameterType="AdminRole">
+        INSERT INTO admin_role (rolename,comment,createtime,available)
+        VALUES (#{adminRole.roleName},#{adminRole.comment},NOW(),#{adminRole.available})
+    </insert>
+
+    <!--删-->
+    <delete id="deleteAdminRoleByIds">
+        DELETE FROM admin_role
+        WHERE id in
+        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

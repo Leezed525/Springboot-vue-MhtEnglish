@@ -2,12 +2,14 @@ package com.lee.mht.system.controller;
 
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminRole;
+import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminRoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ public class AdminRoleController {
     @Autowired
     AdminRoleService adminRoleService;
 
+    //获取所有角色用以放入selection
     @RequestMapping(value = "/getAllRoles")
     public ResultObj getAllRoles(){
         return adminRoleService.getAllRoles();
@@ -33,4 +36,33 @@ public class AdminRoleController {
         return adminRoleService.getAllRolesByUserId(userId);
     }
 
+    //查（带条件）
+    //通过查询条件获取所有用户
+    @RequestMapping("/getAllAdminRole")
+    public ResultObj getAllAdminRole(@RequestParam(required=false,defaultValue="",name = "roleName") String roleName,
+                                     @RequestParam(required=false,defaultValue="",name ="comment") String comment,
+                                     @RequestParam(required=false,defaultValue="5",name ="limit")String pageSize,
+                                     @RequestParam(required=false,defaultValue="1",name ="page")String pageNum){
+        return adminRoleService.getAllAdminRole(roleName, comment,Integer.parseInt(pageSize), Integer.parseInt(pageNum));
+    }
+
+    @RequestMapping("/updateAdminRole")
+    public ResultObj updateAdminRole(@RequestBody AdminRole role){
+        return adminRoleService.updateAdminRole(role);
+    }
+
+    @PostMapping("checkRolenameUnique")
+    public ResultObj checkRolenameUnique(@RequestParam("roleName")String rolename){
+        return adminRoleService.checkRolenameUnique(rolename);
+    }
+
+    @RequestMapping("/addAdminRole")
+    public ResultObj addAdminRole(@RequestBody AdminRole role){
+        return adminRoleService.addAdminRole(role);
+    }
+
+    @RequestMapping("/deleteAdminRoleByIds")
+    public ResultObj deleteAdminRoleByIds(@RequestBody ArrayList<Integer> ids){
+        return adminRoleService.deleteAdminRoleByIds(ids);
+    }
 }

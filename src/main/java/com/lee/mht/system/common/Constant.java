@@ -40,4 +40,7 @@ public class Constant {
 
     public static final String USERNAME_UNIQUE = "用户名唯一";
     public static final String USERNAME_NOT_UNIQUE = "用户名不唯一";
+
+    public static final String ROLENAME_UNIQUE = "角色名唯一";
+    public static final String ROLENAME_NOT_UNIQUE = "角色名不唯一";
 }

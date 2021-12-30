@@ -80,8 +80,8 @@
 
     <!--增-->
     <insert id="addAdminUser" parameterType="AdminUser">
-        INSERT INTO admin_user (username,nickname,password,createtime,salt)
-        VALUES (#{user.username},#{user.nickname},#{user.password},NOW(),#{user.salt})
+        INSERT INTO admin_user (username,nickname,password,createtime,salt,available)
+        VALUES (#{user.username},#{user.nickname},#{user.password},NOW(),#{user.salt},#{user.available})
     </insert>
 
     <!--重置密码-->
