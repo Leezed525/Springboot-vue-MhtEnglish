@@ -38,4 +38,6 @@ public class Constant {
     public static final String RESET_SUCCESS = "重置成功";
     public static final String RESET_ERROR = "重置失败";
 
+    public static final String USERNAME_UNIQUE = "用户名唯一";
+    public static final String USERNAME_NOT_UNIQUE = "用户名不唯一";
 }

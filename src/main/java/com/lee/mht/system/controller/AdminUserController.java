@@ -83,5 +83,10 @@ public class AdminUserController {
         return adminUserService.reassignRoles(rIds,userId);
     }
 
+    //检查用户名是否唯一
+    @PostMapping("checkUsernameUnique")
+    public ResultObj checkUsernameUnique(@RequestParam("username")String username){
+        return adminUserService.checkUsernameUnique(username);
+    }
 
 }

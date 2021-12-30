@@ -95,4 +95,10 @@
             id = #{id}
         </where>
     </update>
+
+    <!--检查用户名是否唯一-->
+    <select id="checkUsernameUnique" resultType="Integer">
+        SELECT COUNT(0) FROM admin_user
+        WHERE username = #{username}
+    </select>
 </mapper>

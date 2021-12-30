@@ -25,4 +25,6 @@ public interface AdminUserDao {
     boolean addAdminUser(@Param("user")AdminUser user);
 
     boolean restPassword(@Param("id")Integer id, @Param("password") String password, @Param("salt") String salt);
+
+    int checkUsernameUnique(@Param("username") String username);
 }

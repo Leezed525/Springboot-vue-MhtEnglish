@@ -21,4 +21,6 @@ public interface AdminUserService {
     ResultObj restPassword(Integer id);
 
     ResultObj reassignRoles(List<Integer> rIds, Integer userId);
+
+    ResultObj checkUsernameUnique(String username);
 }

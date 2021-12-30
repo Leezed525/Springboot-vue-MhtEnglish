@@ -82,7 +82,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public ResultObj addAdminUser(AdminUser user) {
         String salt = PasswordUtils.getSalt();
-        String password = PasswordUtils.encode(user.getPassword(), salt);
+        String password = PasswordUtils.encode("123456", salt);
         user.setSalt(salt);
         user.setPassword(password);
         try {
@@ -128,6 +128,18 @@ public class AdminUserServiceImpl implements AdminUserService {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+        }
+    }
+
+    @Override
+    public ResultObj checkUsernameUnique(String username) {
+
+        int count = adminUserDao.checkUsernameUnique(username);
+        if(count == 0){
+            return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE,null);
+        }else{
+            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE,null);
+
         }
     }
 
