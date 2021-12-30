@@ -19,4 +19,6 @@ public interface AdminUserService {
     ResultObj addAdminUser(AdminUser user);
 
     ResultObj restPassword(Integer id);
+
+    ResultObj reassignRoles(List<Integer> rIds, Integer userId);
 }

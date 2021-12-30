@@ -13,4 +13,9 @@ public interface AdminRoleDao {
 
     List<AdminRole> getAllRolesByUserId(@Param("id")int userId);
 
+    List<AdminRole> getAllRoles();
+
+    void deleteAllRolesByUserId(@Param("userId") Integer userId);
+
+    void addRolesByUserId(@Param("rIds") List<Integer> rIds,@Param("u_id") Integer userId);
 }

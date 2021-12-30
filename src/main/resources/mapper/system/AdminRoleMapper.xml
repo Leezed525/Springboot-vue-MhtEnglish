@@ -10,6 +10,12 @@
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <select id="getAllRoles" resultMap="baseResultMap">
+        SELECT id,rolename,comment,available,createtime
+        FROM admin_role
+        where available = 1 and visible = 1
+    </select>
+
     <select id="getAllRolesByUserId" resultMap="baseResultMap">
         SELECT r.id as id,r.rolename as rolename,r.comment as comment,
                r.available as available ,r.createtime as createtime
@@ -18,5 +24,20 @@
         on r.id = ur.r_id
         where ur.u_id = #{id}
     </select>
+
+    <delete id="deleteAllRolesByUserId">
+        DELETE FROM admin_user_role
+        where u_id = #{userId}
+    </delete>
+
+    <insert id="addRolesByUserId" >
+        INSERT INTO admin_user_role(u_id,r_id)
+        VALUES
+        <foreach collection="rIds"  item="r_id" index="index" separator=",">
+            (#{u_id},#{r_id})
+
+        </foreach>
+
+    </insert>
 
 </mapper>

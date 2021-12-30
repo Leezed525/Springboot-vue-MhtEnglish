@@ -20,6 +20,7 @@ public class AdminUser implements Serializable {
     private Integer id;
     private String username;
     private String nickname;
+    private String remark;
     private String password;
     private Integer roleId;
     private Boolean available;

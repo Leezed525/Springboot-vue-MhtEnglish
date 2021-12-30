@@ -22,9 +22,15 @@ public class AdminRoleController {
     @Autowired
     AdminRoleService adminRoleService;
 
-    //@RequestMapping(value = "/getAllRoles")
-    //public ResultObj getAllRoles(){
-    //    return adminRoleService.getAllRoles();
-    //}
+    @RequestMapping(value = "/getAllRoles")
+    public ResultObj getAllRoles(){
+        return adminRoleService.getAllRoles();
+    }
+
+    //获取用户的角色
+    @RequestMapping("/getAllRolesByUserId")
+    public ResultObj getAllRolesByUserId(@RequestParam("userId")Integer userId){
+        return adminRoleService.getAllRolesByUserId(userId);
+    }
 
 }

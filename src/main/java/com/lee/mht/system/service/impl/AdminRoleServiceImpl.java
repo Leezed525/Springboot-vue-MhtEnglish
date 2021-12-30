@@ -1,7 +1,5 @@
 package com.lee.mht.system.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminRoleDao;
@@ -23,13 +21,23 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Autowired(required = false)
     AdminRoleDao adminRoleDao;
 
-    //@Override
-    //public ResultObj getAllRoles() {
-    //    try {
-    //        List<AdminRole> adminRoles = adminRoleDao.getAllRoles();
-    //        return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,adminRoles);
-    //    }catch (Exception e){
-    //        return new ResultObj(Constant.ERROR,Constant.QUERY_ERROR,null);
-    //    }
-    //}
+    @Override
+    public ResultObj getAllRoles() {
+        try {
+            List<AdminRole> adminRoles = adminRoleDao.getAllRoles();
+            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,adminRoles);
+        }catch (Exception e){
+            return new ResultObj(Constant.ERROR,Constant.QUERY_ERROR,null);
+        }
+    }
+
+    @Override
+    public ResultObj getAllRolesByUserId(Integer userId) {
+        try {
+            List<AdminRole> adminRoles = adminRoleDao.getAllRolesByUserId(userId);
+            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,adminRoles);
+        }catch (Exception e){
+            return new ResultObj(Constant.ERROR,Constant.QUERY_ERROR,null);
+        }
+    }
 }

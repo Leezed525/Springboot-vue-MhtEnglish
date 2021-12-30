@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
@@ -25,6 +26,9 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Autowired(required = false)
     private AdminUserDao adminUserDao;
+
+    @Autowired(required = false)
+    private AdminRoleDao adminRoleDao;
 
 
     @Override
@@ -109,6 +113,21 @@ public class AdminUserServiceImpl implements AdminUserService {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultObj(Constant.ERROR, Constant.RESET_ERROR, null);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResultObj reassignRoles(List<Integer> rIds, Integer userId) {
+        try {
+            //先删除所有该用户的角色
+            adminRoleDao.deleteAllRolesByUserId(userId);
+            //再添加角色关系
+            adminRoleDao.addRolesByUserId(rIds, userId);
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 

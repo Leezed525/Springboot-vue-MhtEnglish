@@ -76,4 +76,12 @@ public class AdminUserController {
         log.info(String.valueOf(id));
         return adminUserService.restPassword(id);
     }
+
+    //重新给用户分配角色
+    @RequestMapping("/reassignRoles")
+    public ResultObj reassignRoles(@RequestParam("rIds") ArrayList<Integer> rIds,@RequestParam("uId")Integer userId){
+        return adminUserService.reassignRoles(rIds,userId);
+    }
+
+
 }

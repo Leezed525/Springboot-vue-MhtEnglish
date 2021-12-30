@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="username" property="username" javaType="string"/>
         <result column="nickname" property="nickname" javaType="string"/>
+        <result column="remark" property="remark"  javaType="string"/>
         <result column="password" property="password" javaType="string"/>
         <result column="available" property="available" javaType="Boolean"/>
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
@@ -29,18 +30,26 @@
 
     <!--查-->
     <select id="getAllAdminUser"  resultMap="baseResultMap">
-        SELECT id,username,nickname,available
-        FROM admin_user
+        SELECT  DISTINCT u.id as id,u.username as username,u.nickname as nickname,
+                u.available as available,u.remark as remark
+        FROM  `admin_user` as u
+        left join  admin_user_role as ur
+        on u.id = ur.u_id
         <where>
             <if test="username != null and ! &quot;&quot;.equals(username)">
                 <bind name="myUsername" value="'%' + username + '%'"/>
-                username like #{myUsername}
+                and u.username like #{myUsername}
             </if>
             <if test="nickname != null and ! &quot;&quot;.equals(nickname)">
                 <bind name="myNickname" value="'%' + nickname + '%'"/>
-                nickname like #{myNickname}
+                and u.nickname like #{myNickname}
             </if>
+            <if test="role_id != null">
+                and ur.r_id = #{role_id}
+            </if>
+            and u.visible = 1
         </where>
+
     </select>
     <!--改-->
     <update id="updateAdminUser" parameterType="AdminUser">
@@ -48,6 +57,12 @@
         <set>
             <if test="adminUser.nickname != null and ! &quot;&quot;.equals(adminUser.nickname)">
                 nickname = #{adminUser.nickname},
+            </if>
+            <if test="adminUser.remark != null and ! &quot;&quot;.equals(adminUser.remark)">
+                remark = #{adminUser.remark},
+            </if>
+            <if test="adminUser.available != null">
+                available = #{adminUser.available}
             </if>
         </set>
         WHERE

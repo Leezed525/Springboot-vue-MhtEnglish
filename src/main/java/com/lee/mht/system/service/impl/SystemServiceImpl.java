@@ -66,7 +66,7 @@ public class SystemServiceImpl implements SystemService {
                 permissions.add(permission.getPercode());
             }
         }
-        //将set转成string
+        //将set转成List<string>
         List<String> permissionsToClaims = new ArrayList<String>(permissions);
 
         claims.put(Constant.JWT_PERMISSIONS_KEY, permissionsToClaims);
