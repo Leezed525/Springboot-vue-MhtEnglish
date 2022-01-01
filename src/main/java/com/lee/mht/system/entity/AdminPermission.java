@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AdminPermission {
     private Integer id;
+    private Integer pid;
     private String title;
     private String reqUrl;
     private String percode;
     private Boolean available;
+    private String type;
 }

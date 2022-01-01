@@ -4,11 +4,13 @@
 <mapper namespace="com.lee.mht.system.dao.AdminPermissionDao">
     <resultMap id="baseResultMap" type="AdminPermission">
         <id column="id" property="id"/>
+        <result column="pid" property="pid" javaType="integer"/>
         <result column="title" property="title" javaType="string"/>
         <result column="req_url" property="reqUrl" javaType="string"/>
         <result column="password" property="password" javaType="string"/>
         <result column="percode" property="percode" javaType="string"/>
         <result column="available" property="available" javaType="Boolean"/>
+        <result column="type" property="type" javaType="string"/>
     </resultMap>
 
     <select id="getAllPermissionsByRoleId" resultMap = "baseResultMap">
@@ -19,4 +21,68 @@
         on p.id = rp.p_id
         where rp.r_id = #{id}
     </select>
+
+    <select id="getAllAdminPermission" resultMap = "baseResultMap">
+        SELECT id,title,req_url,percode,available,type
+        FROM admin_permission
+        <where>
+            <if test="title != null and ! &quot;&quot;.equals(title)">
+                <bind name="myTitle" value="'%' + title + '%'"/>
+                and title like #{myTitle}
+            </if>
+            <if test="percode != null and ! &quot;&quot;.equals(percode)">
+                <bind name="myPercode" value="'%' + percode + '%'"/>
+                and percode like #{myPercode}
+            </if>
+            <if test="pid != null">
+                and pid = #{pid}
+            </if>
+            and type = 'permission'
+        </where>
+    </select>
+    <select id="getAllMenu" resultMap="baseResultMap">
+        SELECT id,title,req_url,percode,available,type
+        FROM admin_permission
+        WHERE type = 'menu'
+    </select>
+
+    <update id="updateAdminPermission" >
+        UPDATE admin_permission
+        <set>
+            <if test="permission.title != null and ! &quot;&quot;.equals(permission.title)">
+                title = #{permission.title},
+            </if>
+            <if test="permission.reqUrl != null and ! &quot;&quot;.equals(permission.reqUrl)">
+                req_url = #{permission.reqUrl},
+            </if>
+            <if test="permission.percode != null and ! &quot;&quot;.equals(permission.percode)">
+                percode = #{permission.percode},
+            </if>
+            <if test="permission.available != null">
+                available = #{permission.available}
+            </if>
+        </set>
+        WHERE
+        id = #{permission.id};
+    </update>
+
+    <insert id="addAdminPermission">
+        INSERT INTO admin_permission (title,pid,req_url,percode,available,type)
+        VALUES (#{permission.title},#{permission.pid},#{permission.reqUrl},#{permission.percode},#{permission.available},'permission')
+    </insert>
+
+    <select id="checkPermissionnameUnique" resultType="Integer">
+        SELECT COUNT(*) FROM admin_permission
+        WHERE title = #{title}
+    </select>
+
+    <!--删-->
+    <delete id="deleteAdminPermissionByIds">
+        DELETE FROM admin_permission
+        WHERE id in
+        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 </mapper>
