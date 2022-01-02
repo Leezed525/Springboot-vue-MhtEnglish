@@ -13,6 +13,11 @@
         <result column="type" property="type" javaType="string"/>
     </resultMap>
 
+    <resultMap id="treeResultMap" type="com.lee.mht.system.utils.TreeNode">
+        <id column="id" property="id"/>
+        <result column="title" property="label" javaType="string"/>
+    </resultMap>
+
     <select id="getAllPermissionsByRoleId" resultMap = "baseResultMap">
         SELECT p.id as id,p.title as title ,p.req_url as req_url,p.percode as percode,
                p.available as available
@@ -23,7 +28,7 @@
     </select>
 
     <select id="getAllAdminPermission" resultMap = "baseResultMap">
-        SELECT id,title,req_url,percode,available,type
+        SELECT id,title,pid,req_url,percode,available,type
         FROM admin_permission
         <where>
             <if test="title != null and ! &quot;&quot;.equals(title)">
@@ -84,5 +89,10 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getPids" resultMap="treeResultMap">
+        SELECT id,title FROM admin_permission
+        WHERE type = 'menu'
+    </select>
 
 </mapper>

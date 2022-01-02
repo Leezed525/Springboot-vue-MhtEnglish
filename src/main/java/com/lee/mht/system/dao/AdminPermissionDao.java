@@ -1,6 +1,7 @@
 package com.lee.mht.system.dao;
 
 import com.lee.mht.system.entity.AdminPermission;
+import com.lee.mht.system.utils.TreeNode;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -20,4 +21,6 @@ public interface AdminPermissionDao {
     int checkPermissionnameUnique(@Param("title")String title);
 
     boolean deleteAdminPermissionByIds(@Param("ids") ArrayList<Integer> ids);
+
+    List<TreeNode> getPids();
 }

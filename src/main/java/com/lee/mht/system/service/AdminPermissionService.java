@@ -17,4 +17,8 @@ public interface AdminPermissionService {
     ResultObj checkPermissionnameUnique(String title);
 
     ResultObj deleteAdminPermissionByIds(ArrayList<Integer> ids);
+
+    ResultObj getPermissionTree();
+
+    ResultObj getPermissionByRoleId(Integer roleId);
 }

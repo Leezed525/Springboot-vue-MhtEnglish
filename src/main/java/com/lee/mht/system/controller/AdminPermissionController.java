@@ -67,10 +67,24 @@ public class AdminPermissionController {
         return adminPermissionService.checkPermissionnameUnique(title);
     }
 
+    //删
     @RequestMapping("/deleteAdminPermissionByIds")
     public ResultObj deleteAdminPermissionByIds(@RequestBody ArrayList<Integer> ids){
         log.info(ids.toString());
         return adminPermissionService.deleteAdminPermissionByIds(ids);
+    }
+
+
+    //获取权限树
+    @RequestMapping("getPermissionTree")
+    public ResultObj getPermissionTree(){
+        return adminPermissionService.getPermissionTree();
+    }
+
+    //获取某个角色拥有的所有权限
+    @RequestMapping("getPermissionByRoleId")
+    public ResultObj getPermissionByRoleId(@RequestParam("RoleId")Integer RoleId){
+        return adminPermissionService.getPermissionByRoleId(RoleId);
     }
 
 
