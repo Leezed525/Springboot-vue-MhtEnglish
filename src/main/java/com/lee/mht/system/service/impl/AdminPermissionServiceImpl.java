@@ -141,4 +141,5 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
             return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
         }
     }
+
 }

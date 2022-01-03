@@ -95,4 +95,16 @@
         WHERE type = 'menu'
     </select>
 
+    <delete id="deleteAllPermissionByRoleId" >
+        DELETE FROM admin_role_permission
+        WHERE r_id = #{roleId}
+    </delete>
+
+    <insert id="addPermissionByRoleId">
+        INSERT INTO admin_role_permission(r_id,p_id)
+        VALUES
+        <foreach collection="pIds"  item="p_id" index="index" separator=",">
+            (#{roleId},#{p_id})
+        </foreach>
+    </insert>
 </mapper>

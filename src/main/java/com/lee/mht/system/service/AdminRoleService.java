@@ -19,4 +19,6 @@ public interface AdminRoleService {
     ResultObj addAdminRole(AdminRole role);
 
     ResultObj deleteAdminRoleByIds(ArrayList<Integer> ids);
+
+    ResultObj reassignPermissions(ArrayList<Integer> pIds, Integer roleId);
 }

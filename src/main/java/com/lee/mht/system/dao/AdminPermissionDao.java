@@ -23,4 +23,8 @@ public interface AdminPermissionDao {
     boolean deleteAdminPermissionByIds(@Param("ids") ArrayList<Integer> ids);
 
     List<TreeNode> getPids();
+
+    void deleteAllPermissionByRoleId(@Param("roleId") Integer roleId);
+
+    void addPermissionByRoleId(@Param("pIds") ArrayList<Integer> pIds,@Param("roleId") Integer roleId);
 }

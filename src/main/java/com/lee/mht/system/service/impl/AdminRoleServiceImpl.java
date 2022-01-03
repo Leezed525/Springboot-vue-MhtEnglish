@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.dao.AdminPermissionDao;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.service.AdminRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,10 @@ public class AdminRoleServiceImpl implements AdminRoleService {
 
     @Autowired(required = false)
     AdminRoleDao adminRoleDao;
+
+
+    @Autowired(required = false)
+    private AdminPermissionDao adminPermissionDao;
 
     @Override
     public ResultObj getAllRoles() {
@@ -98,8 +104,12 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
+    @Transactional
     public ResultObj deleteAdminRoleByIds(ArrayList<Integer> ids) {
         try {
+            for (Integer id : ids) {
+                adminPermissionDao.deleteAllPermissionByRoleId(id);
+            }
             boolean flag = adminRoleDao.deleteAdminRoleByIds(ids);
             if (flag) {
                 return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
@@ -108,6 +118,21 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             }
         } catch (Exception e) {
             return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResultObj reassignPermissions(ArrayList<Integer> pIds, Integer roleId) {
+        try {
+            //先删除所有该用户的角色
+            adminPermissionDao.deleteAllPermissionByRoleId(roleId);
+            //再添加角色关系
+            adminPermissionDao.addPermissionByRoleId(pIds, roleId);
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 }

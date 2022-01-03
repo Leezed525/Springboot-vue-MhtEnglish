@@ -65,4 +65,10 @@ public class AdminRoleController {
     public ResultObj deleteAdminRoleByIds(@RequestBody ArrayList<Integer> ids){
         return adminRoleService.deleteAdminRoleByIds(ids);
     }
+
+    //给角色分配权限
+    @RequestMapping("/reassignPermission")
+    public ResultObj reassignRoles(@RequestParam("pIds") ArrayList<Integer> pIds,@RequestParam("rId")Integer roleId){
+        return adminRoleService.reassignPermissions(pIds, roleId);
+    }
 }
