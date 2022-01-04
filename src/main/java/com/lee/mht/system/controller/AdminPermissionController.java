@@ -7,6 +7,7 @@ import com.lee.mht.system.entity.AdminPermission;
 import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.utils.TreeNode;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class AdminPermissionController {
 
     //查询权限列表
     @RequestMapping("/getAllAdminPermission")
+    @RequiresPermissions("adminPermission:query")
     public ResultObj getAllAdminPermission(@RequestParam(required = false, defaultValue = "", name = "title") String title,
                                            @RequestParam(required = false, defaultValue = "", name = "percode") String percode,
                                            @RequestParam(required = false, defaultValue = "", name = "pid") String pid,
@@ -44,7 +46,7 @@ public class AdminPermissionController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
 
     }
@@ -56,29 +58,31 @@ public class AdminPermissionController {
         if (list != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
     }
 
     //改
     @RequestMapping("/updateAdminPermission")
+    @RequiresPermissions("adminPermission:update")
     public ResultObj updateAdminPermission(@RequestBody AdminPermission permission) {
         boolean flag = adminPermissionService.updateAdminPermission(permission);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 
     //增
     @RequestMapping("/addAdminPermission")
+    @RequiresPermissions("adminPermission:add")
     public ResultObj addAdminPermission(@RequestBody AdminPermission permission) {
         boolean flag = adminPermissionService.addAdminPermission(permission);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR, null);
         }
     }
 
@@ -89,19 +93,20 @@ public class AdminPermissionController {
         if (count == 0) {
             return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.USERNAME_NOT_UNIQUE, null);
 
         }
     }
 
     //删
     @RequestMapping("/deleteAdminPermissionByIds")
+    @RequiresPermissions("adminPermission:delete")
     public ResultObj deleteAdminPermissionByIds(@RequestBody ArrayList<Integer> ids) {
         boolean flag = adminPermissionService.deleteAdminPermissionByIds(ids);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
         }
     }
 
@@ -113,7 +118,7 @@ public class AdminPermissionController {
         if (pids != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pids);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
 
         }
     }
@@ -125,7 +130,7 @@ public class AdminPermissionController {
         if (permissions != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, permissions);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
     }
 

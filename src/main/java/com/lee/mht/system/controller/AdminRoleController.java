@@ -4,11 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminRole;
-import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class AdminRoleController {
         if (adminRoles != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, adminRoles);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -45,14 +43,14 @@ public class AdminRoleController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, adminRoles);
         }
         else{
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
-
     }
 
     //查（带条件）
     //通过查询条件获取所有用户
     @RequestMapping("/getAllAdminRole")
+    @RequiresPermissions("adminRole:query")
     public ResultObj getAllAdminRole(@RequestParam(required = false, defaultValue = "", name = "roleName") String roleName,
                                      @RequestParam(required = false, defaultValue = "", name = "comment") String comment,
                                      @RequestParam(required = false, defaultValue = "5", name = "limit") String pageSize,
@@ -61,18 +59,19 @@ public class AdminRoleController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         }else{
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
     }
 
     @RequestMapping("/updateAdminRole")
+    @RequiresPermissions("adminRole:update")
     public ResultObj updateAdminRole(@RequestBody AdminRole role) {
         boolean flag = adminRoleService.updateAdminRole(role);
         if(flag){
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         }
         else{
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -82,38 +81,41 @@ public class AdminRoleController {
         if(count == 0){
             return new ResultObj(Constant.OK, Constant.ROLENAME_UNIQUE,null);
         }else{
-            return new ResultObj(Constant.ERROR, Constant.ROLENAME_NOT_UNIQUE,null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ROLENAME_NOT_UNIQUE,null);
         }
     }
 
     @RequestMapping("/addAdminRole")
+    @RequiresPermissions("adminRole:add")
     public ResultObj addAdminRole(@RequestBody AdminRole role) {
         boolean flag = adminRoleService.addAdminRole(role);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR, null);
         }
     }
 
     @RequestMapping("/deleteAdminRoleByIds")
+    @RequiresPermissions("adminRole:delete")
     public ResultObj deleteAdminRoleByIds(@RequestBody ArrayList<Integer> ids) {
         boolean flag =  adminRoleService.deleteAdminRoleByIds(ids);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
         }
     }
 
     //给角色分配权限
     @RequestMapping("/reassignPermission")
+    @RequiresPermissions("adminRole:assign")
     public ResultObj reassignRoles(@RequestParam("pIds") ArrayList<Integer> pIds, @RequestParam("rId") Integer roleId) {
         boolean flag =  adminRoleService.reassignPermissions(pIds, roleId);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 }

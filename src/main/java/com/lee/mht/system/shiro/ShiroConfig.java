@@ -1,5 +1,7 @@
 package com.lee.mht.system.shiro;
 
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
@@ -11,8 +13,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -88,6 +93,33 @@ public class ShiroConfig {
     //public JwtFilter jwtFilter() {
     //    return new JwtFilter();
     //}
+
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        ModelAndView mv;
+        System.out.println(ex instanceof UnauthenticatedException);
+        //进行异常判断。如果捕获异常请求跳转。
+        if (ex instanceof UnauthorizedException) {
+            mv = new ModelAndView("/error/error");
+            ex.printStackTrace();
+            mv.addObject("msg", "你的级别还不够高,加油吧！少年。");
+            return mv;
+        }
+        else if(ex instanceof UnauthenticatedException){
+            mv = new ModelAndView("/error/error");
+            ex.printStackTrace();
+            mv.addObject("msg", "没有此权限！");
+            return mv;
+        }
+        else {
+            mv = new ModelAndView("/error/error");
+            ex.printStackTrace();
+            mv.addObject("msg", "我勒个去，页面被外星人挟持了!");
+            return mv;
+
+        }
+
+    }
+
 
     /**
      * 下面两个Bean用于开启shiro aop注解支持.

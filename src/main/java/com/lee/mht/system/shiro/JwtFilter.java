@@ -1,6 +1,11 @@
 package com.lee.mht.system.shiro;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lee.mht.system.common.Constant;
+import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.exception.SystemException;
+import com.lee.mht.system.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.util.AntPathMatcher;
@@ -13,6 +18,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author FucXing
@@ -23,10 +30,15 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     //@Autowired
     //private RedisUtil redisUtil;
 
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-    private AntPathMatcher antPathMatcher =new AntPathMatcher();
+
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+
     /**
      * 执行登录认证(判断请求头是否带上token)
+     *
      * @param request
      * @param response
      * @param mappedValue
@@ -38,24 +50,20 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         if (isLoginAttempt(request, response)) {
             return true;
         }
-        //如果不是访问登录api，正常的情况下HEADER中应该有token
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader(Constant.HEADER_TOKEN_KEY);
-        if(StringUtils.hasLength(token)){
-            //如果存在,则进入executeLogin方法执行登入,检查token 是否正确
-            //从redis中去查看这个token是否已经验证通过了
-            //如果通过了直接返回true
-            //否则去验证进入login方法
-            try {
-                executeLogin(request, response);
-                return true;
-            } catch (Exception e) {
-                throw new AuthenticationException("Token非法，请登出后重新登陆，请勿篡改Token");
+        try {
+            executeLogin(request, response);
+            return true;
+        }catch (SystemException e) {
+            CommonRsponse(e.getCode(),e.getDefaultMessage(),response);
+            return false;
+        } catch (AuthenticationException e){//如果抓到这个错误
+            if(e.getCause() instanceof SystemException){
+                SystemException exception= (SystemException) e.getCause();
+                CommonRsponse(exception.getCode(),exception.getDefaultMessage(),response);
+            }else {
+                CommonRsponse(Constant.SERVER_ERROR,Constant.SHIRO_AUTHENTICATION_ERROR,response);
             }
-        }
-        else{
-            //无token非法访问请求
-            throw new AuthenticationException("非法访问");
+            return false;
         }
     }
 
@@ -65,17 +73,15 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
-        if(antPathMatcher.match("/admin/system/login",req.getRequestURI())){
-            return true;
-        }
-        return false;
+        return antPathMatcher.match("/admin/system/login", req.getRequestURI());
         //String token = req.getHeader(Constant.HEADER_TOKEN_KEY);
     }
+
     /**
      * 重写AuthenticatingFilter的executeLogin方法执行登陆操作
      */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws AuthenticationException{
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(Constant.HEADER_TOKEN_KEY);//Access-Token获取token
         JwtToken jwtToken = new JwtToken(token);
@@ -100,5 +106,26 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             return false;
         }
         return super.preHandle(request, response);
+    }
+
+    /**
+     * 自定义错误响应
+     * filter的错误比自定义的错误先判，所以要在这里单独写一个判断
+     */
+    private void CommonRsponse(int code, String msg, ServletResponse resp) {
+        // 自定义异常的类，用户返回给客户端相应的JSON格式的信息
+        try {
+            HttpServletResponse response = (HttpServletResponse) resp;
+            ResultObj result = new ResultObj(code, msg, null);
+            response.setContentType("application/json; charset=utf-8");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(code);
+            String userJson = JacksonUtils.toJson(result);
+            OutputStream out = response.getOutputStream();
+            out.write(userJson.getBytes("UTF-8"));
+            out.flush();
+        } catch (IOException e) {
+            log.error("eror={}", e);
+        }
     }
 }

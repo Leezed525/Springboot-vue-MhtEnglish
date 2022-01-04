@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author FucXing
@@ -51,7 +50,7 @@ public class AdminUserController {
         if(pageInfo != null){
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         }else{
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -63,7 +62,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -75,7 +74,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
         }
     }
 
@@ -87,7 +86,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR, null);
         }
     }
 
@@ -99,18 +98,19 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.RESET_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.RESET_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.RESET_ERROR, null);
         }
     }
 
     //重新给用户分配角色
     @RequestMapping("/reassignRoles")
+    @RequiresPermissions("adminUser:assign")
     public ResultObj reassignRoles(@RequestParam("rIds") ArrayList<Integer> rIds,@RequestParam("uId")Integer userId){
         boolean flag =  adminUserService.reassignRoles(rIds,userId);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -121,7 +121,7 @@ public class AdminUserController {
         if(count == 0){
             return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE,null);
         }else{
-            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE,null);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.USERNAME_NOT_UNIQUE,null);
 
         }
     }

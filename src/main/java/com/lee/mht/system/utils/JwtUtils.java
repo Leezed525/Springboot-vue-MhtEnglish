@@ -20,7 +20,7 @@ public class JwtUtils {
     private static final String secretKey = "FucXingMht"; // token 密钥
 
     private static final Long accessTokenExpireTime = 1000 * 60 * 5L;//accessToken (发给客户端的5分钟过期一次)
-    private static final Long refreshTokenExpireTime = 1000 * 60 * 60 * 24L; //refreshToken(保留再redis的一天过期一次)
+    //private static final Long refreshTokenExpireTime = 1000 * 60 * 60 * 24L; //refreshToken(保留再redis的一天过期一次)
 
     /**
      * 生成 access_token
@@ -33,14 +33,15 @@ public class JwtUtils {
     /*
      * 生成refreshtoken
      * */
-    public static String getRefreshToken(String subject, Map<String, Object> claims) {
-        return generateToken(issuer, subject, claims, refreshTokenExpireTime, secretKey);
-    }
+    //public static String getRefreshToken(String subject, Map<String, Object> claims) {
+    //    return generateToken(issuer, subject, claims, refreshTokenExpireTime, secretKey);
+    //}
 
     /**
      * 签发token
      */
-    public static String generateToken(String issuer, String subject, Map<String, Object> claims, long ttlMillis, String secret) {
+    public static String generateToken(String issuer, String subject,
+                                       Map<String, Object> claims, long ttlMillis, String secret) {
 
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -105,7 +106,6 @@ public class JwtUtils {
      * 从claim中获取用户名
      */
     public static String getUserName(String token) {
-
         String username = null;
         try {
             Claims claims = getClaimsFromToken(token);

@@ -1,6 +1,7 @@
 package com.lee.mht.system.common;
 
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.exception.SystemException;
 
 /**
  * @author FucXing
@@ -8,18 +9,37 @@ import com.lee.mht.system.common.ResultObj;
  **/
 public class Constant {
     public static final int OK = 200;
-    public static final int ERROR = -1;
+    public static final int SERVER_ERROR = -1;
+    public static final int TOKEN_ERROR = 403;
+    public static final int PERMISSION_ERROR = 401;
 
     //jwtToken中获取username的key
     public static final String JWT_USER_NAME = "jwt-user-name-key";
     //jwtToken中获取所有权限的的key
     public static final String JWT_PERMISSIONS_KEY = "jwt-permissions-key";
+    //jwtToken中签发时间的key
+    public static final String JWT_ISSUANCE_TIME = "jwt-issuance-time";
+
 
     public static final String HEADER_TOKEN_KEY = "AccessToken";
+    public static final String REDIS_TOKEN_KEY = "AccessToken_USERID_";
+
+    //Token过期时间
+    public static final long TOKEN_EXPIRE_TIME = 60*60*12L;
+
+
+    public static final String NOT_PERMISSION = "您没有操作权限";
+    public static final String ILLEAGEL_TOKEN = "TOKEN非法,请勿篡改token！";
+    public static final String TOKEN_EXPIRED  = "登陆已过期";
+
+    public static final String SHIRO_AUTHENTICATION_ERROR = "用户认证异常";
+
 
 
     //业务常量
     public static final String LOGIN_SUCCESS = "登陆成功";
+    public static final String ALLOW_ACCESS = "允许访问";
+
     public static final String USERNAME_PASSWORD_ERROR = "用户名或密码错误";
     public static final String ADMINUSER_NOT_AVAILABLE = "用户不可用";
 
