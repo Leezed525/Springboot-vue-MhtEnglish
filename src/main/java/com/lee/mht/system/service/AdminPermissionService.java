@@ -1,24 +1,27 @@
 package com.lee.mht.system.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminPermission;
+import com.lee.mht.system.utils.TreeNode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface AdminPermissionService {
-    ResultObj getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum);
+    PageInfo<AdminPermission> getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum);
 
-    ResultObj getAllMenu();
+    List<AdminPermission> getAllMenu();
 
-    ResultObj updateAdminPermission(AdminPermission permission);
+    boolean updateAdminPermission(AdminPermission permission);
 
-    ResultObj addAdminPermission(AdminPermission permission);
+    boolean addAdminPermission(AdminPermission permission);
 
-    ResultObj checkPermissionnameUnique(String title);
+    int checkPermissionnameUnique(String title);
 
-    ResultObj deleteAdminPermissionByIds(ArrayList<Integer> ids);
+    boolean deleteAdminPermissionByIds(ArrayList<Integer> ids);
 
-    ResultObj getPermissionTree();
+    List<TreeNode> getPermissionTree();
 
-    ResultObj getPermissionByRoleId(Integer roleId);
+    List<AdminPermission> getPermissionByRoleId(Integer roleId);
 }

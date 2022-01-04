@@ -1,6 +1,7 @@
 package com.lee.mht.system.service;
 
 
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminUser;
 
@@ -10,17 +11,17 @@ public interface AdminUserService {
 
     AdminUser getAdminUserInfoByUsername(String username);
 
-    ResultObj  getAllAdminUser(String username, String nickname, Integer role_id,Integer pageSize,Integer pageNum);
+    PageInfo<AdminUser> getAllAdminUser(String username, String nickname, Integer role_id, Integer pageSize, Integer pageNum);
 
-    ResultObj updateAdminUser(AdminUser user);
+    boolean updateAdminUser(AdminUser user);
 
-    ResultObj deleteAdminUserByIds(List<Integer> ids);
+    boolean deleteAdminUserByIds(List<Integer> ids);
 
-    ResultObj addAdminUser(AdminUser user);
+    boolean addAdminUser(AdminUser user);
 
-    ResultObj restPassword(Integer id);
+    boolean restPassword(Integer id);
 
-    ResultObj reassignRoles(List<Integer> rIds, Integer userId);
+    boolean reassignRoles(List<Integer> rIds, Integer userId);
 
-    ResultObj checkUsernameUnique(String username);
+    int checkUsernameUnique(String username);
 }

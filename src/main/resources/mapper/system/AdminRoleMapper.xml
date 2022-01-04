@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mht.system.dao.AdminRoleDao">
-    <resultMap id="baseResultMap" type="AdminRole">
+    <resultMap id="baseResultMap" type="com.lee.mht.system.entity.AdminRole">
         <id column="id" property="id"/>
         <result column="rolename" property="roleName"/>
         <result column="comment" property="comment"/>
@@ -77,7 +77,7 @@
     </select>
 
     <!--增-->
-    <insert id="addAdminRole" parameterType="AdminRole">
+    <insert id="addAdminRole" parameterType="com.lee.mht.system.entity.AdminRole">
         INSERT INTO admin_role (rolename,comment,createtime,available)
         VALUES (#{adminRole.roleName},#{adminRole.comment},NOW(),#{adminRole.available})
     </insert>

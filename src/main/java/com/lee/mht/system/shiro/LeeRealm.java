@@ -48,17 +48,20 @@ public class LeeRealm extends AuthorizingRealm {
 
         //创建返回的info
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        if (id == 1) {
+            info.addStringPermission("*:*");
+        } else {
+            //先去redis里找，找不到再去claims里找
 
-        //先去redis里找，找不到再去claims里找
+
+            //以上留空为redis做准备
 
 
-        //以上留空为redis做准备
-
-
-        Claims claims = JwtUtils.getClaimsFromToken(accessToken);
-        List<String> permissions = (List<String>) claims.get(Constant.JWT_PERMISSIONS_KEY);
-        if(permissions != null){
-            info.addStringPermissions(permissions);
+            Claims claims = JwtUtils.getClaimsFromToken(accessToken);
+            List<String> permissions = (List<String>) claims.get(Constant.JWT_PERMISSIONS_KEY);
+            if (permissions != null) {
+                info.addStringPermissions(permissions);
+            }
         }
         return info;
     }
@@ -69,6 +72,6 @@ public class LeeRealm extends AuthorizingRealm {
         log.info("开始用户验证");
         JwtToken token = (JwtToken) authenticationToken;
         //log.info(String.valueOf(token.getCredentials()));
-        return new SimpleAuthenticationInfo(token.getPrincipal(),token.getCredentials(),getName());
+        return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), getName());
     }
 }

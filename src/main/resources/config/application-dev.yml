@@ -50,6 +50,22 @@ spring:
         login-password: admin
         allow: 127.0.0.1
 
+
+  redis:
+    host: 192.168.78.128
+    port: 6379
+    password: 123456
+    database: 0
+  cache:
+    redis:
+      cache-null-values: true
+      time-to-live: 600000ms
+      use-key-prefix: true
+      key-prefix: MhtEnglish
+
+
+
+
 #mybatis配置
 mybatis:
   mapper-locations: classpath:/mapper/*/*.xml

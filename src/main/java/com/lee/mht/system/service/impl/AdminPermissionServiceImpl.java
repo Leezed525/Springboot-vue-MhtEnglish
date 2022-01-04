@@ -10,6 +10,10 @@ import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.utils.TreeNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,95 +27,63 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@CacheConfig(cacheNames = "AdminPermission")
 public class AdminPermissionServiceImpl implements AdminPermissionService {
 
     @Autowired(required = false)
     private AdminPermissionDao adminPermissionDao;
 
     @Override
-    public ResultObj getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum) {
+    public PageInfo<AdminPermission> getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum) {
         try {
             PageHelper.startPage(pageNum, pageSize);
             List<AdminPermission> adminPermissions = adminPermissionDao.getAllAdminPermission(title, percode, pId);
-            PageInfo<AdminPermission> pageInfo = new PageInfo<>(adminPermissions);
-            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
+            return new PageInfo<>(adminPermissions);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return null;
         }
     }
 
     @Override
-    public ResultObj getAllMenu() {
+    @Cacheable(key = "'AllMenu'")
+    public List<AdminPermission> getAllMenu() {
         try {
-            List<AdminPermission> adminMenus = adminPermissionDao.getAllMenu();
-            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, adminMenus);
+            return adminPermissionDao.getAllMenu();
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return null;
         }
     }
 
     @Override
-    public ResultObj updateAdminPermission(AdminPermission permission) {
-        try {
-            boolean flag = adminPermissionDao.updateAdminPermission(permission);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
-        }
+    public boolean updateAdminPermission(AdminPermission permission) {
+        return adminPermissionDao.updateAdminPermission(permission);
     }
 
     @Override
-    public ResultObj addAdminPermission(AdminPermission permission) {
-        try {
-            boolean flag = adminPermissionDao.addAdminPermission(permission);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
-        }
+    @CacheEvict(key = "'PermissionTree'")
+    public boolean addAdminPermission(AdminPermission permission) {
+        return adminPermissionDao.addAdminPermission(permission);
     }
 
     @Override
-    public ResultObj checkPermissionnameUnique(String title) {
-        int count = adminPermissionDao.checkPermissionnameUnique(title);
-        if (count == 0) {
-            return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE, null);
-        } else {
-            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE, null);
+    public int checkPermissionnameUnique(String title) {
+        return adminPermissionDao.checkPermissionnameUnique(title);
 
-        }
     }
 
     @Override
-    public ResultObj deleteAdminPermissionByIds(ArrayList<Integer> ids) {
-        try {
-            boolean flag = adminPermissionDao.deleteAdminPermissionByIds(ids);
-            log.info(String.valueOf(flag));
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
-            }
-        } catch (Exception e) {
-            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
-        }
+    @CacheEvict(key = "'PermissionTree'")
+    public boolean deleteAdminPermissionByIds(ArrayList<Integer> ids) {
+        return adminPermissionDao.deleteAdminPermissionByIds(ids);
     }
 
 
     //获取权限树
     @Override
-    public ResultObj getPermissionTree() {
+    @Cacheable(key = "'PermissionTree'")
+    public List<TreeNode> getPermissionTree() {
         try {
             List<TreeNode> pids = adminPermissionDao.getPids();
             List<AdminPermission> permissions = adminPermissionDao.getAllAdminPermission(null, null, null);
@@ -124,22 +96,20 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
                 }
                 node.setChildren(childrens);
             }
-            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pids);
+            return pids;
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return null;
         }
     }
 
     @Override
-    public ResultObj getPermissionByRoleId(Integer roleId) {
+    public List<AdminPermission> getPermissionByRoleId(Integer roleId) {
         try {
-            List<AdminPermission> permissions = adminPermissionDao.getAllPermissionsByRoleId(roleId);
-            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, permissions);
+            return adminPermissionDao.getAllPermissionsByRoleId(roleId);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return null;
         }
     }
-
 }

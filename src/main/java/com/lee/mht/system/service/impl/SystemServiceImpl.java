@@ -53,7 +53,6 @@ public class SystemServiceImpl implements SystemService {
         Map<String, Object> claims = new HashMap<>();
 
         //这里要加权限信息 加载claim中
-        //留空
         //获取该用户所有角色
         List<AdminRole> roles = adminRoleDao.getAllRolesByUserId(user_id);
         //用Set来去重用户所有权限

@@ -37,110 +37,82 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public ResultObj getAllAdminUser(String username, String nickname, Integer role_id, Integer pageSize, Integer pageNum) {
+    public PageInfo<AdminUser> getAllAdminUser(String username, String nickname, Integer role_id, Integer pageSize, Integer pageNum) {
         try {
             PageHelper.startPage(pageNum, pageSize);
             List<AdminUser> adminUsers = adminUserDao.getAllAdminUser(username, nickname, role_id);
-            PageInfo<AdminUser> pageInfo = new PageInfo<>(adminUsers);
-            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
+            return new PageInfo<>(adminUsers);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+            return null;
         }
     }
 
     @Override
-    public ResultObj updateAdminUser(AdminUser user) {
+    public boolean updateAdminUser(AdminUser user) {
         try {
-            boolean flag = adminUserDao.updateAdminUser(user);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
-            }
+            return adminUserDao.updateAdminUser(user);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return false;
         }
     }
 
     @Override
     @Transactional
-    public ResultObj deleteAdminUserByIds(List<Integer> ids) {
+    public boolean deleteAdminUserByIds(List<Integer> ids) {
         try {
-            boolean flag = adminUserDao.deleteAdminUserByIds(ids);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
-            }
+            return adminUserDao.deleteAdminUserByIds(ids);
         } catch (Exception e) {
-            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+            return false;
         }
     }
 
     @Override
-    public ResultObj addAdminUser(AdminUser user) {
+    public boolean addAdminUser(AdminUser user) {
         String salt = PasswordUtils.getSalt();
         String password = PasswordUtils.encode("123456", salt);
         user.setSalt(salt);
         user.setPassword(password);
         try {
-            boolean flag = adminUserDao.addAdminUser(user);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
-            }
+            return adminUserDao.addAdminUser(user);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
+            return false;
         }
     }
 
     //重置密码
     @Override
-    public ResultObj restPassword(Integer id) {
+    public boolean restPassword(Integer id) {
         String salt = PasswordUtils.getSalt();
         String password = PasswordUtils.encode("123456", salt);
         try {
-            boolean flag = adminUserDao.restPassword(id, password, salt);
-            if (flag) {
-                return new ResultObj(Constant.OK, Constant.RESET_SUCCESS, null);
-            } else {
-                return new ResultObj(Constant.ERROR, Constant.RESET_ERROR, null);
-            }
+            return adminUserDao.restPassword(id, password, salt);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.RESET_ERROR, null);
+            return false;
         }
     }
 
     @Override
     @Transactional
-    public ResultObj reassignRoles(List<Integer> rIds, Integer userId) {
+    public boolean reassignRoles(List<Integer> rIds, Integer userId) {
         try {
             //先删除所有该用户的角色
             adminRoleDao.deleteAllRolesByUserId(userId);
             //再添加角色关系
             adminRoleDao.addRolesByUserId(rIds, userId);
-            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+            return false;
         }
     }
 
     @Override
-    public ResultObj checkUsernameUnique(String username) {
-
-        int count = adminUserDao.checkUsernameUnique(username);
-        if(count == 0){
-            return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE,null);
-        }else{
-            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE,null);
-
-        }
+    public int checkUsernameUnique(String username) {
+        return adminUserDao.checkUsernameUnique(username);
     }
 
 

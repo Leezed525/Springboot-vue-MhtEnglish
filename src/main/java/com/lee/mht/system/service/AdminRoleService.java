@@ -1,24 +1,26 @@
 package com.lee.mht.system.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminRole;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface AdminRoleService {
-    ResultObj getAllRoles();
+    List<AdminRole> getAllRoles();
 
-    ResultObj getAllRolesByUserId(Integer userId);
+    List<AdminRole> getAllRolesByUserId(Integer userId);
 
-    ResultObj getAllAdminRole(String roleName, String comment, int pageSize, int pageNum);
+    PageInfo<AdminRole> getAllAdminRole(String roleName, String comment, int pageSize, int pageNum);
 
-    ResultObj updateAdminRole(AdminRole role);
+    boolean updateAdminRole(AdminRole role);
 
-    ResultObj checkRolenameUnique(String rolename);
+    int checkRolenameUnique(String rolename);
 
-    ResultObj addAdminRole(AdminRole role);
+    boolean addAdminRole(AdminRole role);
 
-    ResultObj deleteAdminRoleByIds(ArrayList<Integer> ids);
+    boolean deleteAdminRoleByIds(ArrayList<Integer> ids);
 
-    ResultObj reassignPermissions(ArrayList<Integer> pIds, Integer roleId);
+    boolean reassignPermissions(ArrayList<Integer> pIds, Integer roleId);
 }

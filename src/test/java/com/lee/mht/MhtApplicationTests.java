@@ -4,13 +4,12 @@ import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
 import com.lee.mht.system.service.SystemService;
-import com.lee.mht.system.utils.JwtUtils;
-import com.lee.mht.system.utils.PasswordEncoder;
-import com.lee.mht.system.utils.PasswordUtils;
+import com.lee.mht.system.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +25,9 @@ class MhtApplicationTests {
 
     @Autowired
     SystemService systemService;
+
+    @Autowired
+    RedisUtils redisUtil;
 
     @Test
     void testUpdateAdminUser(){
@@ -60,4 +62,11 @@ class MhtApplicationTests {
         //String accessToken = JwtUtils.getAccessToken(String.valueOf(user_id), claims);
     }
 
+
+    @Test
+    void redisTest(){
+        redisUtil.set("hello",new TreeNode(123,"测试"));
+        TreeNode treenode = ((TreeNode)redisUtil.get("hello"));
+        log.info(treenode.getLabel());
+    }
 }

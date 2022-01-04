@@ -1,5 +1,7 @@
 package com.lee.mht.system.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
@@ -45,48 +47,83 @@ public class AdminUserController {
         else{
             role_id = null;
         }
-        return adminUserService.getAllAdminUser(username, nickname, role_id,Integer.parseInt(pageSize), Integer.parseInt(pageNum));
+        PageInfo<AdminUser> pageInfo =adminUserService.getAllAdminUser(username, nickname, role_id,Integer.parseInt(pageSize), Integer.parseInt(pageNum));
+        if(pageInfo != null){
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
+        }else{
+            return new ResultObj(Constant.ERROR, Constant.QUERY_ERROR, null);
+        }
     }
 
     //改
     @RequiresPermissions("adminUser:update")
     @RequestMapping("/updateAdminUser")
     public ResultObj updateAdminUser(@RequestBody AdminUser user){
-        return adminUserService.updateAdminUser(user);
+        boolean flag =  adminUserService.updateAdminUser(user);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
+        } else {
+            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+        }
     }
 
     //删
     @RequiresPermissions("adminUser:delete")
     @RequestMapping("/deleteAdminUserByIds")
     public ResultObj deleteAdminUserByIds(@RequestBody ArrayList<Integer> ids){
-        return adminUserService.deleteAdminUserByIds(ids);
+        boolean flag =  adminUserService.deleteAdminUserByIds(ids);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
+        } else {
+            return new ResultObj(Constant.ERROR, Constant.DELETE_ERROR, null);
+        }
     }
 
     //增
     @RequiresPermissions("adminUser:create")
     @RequestMapping("/addAdminUser")
     public ResultObj addAdminUser(@RequestBody AdminUser user){
-        return adminUserService.addAdminUser(user);
+        boolean flag =  adminUserService.addAdminUser(user);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
+        } else {
+            return new ResultObj(Constant.ERROR, Constant.ADD_ERROR, null);
+        }
     }
 
     //重置密码
     @RequiresPermissions("adminUser:reset")
     @RequestMapping("/restPassword")
     public ResultObj restPassword(Integer id){
-        log.info(String.valueOf(id));
-        return adminUserService.restPassword(id);
+        boolean flag =  adminUserService.restPassword(id);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.RESET_SUCCESS, null);
+        } else {
+            return new ResultObj(Constant.ERROR, Constant.RESET_ERROR, null);
+        }
     }
 
     //重新给用户分配角色
     @RequestMapping("/reassignRoles")
     public ResultObj reassignRoles(@RequestParam("rIds") ArrayList<Integer> rIds,@RequestParam("uId")Integer userId){
-        return adminUserService.reassignRoles(rIds,userId);
+        boolean flag =  adminUserService.reassignRoles(rIds,userId);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
+        } else {
+            return new ResultObj(Constant.ERROR, Constant.UPDATE_ERROR, null);
+        }
     }
 
     //检查用户名是否唯一
     @PostMapping("checkUsernameUnique")
     public ResultObj checkUsernameUnique(@RequestParam("username")String username){
-        return adminUserService.checkUsernameUnique(username);
+        int count =  adminUserService.checkUsernameUnique(username);
+        if(count == 0){
+            return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE,null);
+        }else{
+            return new ResultObj(Constant.ERROR, Constant.USERNAME_NOT_UNIQUE,null);
+
+        }
     }
 
 }
