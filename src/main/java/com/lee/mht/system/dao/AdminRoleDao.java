@@ -1,6 +1,8 @@
 package com.lee.mht.system.dao;
 
+import com.lee.mht.system.config.MybatisRedisCache;
 import com.lee.mht.system.entity.AdminRole;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
  * @author FucXing
  * @date 2021/12/28 17:42
  **/
+//@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface AdminRoleDao {
 
     List<AdminRole> getAllRolesByUserId(@Param("id")int userId);

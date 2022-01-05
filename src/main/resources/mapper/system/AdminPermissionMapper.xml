@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mht.system.dao.AdminPermissionDao">
-    <resultMap id="baseResultMap" type="AdminPermission">
+    <cache type="com.lee.mht.system.config.MybatisRedisCache"/>
+
+    <resultMap id="baseResultMap" type="com.lee.mht.system.entity.AdminPermission">
         <id column="id" property="id"/>
         <result column="pid" property="pid" javaType="integer"/>
         <result column="title" property="title" javaType="string"/>
         <result column="req_url" property="reqUrl" javaType="string"/>
-        <result column="password" property="password" javaType="string"/>
         <result column="percode" property="percode" javaType="string"/>
         <result column="available" property="available" javaType="Boolean"/>
         <result column="type" property="type" javaType="string"/>

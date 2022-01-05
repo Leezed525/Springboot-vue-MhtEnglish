@@ -1,12 +1,15 @@
 package com.lee.mht.system.dao;
 
+import com.lee.mht.system.config.MybatisRedisCache;
 import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.entity.AdminUser;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 
+//@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface AdminUserDao {
     AdminUser getAdminUserByUsername(@Param("username")String username);
 

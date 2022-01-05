@@ -52,7 +52,7 @@ spring:
 
 
   redis:
-    host: 192.168.78.128
+    host: 121.41.108.9
     port: 6379
     password: 123456
     database: 0
@@ -60,8 +60,6 @@ spring:
     redis:
       cache-null-values: true
       time-to-live: 600000ms
-      use-key-prefix: true
-      key-prefix: MhtEnglish
 
 
 
@@ -72,6 +70,7 @@ mybatis:
   type-aliases-package: com.lee.mht.*.entity
   configuration:
     map-underscore-to-camel-case: true
+    cache-enabled: true
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #用于控制台打印sql语句
 
 #pagehelper配置

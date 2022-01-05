@@ -21,10 +21,4 @@ public class RestExceptionHandler {
         log.error("UnauthorizedException,{},{}",e.getLocalizedMessage(),e);
         return new ResultObj(Constant.PERMISSION_ERROR,Constant.NOT_PERMISSION);
     }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResultObj authenticationException(AuthenticationException e){
-        log.error("authenticationException,{},{}",e.getLocalizedMessage(),e);
-        return new ResultObj(Constant.TOKEN_ERROR,Constant.ILLEAGEL_TOKEN);
-    }
 }

@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mht.system.dao.AdminUserDao">
-    <resultMap id="baseResultMap" type="AdminUser">
+    <cache type="com.lee.mht.system.config.MybatisRedisCache"/>
+
+    <resultMap id="baseResultMap" type="com.lee.mht.system.entity.AdminUser">
         <id column="id" property="id"/>
         <result column="username" property="username" javaType="string"/>
         <result column="nickname" property="nickname" javaType="string"/>
@@ -52,7 +54,7 @@
 
     </select>
     <!--改-->
-    <update id="updateAdminUser" parameterType="AdminUser">
+    <update id="updateAdminUser" parameterType="com.lee.mht.system.entity.AdminUser">
         UPDATE admin_user
         <set>
             <if test="adminUser.nickname != null and ! &quot;&quot;.equals(adminUser.nickname)">
@@ -79,7 +81,7 @@
     </delete>
 
     <!--增-->
-    <insert id="addAdminUser" parameterType="AdminUser">
+    <insert id="addAdminUser" parameterType="com.lee.mht.system.entity.AdminUser">
         INSERT INTO admin_user (username,nickname,password,createtime,salt,available)
         VALUES (#{user.username},#{user.nickname},#{user.password},NOW(),#{user.salt},#{user.available})
     </insert>
