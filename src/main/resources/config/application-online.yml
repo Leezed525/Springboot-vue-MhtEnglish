@@ -1,7 +1,6 @@
-#上线环境
-
+#开发环境
 server:
-  port: 8081
+  port: 8088
 spring:
   application:
     name: SpringbootTestApplication
@@ -50,7 +49,35 @@ spring:
         login-username: admin
         login-password: admin
         allow: 127.0.0.1
+
+
+  redis:
+    host: 121.41.108.9
+    port: 6379
+    password: 123456
+    database: 0
+  cache:
+    redis:
+      cache-null-values: true
+      time-to-live: 600000ms
+
+
+
+
+#mybatis配置
 mybatis:
-  mybatis_config_file:mybatis-config.xml
-  mapper_path:/mapper/**.xml
-  type_alias_package:com.lee.mht.business.entity
+  mapper-locations: classpath:/mapper/*/*.xml
+  type-aliases-package: com.lee.mht.*.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #用于控制台打印sql语句
+
+#pagehelper配置
+
+pagehelper:
+  #  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+

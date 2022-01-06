@@ -1,11 +1,10 @@
 package com.lee.mht.system.config;
 
 import com.lee.mht.system.utils.ApplicationContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.ibatis.cache.Cache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.security.MessageDigest;
@@ -27,11 +26,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author FucXing
  * @date 2022/01/05 19:36
  **/
+@Slf4j
 public class MybatisRedisCache implements Cache
 {
-
-    private static final Logger logger = LoggerFactory.getLogger(MybatisRedisCache.class);
-
     /**
      * 统一缓存头
      */
@@ -107,12 +104,12 @@ public class MybatisRedisCache implements Cache
             getRedisTemplate().opsForHash().put(CACHE_NAME + id, strKey, "1");
             // 有效期 随机，防止雪崩
             int expireMinutes = RandomUtils.nextInt(minExpireMinutes, maxExpireMinutes);
-            logger.info("将查询结果存储到cache.key:" + strKey + ",value:" + value);
+            log.info("将查询结果存储到cache.key:" + strKey + ",value:" + value);
             getRedisTemplate().opsForValue().set(strKey, value, expireMinutes, TimeUnit.SECONDS);
 
-            logger.debug("Put cache to redis, id={}", strKey);
+            log.debug("Put cache to redis, id={}", strKey);
         } catch (Exception e) {
-            logger.error("Redis put failed, key=" + key.toString(), e);
+            log.error("Redis put failed, key=" + key.toString(), e);
         }
     }
 
@@ -126,10 +123,10 @@ public class MybatisRedisCache implements Cache
     public Object getObject(Object key) {
         try {
             String strKey = generateRedisKey(key);
-            logger.debug("Get cache from redis, id={} key={}", id, strKey);
+            log.debug("Get cache from redis, id={} key={}", id, strKey);
             return getRedisTemplate().opsForValue().get(strKey);
         } catch (Exception e) {
-            logger.error("Redis get failed, fail over to db", e);
+            log.error("Redis get failed, fail over to db", e);
             return null;
         }
     }
@@ -145,9 +142,9 @@ public class MybatisRedisCache implements Cache
         try {
             String strKey = generateRedisKey(key);
             getRedisTemplate().delete(strKey);
-            logger.debug("Remove cache from redis, id={}", id);
+            log.debug("Remove cache from redis, id={}", id);
         } catch (Exception e) {
-            logger.error("Redis remove failed", e);
+            log.error("Redis remove failed", e);
         }
         return null;
     }
@@ -159,7 +156,7 @@ public class MybatisRedisCache implements Cache
     @Override
     public void clear() {
         try {
-            logger.debug("clear cache, id={}", id);
+            log.debug("clear cache, id={}", id);
             String hsKey = CACHE_NAME + id;
             // 获取CacheNamespace所有缓存key
             Map<Object, Object> idMap = getRedisTemplate().opsForHash().entries(hsKey);
@@ -173,7 +170,7 @@ public class MybatisRedisCache implements Cache
                 getRedisTemplate().delete(hsKey);
             }
         } catch (Exception e) {
-            logger.error("clear cache failed", e);
+            log.error("clear cache failed", e);
         }
     }
 
