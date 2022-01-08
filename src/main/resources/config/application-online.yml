@@ -49,6 +49,7 @@ spring:
         login-username: admin
         login-password: Leezed963547654
         allow: ""
+      keep-alive: true
 
 
   redis:

@@ -96,6 +96,7 @@
         WHERE type = 'menu'
     </select>
 
+
     <delete id="deleteAllPermissionByRoleId" >
         DELETE FROM admin_role_permission
         WHERE r_id = #{roleId}
@@ -108,4 +109,14 @@
             (#{roleId},#{p_id})
         </foreach>
     </insert>
+
+    <select id="getAllPermissionPercodesByRoleIds" resultType="java.lang.String">
+        SELECT DISTINCT p.percode from admin_role_permission as rp
+        LEFT JOIN admin_permission as p
+        on rp.p_id = p.id
+        WHERE rp.r_id in
+        <foreach collection="roles"  item="role" index="index" separator="," open="(" close=")">
+            #{role.id}
+        </foreach>
+    </select>
 </mapper>

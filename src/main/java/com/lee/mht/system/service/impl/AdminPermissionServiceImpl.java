@@ -2,23 +2,21 @@ package com.lee.mht.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.lee.mht.system.common.Constant;
-import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.annotation.CostTime;
 import com.lee.mht.system.dao.AdminPermissionDao;
+import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.entity.AdminPermission;
+import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.utils.TreeNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author FucXing
@@ -32,6 +30,9 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
 
     @Autowired(required = false)
     private AdminPermissionDao adminPermissionDao;
+
+    @Autowired(required = false)
+    private AdminRoleDao adminRoleDao;
 
     @Override
     public PageInfo<AdminPermission> getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum) {
@@ -111,5 +112,14 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    @CostTime
+    public List<String> getAllPermissionByUserId(int user_id) {
+        //获取该用户所有角色
+        List<AdminRole> roles = adminRoleDao.getAllRolesByUserId(user_id);
+
+        return adminPermissionDao.getAllPermissionPercodesByRoleIds(roles);
     }
 }

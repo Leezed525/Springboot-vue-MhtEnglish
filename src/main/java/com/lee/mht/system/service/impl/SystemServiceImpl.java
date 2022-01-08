@@ -1,5 +1,6 @@
 package com.lee.mht.system.service.impl;
 
+import com.lee.mht.system.annotation.CostTime;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminPermissionDao;
@@ -8,6 +9,7 @@ import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminPermission;
 import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.entity.AdminUser;
+import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.JwtUtils;
 import com.lee.mht.system.utils.PasswordUtils;
@@ -34,13 +36,17 @@ public class SystemServiceImpl implements SystemService {
     @Autowired(required = false)
     AdminRoleDao adminRoleDao;
 
-    @Autowired(required = false)
-    AdminPermissionDao adminPermissionDao;
+    @Autowired
+    AdminPermissionService adminPermissionService;
+
+    @Autowired//注入自己来使用获取权限得方法
+    SystemService systemService;
 
     @Autowired
     RedisUtils redisUtils;
 
     @Override
+    @CostTime
     public ResultObj login(String username, String password) {
 
         AdminUser user = adminUserDao.login(username);
@@ -60,7 +66,7 @@ public class SystemServiceImpl implements SystemService {
         Map<String, Object> claims = new HashMap<>();
 
         //查询用户的所有权限
-        List<String> permissionsToClaims = getAllPermissionByUserId(user_id);
+        List<String> permissionsToClaims = adminPermissionService.getAllPermissionByUserId(user_id);
         //放入
         claims.put(Constant.JWT_PERMISSIONS_KEY, permissionsToClaims);
         claims.put(Constant.JWT_USER_NAME, user.getUsername());
@@ -77,19 +83,4 @@ public class SystemServiceImpl implements SystemService {
         return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, accessToken);
     }
 
-    private List<String> getAllPermissionByUserId(int user_id){
-        //获取该用户所有角色
-        List<AdminRole> roles = adminRoleDao.getAllRolesByUserId(user_id);
-        //用Set来去重用户所有权限
-        Set<String> permissions = new HashSet<>();
-        //查询用户所拥有的每个角色所拥有的权限
-        for(AdminRole role : roles){
-            List<AdminPermission> permissionList = adminPermissionDao.getAllPermissionsByRoleId(role.getId());
-            for (AdminPermission permission : permissionList){
-                permissions.add(permission.getPercode());
-            }
-        }
-        //将set转成List<string>
-        return new ArrayList<String>(permissions);
-    }
 }

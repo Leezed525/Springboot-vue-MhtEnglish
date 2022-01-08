@@ -2,6 +2,7 @@ package com.lee.mht.system.dao;
 
 import com.lee.mht.system.config.MybatisRedisCache;
 import com.lee.mht.system.entity.AdminPermission;
+import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.utils.TreeNode;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +31,6 @@ public interface AdminPermissionDao {
     void deleteAllPermissionByRoleId(@Param("roleId") Integer roleId);
 
     void addPermissionByRoleId(@Param("pIds") ArrayList<Integer> pIds,@Param("roleId") Integer roleId);
+
+    List<String> getAllPermissionPercodesByRoleIds(@Param("roles") List<AdminRole> roles);
 }
