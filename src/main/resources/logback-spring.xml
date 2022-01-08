@@ -14,7 +14,7 @@
     </springProfile>
     <springProfile name="online">
         <!--linux下路径，到时候再写-->
-        <property name="log.path" value="F:\\leezed\\project\\logs\\SpringbootVueMhtLogs" />
+        <property name="log.path" value="/usr/logs"/>
     </springProfile>
 
 
@@ -187,5 +187,8 @@
 
     <!--暂时还没上线就没有写上线后要打印的内容-->
     <springProfile name="online">
+        <!--指定自己项目dao层包的位置-->
+        <logger name="com.lee.mht.system.dao" level="debug"/>
+        <logger name="com.lee.mht.business.dao" level="debug"/>
     </springProfile>
 </configuration>

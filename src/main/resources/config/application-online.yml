@@ -73,8 +73,8 @@ mybatis:
     cache-enabled: true
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   #用于控制台打印sql语句
 
-#pagehelper配置
 
+#pagehelper配置
 pagehelper:
   #  helperDialect: mysql
   reasonable: true
