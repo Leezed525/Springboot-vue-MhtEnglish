@@ -5,9 +5,9 @@ spring:
   application:
     name: SpringbootTestApplication
   datasource:
-    url: jdbc:mysql://localhost:3306/mht?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://121.41.108.9:3306/mht?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: 123456
+    password: Leezed963547654
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
       #2.连接池配置
