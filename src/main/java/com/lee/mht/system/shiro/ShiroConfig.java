@@ -1,7 +1,5 @@
 package com.lee.mht.system.shiro;
 
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
@@ -13,11 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -63,7 +58,7 @@ public class ShiroConfig {
         return manager;
     }
 
-    //配置权限过滤器，以下内容是抄的，先把框架搭出来，到时候再改
+    //配置权限过滤器
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -73,8 +68,11 @@ public class ShiroConfig {
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();//拦截器, 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/druid/**","anon");
         filterChainDefinitionMap.put("/admin/system/login","anon");
+        //下面这一行是为了防止请求druid时报错，虽然无伤大雅，但是看着不爽（druid能打开，但是会在控制台输出错误，因为这个请求进了jwtFilter）
+        filterChainDefinitionMap.put("/favicon.ico","anon");
+
         //filterChainDefinitionMap.put("/admin/user/getAllAdminUser", "perms[adminUser:query]");
-        filterChainDefinitionMap.put("/**", "authc");    //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
+        //filterChainDefinitionMap.put("/**", "authc");    //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
         //filterChainDefinitionMap.put("/**", "user");   //user表示配置记住我或认证通过可以访问的地址
 
         // 添加自己的过滤器并且取名为jwt
@@ -93,33 +91,6 @@ public class ShiroConfig {
     //public JwtFilter jwtFilter() {
     //    return new JwtFilter();
     //}
-
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        ModelAndView mv;
-        System.out.println(ex instanceof UnauthenticatedException);
-        //进行异常判断。如果捕获异常请求跳转。
-        if (ex instanceof UnauthorizedException) {
-            mv = new ModelAndView("/error/error");
-            ex.printStackTrace();
-            mv.addObject("msg", "你的级别还不够高,加油吧！少年。");
-            return mv;
-        }
-        else if(ex instanceof UnauthenticatedException){
-            mv = new ModelAndView("/error/error");
-            ex.printStackTrace();
-            mv.addObject("msg", "没有此权限！");
-            return mv;
-        }
-        else {
-            mv = new ModelAndView("/error/error");
-            ex.printStackTrace();
-            mv.addObject("msg", "我勒个去，页面被外星人挟持了!");
-            return mv;
-
-        }
-
-    }
-
 
     /**
      * 下面两个Bean用于开启shiro aop注解支持.

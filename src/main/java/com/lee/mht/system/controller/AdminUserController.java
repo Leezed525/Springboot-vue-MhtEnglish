@@ -27,7 +27,7 @@ public class AdminUserController {
 
     @RequestMapping("/getAdminUserInfoByUsername")
     public AdminUser getAdminUserInfoByUsername(@RequestParam("username") String username){
-        log.info("username" + username);
+        //log.info("username" + username);
         return adminUserService.getAdminUserInfoByUsername(username);
     }
 

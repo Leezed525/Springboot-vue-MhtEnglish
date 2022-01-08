@@ -47,8 +47,8 @@ spring:
         reset-enable: true
         #设置监控页面的登录名和密码
         login-username: admin
-        login-password: admin
-        allow: 127.0.0.1
+        login-password: Leezed963547654
+        allow: ""
 
 
   redis:

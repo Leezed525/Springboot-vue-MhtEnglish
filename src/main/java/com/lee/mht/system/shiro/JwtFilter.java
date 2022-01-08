@@ -46,6 +46,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        log.info("请求的地址是{}",((HttpServletRequest)request).getRequestURL());
         //是否是尝试登录，如果尝试登陆直接返回true
         if (isLoginAttempt(request, response)) {
             return true;
