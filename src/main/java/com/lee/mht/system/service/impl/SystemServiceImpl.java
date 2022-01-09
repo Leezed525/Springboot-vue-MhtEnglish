@@ -3,22 +3,16 @@ package com.lee.mht.system.service.impl;
 import com.lee.mht.system.annotation.CostTime;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
-import com.lee.mht.system.dao.AdminPermissionDao;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
-import com.lee.mht.system.entity.AdminPermission;
-import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.service.SystemService;
-import com.lee.mht.system.utils.JwtUtils;
-import com.lee.mht.system.utils.PasswordUtils;
-import com.lee.mht.system.utils.RedisUtils;
-import com.lee.mht.system.utils.WebUtils;
+import com.lee.mht.system.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -39,15 +33,13 @@ public class SystemServiceImpl implements SystemService {
     @Autowired
     AdminPermissionService adminPermissionService;
 
-    @Autowired//注入自己来使用获取权限得方法
-    SystemService systemService;
 
     @Autowired
     RedisUtils redisUtils;
 
     @Override
     @CostTime
-    public ResultObj login(String username, String password) {
+    public ResultObj login(String username, String password, HttpServletRequest request) {
 
         AdminUser user = adminUserDao.login(username);
         int user_id = user.getId();
@@ -77,9 +69,8 @@ public class SystemServiceImpl implements SystemService {
         //将accessToken 存入redis
         redisUtils.set(Constant.REDIS_TOKEN_KEY + user_id,accessToken,Constant.TOKEN_EXPIRE_TIME);
 
-        //输出登录ip(为功能升级做准备)
-        String ip = WebUtils.getRequest().getRemoteAddr();
-        log.info("登录人" + username + "的IP为" + ip);
+        log.info("登录人" + username + "的IP为" + IpUtils.getClientIpAddress(request));
+
         return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, accessToken);
     }
 

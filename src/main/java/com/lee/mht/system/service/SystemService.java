@@ -2,8 +2,8 @@ package com.lee.mht.system.service;
 
 import com.lee.mht.system.common.ResultObj;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 public interface SystemService {
-    ResultObj login(String username, String password);
+    ResultObj login(String username, String password, HttpServletRequest request);
 }

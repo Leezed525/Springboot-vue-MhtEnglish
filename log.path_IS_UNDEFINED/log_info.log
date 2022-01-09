@@ -1,1 +1,2 @@
-2021-12-23 14:46:04.065 [Thread-17] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
+2022-01-08 17:10:13.726 [Thread-12] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2022-01-08 17:10:13.740 [Thread-12] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

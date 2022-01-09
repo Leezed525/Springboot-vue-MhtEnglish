@@ -35,7 +35,8 @@ spring:
       filter:
         stat:
           merge-sql: true
-          slow-sql-millis: 5000
+          slow-sql-millis: 500
+          enabled: true
       #3.基础监控配置
       web-stat-filter:
         enabled: true

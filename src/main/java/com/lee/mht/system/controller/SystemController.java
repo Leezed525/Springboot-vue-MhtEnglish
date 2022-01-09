@@ -7,6 +7,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author FucXing
  * @date 2021/12/23 19:54
@@ -20,8 +22,8 @@ public class SystemController {
     SystemService systemService;
 
     @PostMapping("/login")
-    public ResultObj login(@RequestParam("username")String username, @RequestParam("password")String password){
-        return systemService.login(username,password);
+    public ResultObj login(@RequestParam("username")String username, @RequestParam("password")String password, HttpServletRequest request){
+        return systemService.login(username,password,request);
     }
 
     @GetMapping("/toRole")
