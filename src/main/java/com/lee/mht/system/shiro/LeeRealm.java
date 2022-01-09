@@ -1,12 +1,7 @@
 package com.lee.mht.system.shiro;
 
-import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.dao.AdminUserDao;
-import com.lee.mht.system.entity.AdminRole;
-import com.lee.mht.system.entity.AdminUser;
-import com.lee.mht.system.utils.JwtUtils;
-import com.lee.mht.system.utils.TokenUtils;
-import io.jsonwebtoken.Claims;
+import com.lee.mht.system.service.AdminPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -33,6 +28,10 @@ public class LeeRealm extends AuthorizingRealm {
     @Lazy
     private AdminUserDao adminUserDao;
 
+    @Autowired
+    @Lazy
+    private AdminPermissionService adminPermissionService;
+
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;
@@ -43,22 +42,14 @@ public class LeeRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("开始用户授权");
-        String accessToken = (String) principalCollection.getPrimaryPrincipal();
-        Integer id = Integer.valueOf(JwtUtils.getUserId(accessToken));
-
+        int id = Integer.parseInt((String) principalCollection.getPrimaryPrincipal()) ;
         //创建返回的info
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (id == 1) {
             info.addStringPermission("*:*");
         } else {
-            //先去redis里找，找不到再去claims里找
-
-
-            //以上留空为redis做准备
-
-
-            Claims claims = JwtUtils.getClaimsFromToken(accessToken);
-            List<String> permissions = (List<String>) claims.get(Constant.JWT_PERMISSIONS_KEY);
+            //查询用户的所有权限
+            List<String> permissions = adminPermissionService.getAllPermissionByUserId(id);
             if (permissions != null) {
                 info.addStringPermissions(permissions);
             }
@@ -72,5 +63,10 @@ public class LeeRealm extends AuthorizingRealm {
         log.info("开始用户验证");
         JwtToken token = (JwtToken) authenticationToken;
         return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), getName());
+    }
+
+    @Override
+    public void clearCache(PrincipalCollection principals) {
+        super.clearCache(principals);
     }
 }

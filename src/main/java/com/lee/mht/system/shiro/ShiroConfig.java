@@ -6,6 +6,8 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,9 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+
+
+    //自定义登录校验器
     @Bean
     public LeeMatcher leeMatcher(){
         return new LeeMatcher();
@@ -37,7 +42,18 @@ public class ShiroConfig {
         LeeRealm leeRealm = new LeeRealm();
         //设置校验器
         leeRealm.setCredentialsMatcher(leeMatcher());
-        //设置缓存(还没设)
+
+        //设置缓存
+
+        // 开启缓存
+        leeRealm.setCachingEnabled(true);
+        //启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
+        leeRealm.setAuthenticationCachingEnabled(true);
+        leeRealm.setAuthenticationCacheName("authenticationCache");
+        //启用授权缓存，即缓存AuthorizationInfo信息，默认false
+        leeRealm.setAuthorizationCachingEnabled(true);
+        leeRealm.setAuthorizationCacheName("authorizationCache");
+        leeRealm.setCacheManager(cacheManager());
         return leeRealm;
     }
 
@@ -48,6 +64,9 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         manager.setRealm(myRealm());
+
+        manager.setCacheManager(cacheManager());
+
 
         //关闭shiro自带的session
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
@@ -108,5 +127,27 @@ public class ShiroConfig {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
         return defaultAdvisorAutoProxyCreator;
+    }
+
+
+
+    public RedisManager redisManager(){
+        RedisManager redisManager=new RedisManager();
+        redisManager.setHost("121.41.108.9:6379");
+        redisManager.setPassword("123456");
+        redisManager.setTimeout(2000);
+        return redisManager;
+    }
+
+
+    /**
+     * @author  zhuyang
+     * @description  缓存管理器
+     * @date 2021-03-06 17:31
+     */
+    public RedisCacheManager cacheManager(){
+        RedisCacheManager redisCacheManager=new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
     }
 }

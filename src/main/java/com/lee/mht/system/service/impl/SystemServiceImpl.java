@@ -57,10 +57,8 @@ public class SystemServiceImpl implements SystemService {
         //到这里就算登录通过，生成accessToken
         Map<String, Object> claims = new HashMap<>();
 
-        //查询用户的所有权限
-        List<String> permissionsToClaims = adminPermissionService.getAllPermissionByUserId(user_id);
+
         //放入
-        claims.put(Constant.JWT_PERMISSIONS_KEY, permissionsToClaims);
         claims.put(Constant.JWT_USER_NAME, user.getUsername());
         claims.put(Constant.JWT_ISSUANCE_TIME,nowTimestamp);
         //accessToken 中传入adminuser的id和claims

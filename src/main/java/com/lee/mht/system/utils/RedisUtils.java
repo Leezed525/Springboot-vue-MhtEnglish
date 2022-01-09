@@ -63,6 +63,19 @@ public class RedisUtils {
 
 
     /**
+     * 查找匹配的key
+     * @param pattern 匹配方法
+     * @return 查找到的key集合
+     */
+    public Set<String> keys(String pattern) {
+        if (null==pattern){
+            return null;
+        }
+        return redisTemplate.keys(pattern);
+    }
+
+
+    /**
      * 删除缓存
      * @param key 可以传一个值 或多个
      */

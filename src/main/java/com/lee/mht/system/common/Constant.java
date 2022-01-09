@@ -13,12 +13,18 @@ public class Constant {
     public static final int TOKEN_ERROR = 403;
     public static final int PERMISSION_ERROR = 401;
 
+
+    //shiro 相关
+
     //jwtToken中获取username的key
     public static final String JWT_USER_NAME = "jwt-user-name-key";
     //jwtToken中获取所有权限的的key
     public static final String JWT_PERMISSIONS_KEY = "jwt-permissions-key";
     //jwtToken中签发时间的key
     public static final String JWT_ISSUANCE_TIME = "jwt-issuance-time";
+
+    public static final String IDENTIFY_CACHE_KEY = "shiro-cache:com.lee.mht.shiro.LeeRealm.authorizationCache:";
+
 
 
     public static final String HEADER_TOKEN_KEY = "AccessToken";

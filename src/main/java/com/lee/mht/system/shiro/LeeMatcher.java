@@ -25,7 +25,7 @@ public class LeeMatcher extends HashedCredentialsMatcher {
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info){
-        String accessToken= (String) token.getPrincipal();
+        String accessToken= (String) token.getCredentials();
         String userId= JwtUtils.getUserId(accessToken);
         //检验token是否合法
         try{

@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.lee.mht.*.dao")
 public class MhtApplication {
+    static {
+
+        System.setProperty("druid.mysql.usePingMethod","false");
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(MhtApplication.class, args);

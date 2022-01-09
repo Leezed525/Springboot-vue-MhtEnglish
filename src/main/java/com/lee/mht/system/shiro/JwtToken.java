@@ -1,5 +1,6 @@
 package com.lee.mht.system.shiro;
 
+import com.lee.mht.system.utils.JwtUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
@@ -16,7 +17,8 @@ public class JwtToken implements AuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return token;
+        //return token;
+        return JwtUtils.getUserId(token);
     }
 
     @Override
