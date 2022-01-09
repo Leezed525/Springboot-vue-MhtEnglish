@@ -25,7 +25,7 @@ public class Constant {
 
     public static final String IDENTIFY_CACHE_KEY = "shiro-cache:com.lee.mht.shiro.LeeRealm.authorizationCache:";
 
-
+    public static String Redis_SHiRO_AUTHORIZATION_KEY = "shiro:cache:authorizationCache:";
 
     public static final String HEADER_TOKEN_KEY = "AccessToken";
     public static final String REDIS_TOKEN_KEY = "AccessToken_USERID_";
@@ -69,4 +69,5 @@ public class Constant {
 
     public static final String ROLENAME_UNIQUE = "角色名唯一";
     public static final String ROLENAME_NOT_UNIQUE = "角色名不唯一";
+
 }

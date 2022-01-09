@@ -92,4 +92,9 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getAllUsersByRoleId" resultType="Integer">
+        SELECT u_id FROM admin_user_role
+        WHERE r_id = #{r_id}
+    </select>
 </mapper>

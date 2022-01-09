@@ -8,6 +8,7 @@ import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Autowired(required = false)
     private AdminRoleDao adminRoleDao;
+
+    @Autowired
+    private RedisService redisService;
 
 
     @Override
@@ -103,6 +107,8 @@ public class AdminUserServiceImpl implements AdminUserService {
             adminRoleDao.deleteAllRolesByUserId(userId);
             //再添加角色关系
             adminRoleDao.addRolesByUserId(rIds, userId);
+            //删除该用户的授权缓存
+            redisService.deleteUserPermissionCache(userId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -32,4 +32,6 @@ public interface AdminRoleDao {
     boolean addAdminRole(@Param("adminRole") AdminRole role);
 
     boolean deleteAdminRoleByIds(@Param("ids") ArrayList<Integer> ids);
+
+    List<Integer> getAllUsersByRoleId(@Param("r_id") Integer roleId);
 }

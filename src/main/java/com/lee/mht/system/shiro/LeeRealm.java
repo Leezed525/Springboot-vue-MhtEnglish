@@ -24,9 +24,6 @@ import java.util.List;
 public class LeeRealm extends AuthorizingRealm {
 
 
-    @Autowired(required = false)
-    @Lazy
-    private AdminUserDao adminUserDao;
 
     @Autowired
     @Lazy
