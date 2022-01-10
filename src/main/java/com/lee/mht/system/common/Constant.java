@@ -18,20 +18,15 @@ public class Constant {
 
     //jwtToken中获取username的key
     public static final String JWT_USER_NAME = "jwt-user-name-key";
-    //jwtToken中获取所有权限的的key
-    public static final String JWT_PERMISSIONS_KEY = "jwt-permissions-key";
+
     //jwtToken中签发时间的key
     public static final String JWT_ISSUANCE_TIME = "jwt-issuance-time";
 
     public static final String IDENTIFY_CACHE_KEY = "shiro-cache:com.lee.mht.shiro.LeeRealm.authorizationCache:";
 
-    public static String Redis_SHiRO_AUTHORIZATION_KEY = "shiro:cache:authorizationCache:";
-
+    //从request中获取token的请求头
     public static final String HEADER_TOKEN_KEY = "AccessToken";
-    public static final String REDIS_TOKEN_KEY = "AccessToken_USERID_";
 
-    //Token过期时间
-    public static final long TOKEN_EXPIRE_TIME = 60*60*12L;
 
 
     public static final String NOT_PERMISSION = "您没有操作权限";
@@ -40,6 +35,29 @@ public class Constant {
 
     public static final String SHIRO_AUTHENTICATION_ERROR = "用户认证异常";
 
+
+    //redis key部分
+
+    //shiro中权限认证信息的rediskey
+    public static String Redis_SHiRO_AUTHORIZATION_KEY = "shiro:cache:authorizationCache:";
+
+    //redis中存取用户token的key
+    public static final String REDIS_TOKEN_KEY = "MHT:Token:AccessToken_USERID:";
+
+    //Token过期时间(12小时)
+    public static final long TOKEN_EXPIRE_TIME = 60*60*12L;
+
+    public static final String REDIS_MHT_LOG_KEY = "MHT:Log:logs";
+
+
+    //日志部分
+    public static final String DEV_DEBUG_IP = "log by dev";
+
+    public static final String LOG_TYPE_SYSTEM = "system";
+
+    public static final String LOG_RESULT_SUCCESS = "success";
+
+    public static final String LOG_RESULT_FAIL = "fail";
 
 
     //业务常量

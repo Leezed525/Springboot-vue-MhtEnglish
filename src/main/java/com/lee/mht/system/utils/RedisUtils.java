@@ -474,7 +474,7 @@ public class RedisUtils {
      * @param key   键
      * @param value 值
      */
-    public boolean lSet(String key, Object value) {
+    public boolean lPush(String key, Object value) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
             return true;
@@ -491,11 +491,12 @@ public class RedisUtils {
      * @param value 值
      * @param time  时间(秒)
      */
-    public boolean lSet(String key, Object value, long time) {
+    public boolean lPush(String key, Object value, long time) {
         try {
             redisTemplate.opsForList().rightPush(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -512,7 +513,7 @@ public class RedisUtils {
      * @param value 值
      * @return
      */
-    public boolean lSet(String key, List<Object> value) {
+    public boolean lPush(String key, List<Object> value) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;
@@ -532,11 +533,12 @@ public class RedisUtils {
      * @param time  时间(秒)
      * @return
      */
-    public boolean lSet(String key, List<Object> value, long time) {
+    public boolean lPush(String key, List<Object> value, long time) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.lee.mht.system.exception;
+package com.lee.mht.system.exception.handler;
 
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;

@@ -1,6 +1,7 @@
 package com.lee.mht.system.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminPermission;
@@ -31,6 +32,7 @@ public class AdminPermissionController {
     //查询权限列表
     @RequestMapping("/getAllAdminPermission")
     @RequiresPermissions("adminPermission:query")
+    @MhtLog(action = "查询权限",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj getAllAdminPermission(@RequestParam(required = false, defaultValue = "", name = "title") String title,
                                            @RequestParam(required = false, defaultValue = "", name = "percode") String percode,
                                            @RequestParam(required = false, defaultValue = "", name = "pid") String pid,
@@ -65,6 +67,7 @@ public class AdminPermissionController {
     //改
     @RequestMapping("/updateAdminPermission")
     @RequiresPermissions("adminPermission:update")
+    @MhtLog(action = "编辑权限",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj updateAdminPermission(@RequestBody AdminPermission permission) {
         boolean flag = adminPermissionService.updateAdminPermission(permission);
         if (flag) {
@@ -77,6 +80,7 @@ public class AdminPermissionController {
     //增
     @RequestMapping("/addAdminPermission")
     @RequiresPermissions("adminPermission:add")
+    @MhtLog(action = "添加权限",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj addAdminPermission(@RequestBody AdminPermission permission) {
         boolean flag = adminPermissionService.addAdminPermission(permission);
         if (flag) {
@@ -101,6 +105,7 @@ public class AdminPermissionController {
     //删
     @RequestMapping("/deleteAdminPermissionByIds")
     @RequiresPermissions("adminPermission:delete")
+    @MhtLog(action = "删除权限",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj deleteAdminPermissionByIds(@RequestBody ArrayList<Integer> ids) {
         boolean flag = adminPermissionService.deleteAdminPermissionByIds(ids);
         if (flag) {

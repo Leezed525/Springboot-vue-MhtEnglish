@@ -1,6 +1,7 @@
 package com.lee.mht.system.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminUser;
@@ -34,6 +35,7 @@ public class AdminUserController {
     //通过查询条件获取所有用户
     @RequiresPermissions("adminUser:query")
     @RequestMapping("/getAllAdminUser")
+    @MhtLog(action = "查询系统用户",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj getAllAdminUser(@RequestParam(required=false,defaultValue="",name = "username") String username,
                                      @RequestParam(required=false,defaultValue="",name ="nickname") String nickname,
                                      @RequestParam(required=false,defaultValue="",name ="roleId")String roleId,
@@ -57,6 +59,7 @@ public class AdminUserController {
     //改
     @RequiresPermissions("adminUser:update")
     @RequestMapping("/updateAdminUser")
+    @MhtLog(action = "编辑系统用户",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj updateAdminUser(@RequestBody AdminUser user){
         boolean flag =  adminUserService.updateAdminUser(user);
         if (flag) {
@@ -69,6 +72,7 @@ public class AdminUserController {
     //删
     @RequiresPermissions("adminUser:delete")
     @RequestMapping("/deleteAdminUserByIds")
+    @MhtLog(action = "删除系统用户",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj deleteAdminUserByIds(@RequestBody ArrayList<Integer> ids){
         boolean flag =  adminUserService.deleteAdminUserByIds(ids);
         if (flag) {
@@ -81,6 +85,7 @@ public class AdminUserController {
     //增
     @RequiresPermissions("adminUser:create")
     @RequestMapping("/addAdminUser")
+    @MhtLog(action = "添加系统用户",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj addAdminUser(@RequestBody AdminUser user){
         boolean flag =  adminUserService.addAdminUser(user);
         if (flag) {
@@ -93,6 +98,7 @@ public class AdminUserController {
     //重置密码
     @RequiresPermissions("adminUser:reset")
     @RequestMapping("/restPassword")
+    @MhtLog(action = "重置系统用户密码",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj restPassword(Integer id){
         boolean flag =  adminUserService.restPassword(id);
         if (flag) {
@@ -105,6 +111,7 @@ public class AdminUserController {
     //重新给用户分配角色
     @RequestMapping("/reassignRoles")
     @RequiresPermissions("adminUser:assign")
+    @MhtLog(action = "系统用户分配角色",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj reassignRoles(@RequestParam("rIds") ArrayList<Integer> rIds,@RequestParam("uId")Integer userId){
         boolean flag =  adminUserService.reassignRoles(rIds,userId);
         if (flag) {

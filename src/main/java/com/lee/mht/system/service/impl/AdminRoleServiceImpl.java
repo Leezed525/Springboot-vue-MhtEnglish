@@ -2,8 +2,6 @@ package com.lee.mht.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.lee.mht.system.common.Constant;
-import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminPermissionDao;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.entity.AdminRole;
@@ -110,7 +108,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             //再添加角色关系
             adminPermissionDao.addPermissionByRoleId(pIds, roleId);
             //删除所有有这个角色的用户的权限缓存
-            redisService.deleteRolePermissions(roleId);
+            redisService.deleteRolePermissionsCache(roleId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

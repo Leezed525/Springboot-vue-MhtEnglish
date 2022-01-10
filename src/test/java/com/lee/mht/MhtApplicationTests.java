@@ -1,6 +1,7 @@
 package com.lee.mht;
 
 import com.lee.mht.system.common.Constant;
+import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
 import com.lee.mht.system.service.SystemService;
@@ -11,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @SpringBootTest
@@ -26,7 +25,7 @@ class MhtApplicationTests {
     SystemService systemService;
 
     @Autowired
-    RedisUtils redisUtil;
+    RedisUtils redisUtils;
 
     @Test
     void testUpdateAdminUser(){
@@ -64,8 +63,18 @@ class MhtApplicationTests {
 
     @Test
     void redisTest(){
-        redisUtil.set("hello",new TreeNode(123,"测试"));
-        TreeNode treenode = ((TreeNode)redisUtil.get("hello"));
+        redisUtils.set("hello",new TreeNode(123,"测试"));
+        TreeNode treenode = ((TreeNode) redisUtils.get("hello"));
         log.info(treenode.getLabel());
     }
+
+    @Test
+    void getLogFromRedisTest(){
+        List<Object> logs = redisUtils.lGet(Constant.REDIS_MHT_LOG_KEY,0,-1);
+        for(Object object:logs){
+            AdminLog adminLog = (AdminLog) object;
+            log.info(adminLog.toString());
+        }
+    }
+
 }

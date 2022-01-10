@@ -1,6 +1,7 @@
 package com.lee.mht.system.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminRole;
@@ -51,6 +52,7 @@ public class AdminRoleController {
     //通过查询条件获取所有用户
     @RequestMapping("/getAllAdminRole")
     @RequiresPermissions("adminRole:query")
+    @MhtLog(action = "查询角色",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj getAllAdminRole(@RequestParam(required = false, defaultValue = "", name = "roleName") String roleName,
                                      @RequestParam(required = false, defaultValue = "", name = "comment") String comment,
                                      @RequestParam(required = false, defaultValue = "5", name = "limit") String pageSize,
@@ -63,8 +65,10 @@ public class AdminRoleController {
         }
     }
 
+    //改
     @RequestMapping("/updateAdminRole")
     @RequiresPermissions("adminRole:update")
+    @MhtLog(action = "编辑角色",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj updateAdminRole(@RequestBody AdminRole role) {
         boolean flag = adminRoleService.updateAdminRole(role);
         if(flag){
@@ -85,8 +89,10 @@ public class AdminRoleController {
         }
     }
 
+    //增
     @RequestMapping("/addAdminRole")
     @RequiresPermissions("adminRole:add")
+    @MhtLog(action = "增加角色",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj addAdminRole(@RequestBody AdminRole role) {
         boolean flag = adminRoleService.addAdminRole(role);
         if (flag) {
@@ -96,8 +102,10 @@ public class AdminRoleController {
         }
     }
 
+    //删除
     @RequestMapping("/deleteAdminRoleByIds")
     @RequiresPermissions("adminRole:delete")
+    @MhtLog(action = "删除角色",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj deleteAdminRoleByIds(@RequestBody ArrayList<Integer> ids) {
         boolean flag =  adminRoleService.deleteAdminRoleByIds(ids);
         if (flag) {
@@ -110,6 +118,7 @@ public class AdminRoleController {
     //给角色分配权限
     @RequestMapping("/reassignPermission")
     @RequiresPermissions("adminRole:assign")
+    @MhtLog(action = "角色分配权限",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj reassignRoles(@RequestParam("pIds") ArrayList<Integer> pIds, @RequestParam("rId") Integer roleId) {
         boolean flag =  adminRoleService.reassignPermissions(pIds, roleId);
         if (flag) {
