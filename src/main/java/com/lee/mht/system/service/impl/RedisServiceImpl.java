@@ -8,6 +8,7 @@ import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,9 @@ public class RedisServiceImpl implements RedisService {
     private final String TokenKey = Constant.REDIS_TOKEN_KEY;
 
     private final Long TokenExpire = Constant.TOKEN_EXPIRE_TIME;
+
+    private final String logLockKey = Constant.MHT_LOCK_HEAD_KEY + Constant.MHT_LOG_LOCK_KEY;
+
 
     @Autowired(required = false)
     private AdminRoleDao adminRoleDao;
@@ -66,7 +70,22 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    @Async("asyncServiceExecutor")
     public void pushMhtLogList(AdminLog adminLog) {
+        while (true){
+            //如果有锁就循环
+            if(redisUtils.hasKey(logLockKey) && (redisUtils.get(logLockKey)).equals(1)){
+                log.info("存入log等待释放锁中");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                break;
+            }
+        }
         redisUtils.lPush(MhtLogKey,adminLog);
     }
 
@@ -74,6 +93,12 @@ public class RedisServiceImpl implements RedisService {
     @Transactional
     public void saveLogFromRedisToMysql() {
         if(redisUtils.hasKey(MhtLogKey)){
+            if(redisUtils.hasKey(logLockKey)){//有锁加一
+                redisUtils.incr(logLockKey,1);
+            }
+            else{//没锁创造锁
+                redisUtils.set(logLockKey,1);
+            }
             List<Object> logs = redisUtils.lGet(MhtLogKey,0,-1);
             List<AdminLog> adminLogs = new ArrayList<>();
             for(Object object:logs){
@@ -84,6 +109,8 @@ public class RedisServiceImpl implements RedisService {
             if(flag){
                 redisUtils.del(MhtLogKey);
             }
+            //释放锁
+            redisUtils.decr(logLockKey,1);
         }
     }
 }

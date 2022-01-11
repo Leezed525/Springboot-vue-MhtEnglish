@@ -47,7 +47,17 @@ public class Constant {
     //Token过期时间(12小时)
     public static final long TOKEN_EXPIRE_TIME = 60*60*12L;
 
+    //日志 key
     public static final String REDIS_MHT_LOG_KEY = "MHT:Log:logs";
+
+    //日志操作锁
+    public static final String MHT_LOG_LOCK_KEY = "logLock";
+
+    //锁key
+    public static final String MHT_LOCK_HEAD_KEY = "MHT:Lock:";
+
+
+
 
 
     //日志部分
