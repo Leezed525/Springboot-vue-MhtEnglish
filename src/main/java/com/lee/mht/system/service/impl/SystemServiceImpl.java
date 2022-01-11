@@ -13,6 +13,7 @@ import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -71,7 +72,8 @@ public class SystemServiceImpl implements SystemService {
         return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, accessToken);
     }
 
-    private void saveLoginLog(String username, HttpServletRequest request, Long beginTime) {
+    @Async("asyncServiceExecutor")
+    void saveLoginLog(String username, HttpServletRequest request, Long beginTime) {
         AdminLog adminLog = new AdminLog();
         adminLog.setType(Constant.LOG_TYPE_SYSTEM);
         adminLog.setOperator(username);

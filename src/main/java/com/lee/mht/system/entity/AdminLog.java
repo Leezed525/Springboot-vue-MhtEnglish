@@ -27,7 +27,7 @@ public class AdminLog {
 
     private String method;
 
-    private Object data;
+    private String data;
 
     private String result;
 
