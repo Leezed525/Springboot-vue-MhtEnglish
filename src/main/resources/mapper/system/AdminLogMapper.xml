@@ -5,7 +5,7 @@
     <resultMap id="baseResultMap" type="com.lee.mht.system.entity.AdminLog">
         <id column="id" property="id"/>
         <result column="type" property="type" javaType="string"/>
-        <result column="operator" property="operator"  javaType="string"/>
+        <result column="operator" property="operator" javaType="string"/>
         <result column="ip" property="ip" javaType="string"/>
         <result column="action" property="action" javaType="string"/>
         <result column="method" property="method" javaType="string"/>
@@ -17,11 +17,47 @@
     <insert id="batchSaveLogs">
         INSERT INTO admin_log(type, operator, ip, action, method, data, result, createtime, time_consuming)
         VALUES
-        <foreach collection="logs" item="log" separator="," >
-            (#{log.type}, #{log.operator}, #{log.ip}, #{log.action}, #{log.method}, #{log.data},#{log.result}, #{log.createtime}, #{log.timeConsuming})
+        <foreach collection="logs" item="log" separator=",">
+            (#{log.type}, #{log.operator}, #{log.ip}, #{log.action}, #{log.method}, #{log.data},#{log.result},
+            #{log.createtime}, #{log.timeConsuming})
         </foreach>
 
     </insert>
+    <select id="getAllLog" resultType="com.lee.mht.system.entity.AdminLog">
+        SELECT id,id, type, operator, ip, action, method, data, result, createtime, time_consuming FROM admin_log
+        <where>
+            <if test="operator != null and ! &quot;&quot;.equals(operator)">
+                <bind name="myOperator" value="'%' + operator + '%'"/>
+                and operator like #{myOperator}
+            </if>
+            <if test="action != null and ! &quot;&quot;.equals(action)">
+                <bind name="myAction" value="'%' + action + '%'"/>
+                and action like #{myAction}
+            </if>
+            <if test="result != null and ! &quot;&quot;.equals(result)">
+                and result = #{result}
+            </if>
+            <if test="beginTime != null and endTime != null">
+                AND createtime BETWEEN #{beginTime} AND #{endTime}
+            </if>
+            <if test="(beginTime == null ) and endTime != null ">
+                and a.test_time &lt;= #{endTime}
+            </if>
+            <if test="beginTime != null and endTime == null">
+                and a.test_time &gt;= #{beginTime}
+            </if>
+        </where>
+        ORDER BY createtime DESC
+    </select>
+
+    <delete id="deleteAdminLogByIds">
+        DELETE FROM admin_log
+        WHERE id in
+        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 
 
 </mapper>

@@ -31,7 +31,7 @@ public class AdminLog {
 
     private String result;
 
-    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss a")
+    @JsonFormat(pattern="yyyy-MM-dd kk:mm:ss",timezone = "GMT+8")
     private Date createtime;
 
     //耗时
