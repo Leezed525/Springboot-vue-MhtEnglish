@@ -4,7 +4,6 @@ import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminLog;
-import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.IpUtils;
 import com.lee.mht.system.utils.JacksonUtils;
@@ -14,15 +13,15 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -74,6 +73,7 @@ public class MhtLogAspect {
             adminLog.setTimeConsuming(String.valueOf((currentTime - beginTime)));
         }
         redisService.pushMhtLogList(adminLog);
+        //log.info(adminLog.toString());
         return obj;
     }
 
@@ -84,7 +84,8 @@ public class MhtLogAspect {
         if (sra != null) {
             HttpServletRequest request = sra.getRequest();
             adminLog.setIp(getIpFromRequest(request));
-            adminLog.setData(getArgsFromRequest(request));
+
+            adminLog.setData(getArgsNameAndValue(point));
             //从token中获取操作者
             String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
             adminLog.setOperator(JwtUtils.getUserName(token));
@@ -114,9 +115,14 @@ public class MhtLogAspect {
         }
     }
 
-    private String getArgsFromRequest(HttpServletRequest request) {
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        return JacksonUtils.toJson(parameterMap);
+    //从point中获取参数名和参数值
+    private String getArgsNameAndValue(ProceedingJoinPoint point) {
+        Object[] args = point.getArgs();
+        String[] parameterNames = ((MethodSignature)(point.getSignature())).getParameterNames();
+        Map<String,Object> argsMap = new HashMap<String,Object>();
+        for(int i = 0;i < args.length;i++) {
+            argsMap.put(parameterNames[i], args[i]);
+        }
+        return JacksonUtils.toJson(argsMap);
     }
-
 }

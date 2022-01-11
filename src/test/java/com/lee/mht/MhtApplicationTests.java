@@ -4,6 +4,7 @@ import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ class MhtApplicationTests {
 
     @Autowired
     RedisUtils redisUtils;
+
+    @Autowired
+    RedisService redisService;
 
     @Test
     void testUpdateAdminUser(){
@@ -76,5 +80,11 @@ class MhtApplicationTests {
             log.info(adminLog.toString());
         }
     }
+
+    @Test
+    void testsavelog(){
+        redisService.saveLogFromRedisToMysql();
+    }
+
 
 }

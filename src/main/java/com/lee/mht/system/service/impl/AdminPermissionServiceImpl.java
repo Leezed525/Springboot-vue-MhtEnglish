@@ -47,7 +47,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     }
 
     @Override
-    @Cacheable(key = "'AllMenu'")
     public List<AdminPermission> getAllMenu() {
         try {
             return adminPermissionDao.getAllMenu();
@@ -63,7 +62,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     }
 
     @Override
-    @CacheEvict(key = "'PermissionTree'")
     public boolean addAdminPermission(AdminPermission permission) {
         return adminPermissionDao.addAdminPermission(permission);
     }
@@ -75,7 +73,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     }
 
     @Override
-    @CacheEvict(key = "'PermissionTree'")
     public boolean deleteAdminPermissionByIds(ArrayList<Integer> ids) {
         return adminPermissionDao.deleteAdminPermissionByIds(ids);
     }
@@ -83,7 +80,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
 
     //获取权限树
     @Override
-    @Cacheable(key = "'PermissionTree'")
     public List<TreeNode> getPermissionTree() {
         try {
             List<TreeNode> pids = adminPermissionDao.getPids();
