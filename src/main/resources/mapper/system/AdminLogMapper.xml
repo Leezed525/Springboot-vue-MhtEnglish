@@ -41,10 +41,10 @@
                 AND createtime BETWEEN #{beginTime} AND #{endTime}
             </if>
             <if test="(beginTime == null ) and endTime != null ">
-                and a.test_time &lt;= #{endTime}
+                and createtime &lt;= #{endTime}
             </if>
             <if test="beginTime != null and endTime == null">
-                and a.test_time &gt;= #{beginTime}
+                and createtime &gt;= #{beginTime}
             </if>
         </where>
         ORDER BY createtime DESC

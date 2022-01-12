@@ -102,7 +102,15 @@
         WHERE r_id = #{roleId}
     </delete>
 
-    <insert id="addPermissionByRoleId">
+    <delete id="deletePermissionRealtionToRole">
+        DELETE FROM admin_role_permission
+        WHERE p_id in
+        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addPermissionRelationToRoleByRoleId">
         INSERT INTO admin_role_permission(r_id,p_id)
         VALUES
         <foreach collection="pIds"  item="p_id" index="index" separator=",">
@@ -118,5 +126,16 @@
         <foreach collection="roles"  item="role" index="index" separator="," open="(" close=")">
             #{role.id}
         </foreach>
+    </select>
+    <select id="getIdsNotMenu" resultType="java.lang.Integer">
+        SELECT id FROM admin_permission
+        <where>
+            type != "menu"
+            and
+            id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
     </select>
 </mapper>

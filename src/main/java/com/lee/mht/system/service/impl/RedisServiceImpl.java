@@ -23,7 +23,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class RedisServiceImpl implements RedisService {
-    private final String ShiroRedisPermissionskey = Constant.Redis_SHiRO_AUTHORIZATION_KEY;
+    private final String authorizationKey = Constant.Redis_SHiRO_AUTHORIZATION_KEY;
+    private final String authenticationKey = Constant.Redis_SHiRO_AUTHENTICATION_KEY;
 
     private final String MhtLogKey = Constant.REDIS_MHT_LOG_KEY;
 
@@ -45,26 +46,36 @@ public class RedisServiceImpl implements RedisService {
 
 
     @Override
+    //删除用户授权缓存
     public void deleteUserPermissionCache(Integer userId) {
-        String queryKey = ShiroRedisPermissionskey + userId;
+        String queryKey = authorizationKey + userId;
         if(redisUtils.hasKey(queryKey)){
             redisUtils.del(queryKey);
         }
     }
 
     @Override
+    //通过角色id去删除拥有这个角色的用户缓存
     public void deleteRolePermissionsCache(Integer roleId) {
         //通过roleId获得所有的有这个角色的用户id
         List<Integer> userIds = adminRoleDao.getAllUsersByRoleId(roleId);
         for(int id : userIds){
-            if(redisUtils.hasKey(ShiroRedisPermissionskey + id)){
-                redisUtils.del(ShiroRedisPermissionskey + id);
-            }
+            deleteUserPermissionCache(id);
+        }
+    }
+
+    @Override
+    //删除用户认证缓存
+    public void deleteUserLoginCache(Integer id) {
+        String queryKey = authenticationKey + id;
+        if(redisUtils.hasKey(queryKey)){
+            redisUtils.del(queryKey);
         }
     }
 
 
     @Override
+    //添加用户登录token
     public void setAdminUserLoginToken(int user_id, String accessToken) {
         redisUtils.set(TokenKey + user_id, accessToken,TokenExpire);
     }
@@ -113,4 +124,6 @@ public class RedisServiceImpl implements RedisService {
             redisUtils.decr(logLockKey,1);
         }
     }
+
+
 }

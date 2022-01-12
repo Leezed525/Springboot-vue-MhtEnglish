@@ -97,4 +97,16 @@
         SELECT u_id FROM admin_user_role
         WHERE r_id = #{r_id}
     </select>
+
+    <delete id="deleteRoleRelationToUser">
+        DELETE FROM admin_user_role
+        WHERE r_id = #{r_id}
+    </delete>
+
+    <select id="getRoleIdsRelationToPermissionById" resultType="java.lang.Integer">
+        SELECT r_id from admin_role_permission
+        WHERE p_id = #{p_id}
+    </select>
+
+
 </mapper>

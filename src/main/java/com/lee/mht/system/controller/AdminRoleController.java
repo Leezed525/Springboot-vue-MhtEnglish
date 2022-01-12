@@ -119,7 +119,7 @@ public class AdminRoleController {
     @RequestMapping("/reassignPermission")
     @RequiresPermissions("adminRole:assign")
     @MhtLog(action = "角色分配权限",type = Constant.LOG_TYPE_SYSTEM)
-    public ResultObj reassignRoles(@RequestParam("pIds") ArrayList<Integer> pIds, @RequestParam("rId") Integer roleId) {
+    public ResultObj reassignRoles(@RequestParam(name = "pIds",required = false) ArrayList<Integer> pIds, @RequestParam("rId") Integer roleId) {
         boolean flag =  adminRoleService.reassignPermissions(pIds, roleId);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);

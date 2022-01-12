@@ -44,5 +44,11 @@ public class SystemController {
         return new ResultObj(Constant.OK,Constant.ALLOW_ACCESS);
     }
 
+    @GetMapping("/toLog")
+    @RequiresPermissions("adminLog:query")
+    public ResultObj toLog(){
+        return new ResultObj(Constant.OK,Constant.ALLOW_ACCESS);
+    }
+
 
 }

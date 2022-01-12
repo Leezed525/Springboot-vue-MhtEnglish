@@ -1,6 +1,7 @@
 package com.lee.mht.system.service;
 
 import com.lee.mht.system.entity.AdminLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author FucXing
@@ -18,4 +19,6 @@ public interface RedisService {
     void setAdminUserLoginToken(int user_id, String accessToken);
 
     void saveLogFromRedisToMysql();
+
+    void deleteUserLoginCache( Integer id);
 }

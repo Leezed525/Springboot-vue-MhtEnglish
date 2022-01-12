@@ -41,6 +41,9 @@ public class Constant {
     //shiro中权限认证信息的rediskey
     public static String Redis_SHiRO_AUTHORIZATION_KEY = "shiro:cache:authorizationCache:";
 
+    //shiro中登录认证信息的rediskey
+    public static String Redis_SHiRO_AUTHENTICATION_KEY = "shiro:cache:authentication:";
+
     //redis中存取用户token的key
     public static final String REDIS_TOKEN_KEY = "MHT:Token:AccessToken_USERID:";
 

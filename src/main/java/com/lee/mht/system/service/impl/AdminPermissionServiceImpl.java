@@ -8,6 +8,7 @@ import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.entity.AdminPermission;
 import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.service.AdminPermissionService;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.TreeNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -33,6 +35,9 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
 
     @Autowired(required = false)
     private AdminRoleDao adminRoleDao;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public PageInfo<AdminPermission> getAllAdminPermission(String title, String percode, Integer pId, int pageSize, int pageNum) {
@@ -73,8 +78,24 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     }
 
     @Override
+    @Transactional
     public boolean deleteAdminPermissionByIds(ArrayList<Integer> ids) {
-        return adminPermissionDao.deleteAdminPermissionByIds(ids);
+        try {
+            List<Integer> RoleIds = new ArrayList<>();
+            //删除拥有该权限的用户的授权缓存
+            for(Integer id : ids) {
+                RoleIds = adminRoleDao.getRoleIdsRelationToPermissionById(id);
+                for (Integer roleId : RoleIds) {
+                    redisService.deleteRolePermissionsCache(roleId);
+                }
+            }
+            adminPermissionDao.deletePermissionRealtionToRole(ids);
+            adminPermissionDao.deleteAdminPermissionByIds(ids);
+            return true;
+        }catch (Exception e ){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

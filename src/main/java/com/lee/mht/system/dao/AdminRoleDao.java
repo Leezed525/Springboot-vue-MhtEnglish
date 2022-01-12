@@ -34,4 +34,8 @@ public interface AdminRoleDao {
     boolean deleteAdminRoleByIds(@Param("ids") ArrayList<Integer> ids);
 
     List<Integer> getAllUsersByRoleId(@Param("r_id") Integer roleId);
+
+    void deleteRoleRelationToUser(@Param("r_id") Integer roleId);
+
+    List<Integer> getRoleIdsRelationToPermissionById(@Param("p_id")Integer id);
 }

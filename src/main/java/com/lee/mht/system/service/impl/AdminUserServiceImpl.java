@@ -66,6 +66,14 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Transactional
     public boolean deleteAdminUserByIds(List<Integer> ids) {
         try {
+            for (Integer id : ids) {
+                //删除授权缓存
+                redisService.deleteUserPermissionCache(id);
+                //删除认证缓存
+                redisService.deleteUserLoginCache(id);
+                //先删除该用户的角色
+                adminRoleDao.deleteAllRolesByUserId(id);
+            }
             return adminUserDao.deleteAdminUserByIds(ids);
         } catch (Exception e) {
             return false;
@@ -105,8 +113,10 @@ public class AdminUserServiceImpl implements AdminUserService {
         try {
             //先删除所有该用户的角色
             adminRoleDao.deleteAllRolesByUserId(userId);
-            //再添加角色关系
-            adminRoleDao.addRolesByUserId(rIds, userId);
+            if(rIds != null){
+                //再添加角色关系
+                adminRoleDao.addRolesByUserId(rIds, userId);
+            }
             //删除该用户的授权缓存
             redisService.deleteUserPermissionCache(userId);
             return true;

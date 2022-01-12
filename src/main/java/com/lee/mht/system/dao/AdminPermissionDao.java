@@ -1,16 +1,13 @@
 package com.lee.mht.system.dao;
 
-import com.lee.mht.system.config.MybatisRedisCache;
 import com.lee.mht.system.entity.AdminPermission;
 import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.utils.TreeNode;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface AdminPermissionDao {
     List<AdminPermission> getAllPermissionsByRoleId(@Param("id")Integer id);
 
@@ -30,7 +27,11 @@ public interface AdminPermissionDao {
 
     void deleteAllPermissionByRoleId(@Param("roleId") Integer roleId);
 
-    void addPermissionByRoleId(@Param("pIds") ArrayList<Integer> pIds,@Param("roleId") Integer roleId);
+    void addPermissionRelationToRoleByRoleId(@Param("pIds") ArrayList<Integer> pIds, @Param("roleId") Integer roleId);
 
     List<String> getAllPermissionPercodesByRoleIds(@Param("roles") List<AdminRole> roles);
+
+    void deletePermissionRealtionToRole(@Param("ids") ArrayList<Integer> ids);
+
+    List<Integer> getIdsNotMenu(@Param("ids")ArrayList<Integer> pIds);
 }

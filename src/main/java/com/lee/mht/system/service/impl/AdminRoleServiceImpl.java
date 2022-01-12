@@ -32,6 +32,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Autowired
     private RedisService redisService;
 
+
     @Override
     public List<AdminRole> getAllRoles() {
         try {
@@ -90,8 +91,14 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Transactional
     public boolean deleteAdminRoleByIds(ArrayList<Integer> ids) {
         try {
+            //删除role与user ,role与permission的关系
             for (Integer id : ids) {
                 adminPermissionDao.deleteAllPermissionByRoleId(id);
+                adminRoleDao.deleteRoleRelationToUser(id);
+            }
+            //删除拥有这个role的用户的权限缓存
+            for (Integer id : ids) {
+                redisService.deleteRolePermissionsCache(id);
             }
             return adminRoleDao.deleteAdminRoleByIds(ids);
         } catch (Exception e) {
@@ -105,8 +112,14 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         try {
             //先删除所有该用户的角色
             adminPermissionDao.deleteAllPermissionByRoleId(roleId);
-            //再添加角色关系
-            adminPermissionDao.addPermissionByRoleId(pIds, roleId);
+            if (pIds != null) {
+                //获取type不是menu类型的permissionId
+                List<Integer> permissionids = adminPermissionDao.getIdsNotMenu(pIds);
+                if (permissionids != null) {
+                    //再添加角色关系
+                    adminPermissionDao.addPermissionRelationToRoleByRoleId((ArrayList<Integer>) permissionids, roleId);
+                }
+            }
             //删除所有有这个角色的用户的权限缓存
             redisService.deleteRolePermissionsCache(roleId);
             return true;
