@@ -2,8 +2,6 @@ package com.lee.mht.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.lee.mht.system.common.Constant;
-import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
@@ -13,7 +11,6 @@ import com.lee.mht.system.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -100,7 +97,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         String salt = PasswordUtils.getSalt();
         String password = PasswordUtils.encode("123456", salt);
         try {
-            return adminUserDao.restPassword(id, password, salt);
+            return adminUserDao.resetPassword(id, password, salt);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -131,5 +128,10 @@ public class AdminUserServiceImpl implements AdminUserService {
         return adminUserDao.checkUsernameUnique(username);
     }
 
-
+    @Override
+    public boolean changePassWord(Integer userId, String newPassword) {
+        String salt = PasswordUtils.getSalt();
+        String password = PasswordUtils.encode(newPassword,salt);
+        return adminUserDao.resetPassword(userId,password,salt);
+    }
 }

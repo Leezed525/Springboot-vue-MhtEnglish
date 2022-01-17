@@ -32,4 +32,6 @@ public interface AdminUserService {
 
     //检查系统用户名重名
     int checkUsernameUnique(String username);
+
+    boolean changePassWord(Integer userId, String newPassword);
 }

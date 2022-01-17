@@ -9,6 +9,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,13 @@ public class ShiroConfig {
     public LeeMatcher leeMatcher(){
         return new LeeMatcher();
     }
+
+
+    @Value("${LeeMht.redisHost}")
+    private String redisHost;
+
+    @Value("${LeeMht.redisPassword}")
+    private String redisPassword;
 
     /**
      * 创建自定义的验证规则
@@ -133,8 +141,9 @@ public class ShiroConfig {
 
     public RedisManager redisManager(){
         RedisManager redisManager=new RedisManager();
-        redisManager.setHost("121.41.108.9:6379");
-        redisManager.setPassword("123456");
+
+        redisManager.setHost(redisHost);
+        redisManager.setPassword(redisPassword);
         redisManager.setTimeout(2000);
         return redisManager;
     }

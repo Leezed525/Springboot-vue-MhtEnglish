@@ -4,8 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminUserService;
+import com.lee.mht.system.utils.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,11 @@ public class AdminUserController {
     @Autowired
     AdminUserService adminUserService;
 
+    @Autowired(required = false)
+    AdminUserDao adminUserDao;
+
     @RequestMapping("/getAdminUserInfoByUsername")
     public AdminUser getAdminUserInfoByUsername(@RequestParam("username") String username) {
-        //log.info("username" + username);
         return adminUserService.getAdminUserInfoByUsername(username);
     }
 
@@ -122,7 +126,7 @@ public class AdminUserController {
     }
 
     //检查用户名是否唯一
-    @PostMapping("checkUsernameUnique")
+    @PostMapping("/checkUsernameUnique")
     public ResultObj checkUsernameUnique(@RequestParam("username") String username) {
         int count = adminUserService.checkUsernameUnique(username);
         if (count == 0) {
@@ -130,6 +134,25 @@ public class AdminUserController {
         } else {
             return new ResultObj(Constant.SERVER_ERROR, Constant.USERNAME_NOT_UNIQUE, null);
 
+        }
+    }
+
+    //用户修改密码
+    @PostMapping("/changePassWord")
+    public ResultObj checkPassWord(@RequestParam("oldPassword") String oldPassword,
+                                   @RequestParam("newPassword") String newPassword,
+                                   @RequestParam("userId") Integer userId) {
+        AdminUser adminUser = adminUserDao.getAdminUserById(userId);
+        if (!PasswordUtils.matches(adminUser.getSalt(), oldPassword, adminUser.getPassword())) {
+            //如果密码不匹配
+            return new ResultObj(Constant.SERVER_ERROR, "原密码错误");
+        }
+        //密码匹配的话去修改密码
+        boolean flag = adminUserService.changePassWord(userId, newPassword);
+        if (flag) {
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
+        } else {
+            return new ResultObj(Constant.SERVER_ERROR,Constant.UPDATE_ERROR);
         }
     }
 

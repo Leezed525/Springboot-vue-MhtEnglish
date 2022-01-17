@@ -58,9 +58,9 @@ spring:
 
 
   redis:
-    host: 121.41.108.9
+    host: ${ALI_LEE_IP}
     port: 6379
-    password: 123456
+    password: ${ALI_LEE_REDIS_PASSWORD}
     database: 0
   cache:
     redis:
@@ -87,3 +87,7 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
+#自定义配置
+LeeMht:
+  redisHost: ${ALI_LEE_REDIS_HOST}
+  redisPassword: ${ALI_LEE_REDIS_PASSWORD}

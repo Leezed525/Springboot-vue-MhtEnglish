@@ -13,8 +13,8 @@
         <property name="log.path" value="F:\\leezed\\project\\logs\\SpringbootVueMhtLogs" />
     </springProfile>
     <springProfile name="online">
-        <!--linux下路径，到时候再写-->
-        <property name="log.path" value="/usr/logs"/>
+        <!--linux下路径-->
+        <property name="log.path" value="/usr/logs/mht"/>
     </springProfile>
 
 

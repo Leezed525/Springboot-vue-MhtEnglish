@@ -1,9 +1,6 @@
 package com.lee.mht.system.dao;
 
-import com.lee.mht.system.config.MybatisRedisCache;
-import com.lee.mht.system.entity.AdminRole;
 import com.lee.mht.system.entity.AdminUser;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +9,8 @@ import java.util.List;
 //@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface AdminUserDao {
     AdminUser getAdminUserByUsername(@Param("username")String username);
+
+    AdminUser getAdminUserById(@Param("id")Integer id);
 
     AdminUser login(@Param("username")String username);
 
@@ -27,7 +26,7 @@ public interface AdminUserDao {
 
     boolean addAdminUser(@Param("user")AdminUser user);
 
-    boolean restPassword(@Param("id")Integer id, @Param("password") String password, @Param("salt") String salt);
+    boolean resetPassword(@Param("id")Integer id, @Param("password") String password, @Param("salt") String salt);
 
     int checkUsernameUnique(@Param("username") String username);
 }

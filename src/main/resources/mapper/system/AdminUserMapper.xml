@@ -19,6 +19,12 @@
         SELECT id,username,nickname,available FROM admin_user WHERE username = #{username}
     </select>
 
+    <select id="getAdminUserById" resultType="com.lee.mht.system.entity.AdminUser">
+        SELECT id,username,nickname,remark,password,available,createtime,salt
+        FROM admin_user
+        WHERE id = #{id}
+    </select>
+
     <select id="login" parameterType="String" resultMap="baseResultMap">
         <!-- IFNULL(MAX( id ),0) 用来防止mybatis查询查不到结果时报错的问题 -->
         SELECT IFNULL(MAX( id ),0) AS id,username,password,nickname,available ,salt FROM admin_user
@@ -87,7 +93,7 @@
     </insert>
 
     <!--重置密码-->
-    <update id="restPassword" >
+    <update id="resetPassword" >
         update admin_user
         <set>
             password = #{password},
@@ -97,6 +103,7 @@
             id = #{id}
         </where>
     </update>
+
 
     <!--检查用户名是否唯一-->
     <select id="checkUsernameUnique" resultType="Integer">
