@@ -89,5 +89,7 @@ pagehelper:
 
 #自定义配置
 LeeMht:
+  AppID: ${CMJ_APP_ID}
+  AppSecret: ${CMJ_APP_SECRET}
   redisHost: ${ALI_LEE_REDIS_HOST}
   redisPassword: ${ALI_LEE_REDIS_PASSWORD}

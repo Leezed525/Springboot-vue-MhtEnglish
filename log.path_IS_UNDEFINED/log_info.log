@@ -1,2 +1,137 @@
-2022-01-08 17:10:13.726 [Thread-12] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
-2022-01-08 17:10:13.740 [Thread-12] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2022-01-26 13:23:26.744 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 22008 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:23:26.788 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:23:27.572 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:23:27.574 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:23:27.602 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:23:27.950 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:23:28.086 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 22008 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:23:28.086 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:23:28.363 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:23:28.363 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:23:28.380 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:23:28.485 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:25:56.285 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 23372 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:25:56.286 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:25:57.073 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:25:57.076 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:25:57.106 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:25:57.447 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:25:57.513 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 23372 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:25:57.513 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:25:57.738 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:25:57.739 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:25:57.766 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 26 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:25:57.867 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:26:45.490 [restartedMain] INFO  com.lee.mht.MhtApplication - Starting MhtApplication using Java 1.8.0_91 on Lee with PID 19268 (F:\leezed\project\IDEAproject\SpringBootVueMht\target\classes started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:26:45.490 [restartedMain] INFO  com.lee.mht.MhtApplication - The following profiles are active: debug
+2022-01-26 13:26:45.707 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:26:45.707 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:26:45.720 [restartedMain] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:26:45.770 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:26:46.249 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 20464 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:26:46.251 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:26:47.112 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:26:47.115 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:26:47.199 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 64 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:26:47.548 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:26:47.629 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 20464 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:26:47.629 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:26:47.880 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:26:47.880 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:26:47.898 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:26:47.987 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:27:00.355 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 22060 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:27:00.356 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:27:01.155 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:27:01.158 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:27:01.188 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:27:01.503 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:27:01.573 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 22060 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:27:01.573 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: debug
+2022-01-26 13:27:01.787 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:27:01.787 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:27:01.809 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 21 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:27:01.899 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-01-26 13:29:30.749 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 14484 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:29:30.750 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: test
+2022-01-26 13:29:31.523 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:29:31.526 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:29:31.592 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:29:31.876 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'shiroConfig' of type [com.lee.mht.system.shiro.ShiroConfig$$EnhancerBySpringCGLIB$$4aa5cc7c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:32.747 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'leeMatcher' of type [com.lee.mht.system.shiro.LeeMatcher] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:32.768 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'myRealm' of type [com.lee.mht.system.shiro.LeeRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:32.784 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:32.825 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'authorizationAttributeSourceAdvisor' of type [org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.148 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.154 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.259 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.367 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.380 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfig' of type [com.lee.mht.system.config.RedisConfig$$EnhancerBySpringCGLIB$$295bd30d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:33.784 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 0 (http)
+2022-01-26 13:29:33.796 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+2022-01-26 13:29:33.797 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-01-26 13:29:33.797 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.53]
+2022-01-26 13:29:33.967 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-01-26 13:29:33.967 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3195 ms
+2022-01-26 13:29:34.291 [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2022-01-26 13:29:35.037 [main] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2022-01-26 13:29:37.193 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+2022-01-26 13:29:37.213 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-26 13:29:37.213 [main] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-01-26 13:29:37.214 [main] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2022-01-26 13:29:37.215 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10252 (http) with context path ''
+2022-01-26 13:29:37.229 [main] INFO  com.lee.mht.MhtApplicationTests - Started MhtApplicationTests in 7.014 seconds (JVM running for 8.607)
+2022-01-26 13:29:39.319 [main] INFO  com.lee.mht.MhtApplicationTests - false
+2022-01-26 13:29:40.031 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2022-01-26 13:29:40.042 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2022-01-26 13:29:46.660 [main] INFO  com.lee.mht.MhtApplicationTests - Starting MhtApplicationTests using Java 1.8.0_91 on Lee with PID 8196 (started by Leezed525 in F:\leezed\project\IDEAproject\SpringBootVueMht)
+2022-01-26 13:29:46.661 [main] INFO  com.lee.mht.MhtApplicationTests - The following profiles are active: test
+2022-01-26 13:29:47.420 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-26 13:29:47.423 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-26 13:29:47.486 [main] INFO  o.s.d.r.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 Redis repository interfaces.
+2022-01-26 13:29:47.765 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'shiroConfig' of type [com.lee.mht.system.shiro.ShiroConfig$$EnhancerBySpringCGLIB$$4aa5cc7c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:48.650 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'leeMatcher' of type [com.lee.mht.system.shiro.LeeMatcher] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:48.675 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'myRealm' of type [com.lee.mht.system.shiro.LeeRealm] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:48.690 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'securityManager' of type [org.apache.shiro.web.mgt.DefaultWebSecurityManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:48.729 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'authorizationAttributeSourceAdvisor' of type [org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.064 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.070 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.182 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.296 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.309 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfig' of type [com.lee.mht.system.config.RedisConfig$$EnhancerBySpringCGLIB$$295bd30d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-01-26 13:29:49.735 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 0 (http)
+2022-01-26 13:29:49.749 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+2022-01-26 13:29:49.750 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-01-26 13:29:49.751 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.53]
+2022-01-26 13:29:49.903 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-01-26 13:29:49.904 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3215 ms
+2022-01-26 13:29:50.226 [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2022-01-26 13:29:50.973 [main] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2022-01-26 13:29:53.044 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+2022-01-26 13:29:53.066 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-26 13:29:53.066 [main] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2022-01-26 13:29:53.068 [main] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2022-01-26 13:29:53.069 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 10305 (http) with context path ''
+2022-01-26 13:29:53.084 [main] INFO  com.lee.mht.MhtApplicationTests - Started MhtApplicationTests in 6.897 seconds (JVM running for 8.371)
+2022-01-26 13:29:55.019 [main] INFO  com.lee.mht.MhtApplicationTests - MHT:Lock:logLock
+2022-01-26 13:29:55.019 [main] INFO  com.lee.mht.MhtApplicationTests - MHT:onlineUserCount
+2022-01-26 13:29:55.732 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2022-01-26 13:29:55.743 [SpringApplicationShutdownHook] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

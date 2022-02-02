@@ -1,7 +1,15 @@
 package com.lee.mht.system.utils;
 
+import io.lettuce.core.KeyScanCursor;
+import io.lettuce.core.ScanArgs;
+import io.lettuce.core.ScanCursor;
+import io.lettuce.core.api.async.RedisKeyAsyncCommands;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -89,6 +97,66 @@ public class RedisUtils {
             }
         }
     }
+
+    /**
+     * scan
+     * @param matchKey 要匹配的key的模糊表达式，例如 hpfm:lov:*
+     * @param count 步进值，过小效率会低一些，尽量与数据级匹配些，此处默认1000
+     *              private static final int SCAN_COUNT = 1000;
+     * @return 所匹配到的key的Set集合
+     */
+    private Set<String> scan(String matchKey, Integer count) {
+        Set<String> keys = new HashSet<>();
+        try {
+            keys = redisTemplate.execute((RedisCallback<Set<String>>) connection -> {
+                Set<String> keysTmp = new HashSet<>();
+                Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match(matchKey).count(count).build());
+                while (cursor.hasNext()) {
+                    keysTmp.add(new String(cursor.next()));
+                }
+                return keysTmp;
+            });
+        } catch (Exception e) {
+            keys = clusterScan(matchKey, count);
+        }
+        return keys;
+    }
+
+    /**
+     * 支持单机、主从、哨兵、集群
+     * @param matchKey 要匹配的key的模糊表达式，例如 hpfm:lov:*
+     * @param count 步进值，过小效率会低一些，尽量与数据级匹配些，此处默认1000
+     *              private static final int SCAN_COUNT = 1000;
+     * @return 所匹配到的key的Set集合
+     */
+    public Set<String> clusterScan(String matchKey, Integer count) {
+        return redisTemplate.execute((RedisConnection connection) -> {
+            Set<String> keySet = new HashSet<>();
+            //定义起始游标，获取lettuce原生引用，定义scan参数
+            ScanCursor scanCursor = ScanCursor.INITIAL;
+            RedisKeyAsyncCommands commands = (RedisKeyAsyncCommands) connection.getNativeConnection();
+            ScanArgs scanArgs = ScanArgs.Builder.limit(count).match(matchKey);
+            try {
+                do {
+                    //最少scan一次，当返回不为空时将扫描到的key添加到统一key列表中
+                    KeyScanCursor<byte[]> keyScanCursor = (KeyScanCursor) commands.scan(scanCursor, scanArgs).get();
+                    if (keyScanCursor != null) {
+                        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(keyScanCursor.getKeys())) {
+                            keyScanCursor.getKeys().forEach(b -> keySet.add(new String(b)));
+                        }
+                        scanCursor = keyScanCursor;
+                    } else {
+                        scanCursor = ScanCursor.FINISHED;
+                    }
+                } while (!scanCursor.isFinished());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return keySet;
+        });
+    }
+
+
 
 
     // ============================String=============================
@@ -375,8 +443,9 @@ public class RedisUtils {
     public long sSetAndTime(String key, long time, Object... values) {
         try {
             Long count = redisTemplate.opsForSet().add(key, values);
-            if (time > 0)
+            if (time > 0) {
                 expire(key, time);
+            }
             return count;
         } catch (Exception e) {
             e.printStackTrace();
@@ -584,6 +653,26 @@ public class RedisUtils {
             e.printStackTrace();
             return 0;
         }
+    }
 
+    // ===============================HyperLogLog=================================
+    public boolean pfAdd(String key,Object... values){
+        try {
+            redisTemplate.opsForHyperLogLog().add(key,values);
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean pfCount(String key){
+        try {
+            redisTemplate.opsForHyperLogLog().size(key);
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,6 +23,20 @@ public class JwtUtils {
 
     private static final Long accessTokenExpireTime = 1000 * 60 * 5L;//accessToken (发给客户端的5分钟过期一次)
     //private static final Long refreshTokenExpireTime = 1000 * 60 * 60 * 24L; //refreshToken(保留再redis的一天过期一次)
+
+    //生成MHT业务token
+    public static String generateMhtToken(String id,String username,String userType){
+        long nowTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
+        Map<String, Object> claims = new HashMap<>();
+        //放入用户名
+        claims.put(Constant.JWT_USER_NAME, username);
+        //签发时间
+        claims.put(Constant.JWT_ISSUANCE_TIME,nowTimestamp);
+        //存放类型
+        claims.put(Constant.JWT_USER_TYPE,userType);
+        //accessToken 中传入adminuser的id和claims
+        return JwtUtils.getAccessToken(id, claims);
+    }
 
     /**
      * 生成 access_token
@@ -76,7 +92,7 @@ public class JwtUtils {
     /**
      * 获取用户id
      */
-    public static String getUserId(String token) {
+    public static String getId(String token) {
         String userId = null;
         try {
             Claims claims = getClaimsFromToken(token);
@@ -114,6 +130,20 @@ public class JwtUtils {
             log.error("error={}", e);
         }
         return username;
+    }
+
+    /**
+     * 从claim中获取用户类型
+     */
+    public static String getUserType(String token) {
+        String type = null;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            type = (String) claims.get(Constant.JWT_USER_TYPE);
+        } catch (Exception e) {
+            log.error("error={}", e);
+        }
+        return type;
     }
 
     /**

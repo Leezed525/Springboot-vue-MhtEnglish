@@ -21,6 +21,8 @@ public class AdminLog {
 
     private String operator;
 
+    private Integer operatorId;
+
     private String ip;
 
     private String action;

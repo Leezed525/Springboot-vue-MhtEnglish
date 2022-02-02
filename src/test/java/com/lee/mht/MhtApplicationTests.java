@@ -14,9 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MhtApplicationTests {
 
     @Autowired
@@ -84,6 +85,14 @@ class MhtApplicationTests {
     @Test
     void testsavelog(){
         redisService.saveLogFromRedisToMysql();
+    }
+
+    @Test
+    void scanTest(){
+        Set<String> set =  redisUtils.clusterScan("MHT:*",10);
+        for(String tmp:set){
+            log.info(tmp);
+        }
     }
 
 

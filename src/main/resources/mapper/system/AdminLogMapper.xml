@@ -6,6 +6,7 @@
         <id column="id" property="id"/>
         <result column="type" property="type" javaType="string"/>
         <result column="operator" property="operator" javaType="string"/>
+        <result column="operator_id" property="operatorId" javaType="Integer"/>
         <result column="ip" property="ip" javaType="string"/>
         <result column="action" property="action" javaType="string"/>
         <result column="method" property="method" javaType="string"/>
@@ -15,16 +16,18 @@
         <result column="time_consuming" property="timeConsuming" javaType="string"/>
     </resultMap>
     <insert id="batchSaveLogs">
-        INSERT INTO admin_log(type, operator, ip, action, method, data, result, createtime, time_consuming)
+        INSERT INTO admin_log(type, operator,operator_id, ip, action, method, data, result, createtime, time_consuming)
         VALUES
         <foreach collection="logs" item="log" separator=",">
-            (#{log.type}, #{log.operator}, #{log.ip}, #{log.action}, #{log.method}, #{log.data},#{log.result},
+            (#{log.type}, #{log.operator},#{log.operatorId}, #{log.ip}, #{log.action}, #{log.method},
+            #{log.data},#{log.result},
             #{log.createtime}, #{log.timeConsuming})
         </foreach>
 
     </insert>
     <select id="getAllLog" resultType="com.lee.mht.system.entity.AdminLog">
-        SELECT id,id, type, operator, ip, action, method, data, result, createtime, time_consuming FROM admin_log
+        SELECT id,id, type, operator,operator_id, ip, action, method, data, result, createtime, time_consuming FROM
+        admin_log
         <where>
             <if test="operator != null and ! &quot;&quot;.equals(operator)">
                 <bind name="myOperator" value="'%' + operator + '%'"/>
@@ -53,11 +56,10 @@
     <delete id="deleteAdminLogByIds">
         DELETE FROM admin_log
         WHERE id in
-        <foreach collection="ids" item = "id" index = "no" open="(" separator="," close=")">
+        <foreach collection="ids" item="id" index="no" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-
 
 
 </mapper>

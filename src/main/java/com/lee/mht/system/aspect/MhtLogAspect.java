@@ -89,9 +89,12 @@ public class MhtLogAspect {
         if (sra != null) {
             HttpServletRequest request = sra.getRequest();
             adminLog.setIp(getIpFromRequest(request));
-            //从token中获取操作者
             String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
+            //从token中获取操作者
             adminLog.setOperator(JwtUtils.getUserName(token));
+            //从token中取出操作id
+            log.info("从token中取得的id 为{}",JwtUtils.getId(token));
+            adminLog.setOperatorId(Integer.valueOf(JwtUtils.getId(token)));
         } else {
             //正常情况下都是可以获得到request的，但是为了防止某些无法预料的情况给对sra为null做个处理
             //因为数据库中ip是必填的

@@ -28,7 +28,9 @@ public class RedisServiceImpl implements RedisService {
 
     private final String MhtLogKey = Constant.REDIS_MHT_LOG_KEY;
 
-    private final String TokenKey = Constant.REDIS_TOKEN_KEY;
+    private final String AdminTokenKey = Constant.REDIS_ADMIN_USER_TOKEN_KEY;
+
+    private final String BusinessTokenKey = Constant.REDIS_BUSINESS_USER_TOKEN_KEY;
 
     private final Long TokenExpire = Constant.TOKEN_EXPIRE_TIME;
 
@@ -76,8 +78,12 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     //添加用户登录token
-    public void setAdminUserLoginToken(int user_id, String accessToken) {
-        redisUtils.set(TokenKey + user_id, accessToken,TokenExpire);
+    public void setAdminUserLoginToken(int user_id, String accessToken,String tokenType) {
+        if(tokenType.equals(Constant.JWT_USER_TYPE_ADMIN)){
+            redisUtils.set(AdminTokenKey + user_id, accessToken,TokenExpire);
+        }else{
+            redisUtils.set(BusinessTokenKey + user_id, accessToken,TokenExpire);
+        }
     }
 
     @Override

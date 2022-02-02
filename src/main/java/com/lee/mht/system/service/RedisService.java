@@ -16,7 +16,7 @@ public interface RedisService {
 
     void pushMhtLogList(AdminLog adminLog);
 
-    void setAdminUserLoginToken(int user_id, String accessToken);
+    void setAdminUserLoginToken(int user_id, String accessToken,String tokenType);
 
     void saveLogFromRedisToMysql();
 

@@ -2,6 +2,7 @@ package com.lee.mht.system.common;
 
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.exception.SystemException;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author FucXing
@@ -13,11 +14,18 @@ public class Constant {
     public static final int TOKEN_ERROR = 403;
     public static final int PERMISSION_ERROR = 401;
 
-
     //shiro 相关
 
     //jwtToken中获取username的key
     public static final String JWT_USER_NAME = "jwt-user-name-key";
+
+    //jwtToken中获取用户类型的key
+    public static final String JWT_USER_TYPE = "jwt-user-type-key";
+
+    //jwtToken存放的userType值
+    public static final String JWT_USER_TYPE_ADMIN = "admin";
+    public static final String JWT_USER_TYPE_BUSINESS = "business";
+
 
     //jwtToken中签发时间的key
     public static final String JWT_ISSUANCE_TIME = "jwt-issuance-time";
@@ -44,8 +52,11 @@ public class Constant {
     //shiro中登录认证信息的rediskey
     public static String Redis_SHiRO_AUTHENTICATION_KEY = "shiro:cache:authentication:";
 
-    //redis中存取用户token的key
-    public static final String REDIS_TOKEN_KEY = "MHT:Token:AccessToken_USERID:";
+    //redis中存取系统用户token的key
+    public static final String REDIS_ADMIN_USER_TOKEN_KEY = "MHT:Token:AccessToken_Admin:";
+
+    //redis中存取生产用户token的key
+    public static final String REDIS_BUSINESS_USER_TOKEN_KEY = "MHT:Token:AccessToken_Business:";
 
     //Token过期时间(12小时)
     public static final long TOKEN_EXPIRE_TIME = 60*60*12L;
@@ -75,6 +86,7 @@ public class Constant {
 
     //业务常量
     public static final String LOGIN_SUCCESS = "登陆成功";
+    public static final String LOGIN_ERROR = "登陆错误";
     public static final String ALLOW_ACCESS = "允许访问";
 
     public static final String USERNAME_PASSWORD_ERROR = "用户名或密码错误";
