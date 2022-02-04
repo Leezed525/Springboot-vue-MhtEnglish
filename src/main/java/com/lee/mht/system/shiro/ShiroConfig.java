@@ -94,7 +94,7 @@ public class ShiroConfig {
 
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();//拦截器, 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/druid/**","anon");
-        filterChainDefinitionMap.put("/business/login","anon");
+        filterChainDefinitionMap.put("/mhtEnglish/business/login","anon");
         filterChainDefinitionMap.put("/admin/system/login","anon");
         //下面这一行是为了防止请求druid时报错，虽然无伤大雅，但是看着不爽（druid能打开，但是会在控制台输出错误，因为这个请求进了jwtFilter）
         filterChainDefinitionMap.put("/favicon.ico","anon");

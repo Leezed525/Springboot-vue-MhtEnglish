@@ -1,6 +1,7 @@
 package com.lee.mht.system.shiro;
 
-import com.lee.mht.system.dao.AdminUserDao;
+import com.lee.mht.system.common.Constant;
+import com.lee.mht.system.exception.SystemException;
 import com.lee.mht.system.service.AdminPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +22,6 @@ import java.util.List;
 @Slf4j
 @Component
 public class LeeRealm extends AuthorizingRealm {
-
 
 
     @Autowired
@@ -39,7 +38,7 @@ public class LeeRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("开始用户授权");
-        int id = Integer.parseInt((String) principalCollection.getPrimaryPrincipal()) ;
+        int id = Integer.parseInt((String) principalCollection.getPrimaryPrincipal());
         //创建返回的info
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (id == 1) {
@@ -59,7 +58,15 @@ public class LeeRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("开始用户验证");
         JwtToken token = (JwtToken) authenticationToken;
-        return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), getName());
+        //验证toekn合法
+        try {
+            Object principal = token.getPrincipal();
+            Object credential = token.getCredentials();
+            return new SimpleAuthenticationInfo(principal,credential, getName());
+
+        } catch (Exception e) {
+            throw new SystemException(Constant.TOKEN_ERROR, Constant.ILLEAGEL_TOKEN);
+        }
     }
 
     @Override

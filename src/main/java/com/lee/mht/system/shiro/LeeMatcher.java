@@ -26,14 +26,14 @@ public class LeeMatcher extends HashedCredentialsMatcher {
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info){
         String accessToken= (String) token.getCredentials();
         String id= JwtUtils.getId(accessToken);
-        //检验token是否合法
-        try{
-            if(!JwtUtils.validateToken(accessToken)){
-                throw new SystemException(Constant.TOKEN_ERROR,Constant.ILLEAGEL_TOKEN);
-            }
-        }catch(Exception e){
-            throw new SystemException(Constant.TOKEN_ERROR,Constant.ILLEAGEL_TOKEN);
-        }
+        //检验token是否合法 （废弃，因为经过调试发现只要是能到这里来的token都是已经经过验证了的了，具体请看leeRealm）
+        //try{
+        //    if(!JwtUtils.validateToken(accessToken)){
+        //        throw new SystemException(Constant.TOKEN_ERROR,Constant.ILLEAGEL_TOKEN);
+        //    }
+        //}catch(Exception e){
+        //    throw new SystemException(Constant.TOKEN_ERROR,Constant.ILLEAGEL_TOKEN);
+        //}
         //判断用户类型
         String tokenKey;
         if (JwtUtils.getUserType(accessToken).equals(Constant.JWT_USER_TYPE_ADMIN)){
