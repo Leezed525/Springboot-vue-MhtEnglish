@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mht.business.dao.WordDao">
+    <cache type="com.lee.mht.system.config.MybatisRedisCache"/>
+    <resultMap id="baseResultMap" type="com.lee.mht.business.entity.Word">
+        <id column="id" property="id"/>
+        <result column="word" property="word" javaType="string"/>
+        <result column="symbols" property="symbols" javaType="string"/>
+        <result column="part" property="part" javaType="string"/>
+        <result column="mean" property="mean" javaType="integer"/>
+        <result column="ex" property="ex" javaType="string"/>
+        <result column="tran" property="tran" javaType="string"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="RandomSelectWordByNumber" resultType="com.lee.mht.business.entity.Word" useCache="false">
+        SELECT *
+        FROM `words`
+        WHERE id not in
+              (SELECT w_id FROM `complete_word` where u_id = #{userId})
+        ORDER BY RAND()
+        LIMIT #{number}
+    </select>
+    <select id="getRightOption" resultType="com.lee.mht.business.vo.WordOptionsVo">
+        SELECT CONCAT(part, mean) AS mean,1 AS 'right'
+        FROM words
+        WHERE id = #{id}
+    </select>
+
+    <select id="getErrorOption" resultType="com.lee.mht.business.vo.WordOptionsVo">
+        SELECT CONCAT(part, mean) AS mean,0 AS 'right'
+        FROM words
+        WHERE id != #{id}
+        ORDER BY RAND()
+        LIMIT 3;
+    </select>
+</mapper>

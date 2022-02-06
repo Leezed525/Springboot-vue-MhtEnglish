@@ -26,7 +26,7 @@ import java.util.Map;
  * @date 2022/02/01 15:04
  **/
 @RestController
-@RequestMapping("/mhtEnglish/business")
+@RequestMapping("/business")
 @Slf4j
 public class BusinessController {
 

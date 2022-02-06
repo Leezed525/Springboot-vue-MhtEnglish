@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author FucXing
  * @date 2022/02/02 22:35
  **/
-@RequestMapping("/mhtEnglish/user")
+@RequestMapping("/user")
 @RestController
 public class UserController {
     @Autowired
@@ -28,7 +28,6 @@ public class UserController {
         try{
             //获取token
             String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
-
             int id = Integer.parseInt(JwtUtils.getId(token));
             User user = userService.getUserInfoById(id);
             return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,user);

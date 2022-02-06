@@ -42,8 +42,6 @@ public class LeeMatcher extends HashedCredentialsMatcher {
             tokenKey = Constant.REDIS_BUSINESS_USER_TOKEN_KEY + id;
         }
         //判断token是否过期
-        log.info(tokenKey);
-
         if(isTokenExpired(tokenKey,accessToken)){
             throw new SystemException(Constant.TOKEN_ERROR,Constant.TOKEN_EXPIRED);
         }

@@ -1,6 +1,8 @@
 #开发环境
 server:
   port: 8080
+  servlet:
+    context-path: /mhtEnglish
 spring:
   mvc:
     servlet:
