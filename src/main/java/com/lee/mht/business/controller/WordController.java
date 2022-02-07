@@ -8,10 +8,7 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -28,12 +25,18 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
-    /*
-     * 获取10个随机单词
-     * */
+    /**
+     *
+     * @param number 请求数
+     * @param request request
+     * @return List<Word>
+     */
     @RequestMapping("/getWordsByNumber")
     public ResultObj getWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
                                       HttpServletRequest request) {
+        if(number > 50 || number <= 0){
+            return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
+        }
         try {
             String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
             int userId = Integer.parseInt(JwtUtils.getId(token));
@@ -45,6 +48,12 @@ public class WordController {
 
     }
 
+    /**
+     *
+     *
+     * @param wordId 单词id
+     * @return WordOptionVo
+     */
     @RequestMapping("/getWordOptions")
     public ResultObj getWordOptions(@RequestParam(name = "wordId")int wordId){
         try {
@@ -53,6 +62,22 @@ public class WordController {
             return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,options);
         }catch (Exception e) {
             return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
+        }
+    }
+
+
+    @RequestMapping("/learnComplete")
+    public ResultObj learnComplete(@RequestBody List<Word> words,HttpServletRequest request){
+        if(words.size() == 0){
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+        }
+        try {
+            String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
+            int userId = Integer.parseInt(JwtUtils.getId(token));
+            wordService.learnComplete(words, userId);
+            return new ResultObj(Constant.OK,Constant.ADD_SUCCESS);
+        }catch(Exception e) {
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
         }
     }
 }

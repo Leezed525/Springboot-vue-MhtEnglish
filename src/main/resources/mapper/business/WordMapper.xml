@@ -22,16 +22,25 @@
         LIMIT #{number}
     </select>
     <select id="getRightOption" resultType="com.lee.mht.business.vo.WordOptionsVo">
-        SELECT CONCAT(part, mean) AS mean,1 AS 'right'
+        SELECT CONCAT(part, mean) AS mean, 1 AS 'right'
         FROM words
         WHERE id = #{id}
     </select>
 
     <select id="getErrorOption" resultType="com.lee.mht.business.vo.WordOptionsVo">
-        SELECT CONCAT(part, mean) AS mean,0 AS 'right'
+        SELECT CONCAT(part, mean) AS mean, 0 AS 'right'
         FROM words
         WHERE id != #{id}
         ORDER BY RAND()
         LIMIT 3;
     </select>
+
+    <insert id="learnComplete">
+        INSERT INTO complete_word(u_id, w_id, createtime)
+        VALUES
+        <foreach collection="words" item="word" separator=",">
+            (#{uId},#{word.id},NOW())
+        </foreach>
+    </insert>
+
 </mapper>

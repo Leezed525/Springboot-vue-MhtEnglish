@@ -13,4 +13,7 @@ public interface WordDao {
     WordOptionsVo getRightOption(@Param("id") int wordId);
 
     List<WordOptionsVo> getErrorOption(@Param("id") int wordId);
+
+    void learnComplete(@Param("words") List<Word> words,
+                       @Param("uId") int userId);
 }

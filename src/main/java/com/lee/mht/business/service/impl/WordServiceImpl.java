@@ -22,8 +22,7 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public List<Word> RandomSelectWordByNumber(int userId, int number) {
-        List<Word> list = wordDao.RandomSelectWordByNumber(userId, number);
-        return list;
+        return wordDao.RandomSelectWordByNumber(userId, number);
     }
 
     @Override
@@ -32,6 +31,11 @@ public class WordServiceImpl implements WordService {
         List<WordOptionsVo> list = wordDao.getErrorOption(wordId);
         list.add(rightOption);
         return list;
+    }
+
+    @Override
+    public void learnComplete(List<Word> words, int userId) {
+        wordDao.learnComplete(words, userId);
     }
 
 

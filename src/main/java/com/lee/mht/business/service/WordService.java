@@ -13,4 +13,6 @@ public interface WordService {
     List<Word> RandomSelectWordByNumber(int userId, int number);
 
     List<WordOptionsVo> getWordOptions(int wordId);
+
+    void learnComplete(List<Word> words, int userId);
 }
