@@ -1,5 +1,6 @@
 package com.lee.mht.business.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.vo.WordOptionsVo;
 
@@ -15,4 +16,8 @@ public interface WordService {
     List<WordOptionsVo> getWordOptions(int wordId);
 
     void learnComplete(List<Word> words, int userId);
+
+    int getCompleteWordCount(int userId);
+
+    PageInfo<Word> getAllCompleteWord(String word, Integer pageSize, Integer pageNum, int userId);
 }

@@ -32,7 +32,7 @@ public class AdminWordController {
     @Autowired
     private AdminWordService adminWordService;
 
-    //通过查询条件获取所有用户
+    //通过查询条件获取所有单词
     @RequiresPermissions("word:query")
     @RequestMapping("/getAllAdminWord")
     @MhtLog(action="单词查询",type = Constant.LOG_TYPE_SYSTEM)

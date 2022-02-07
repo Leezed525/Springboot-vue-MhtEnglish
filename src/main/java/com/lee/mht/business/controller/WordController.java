@@ -1,12 +1,15 @@
 package com.lee.mht.business.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
 import com.lee.mht.business.vo.WordOptionsVo;
+import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,7 @@ public class WordController {
     private WordService wordService;
 
     /**
-     *
+     * 获取学习的单词
      * @param number 请求数
      * @param request request
      * @return List<Word>
@@ -38,8 +41,7 @@ public class WordController {
             return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
         }
         try {
-            String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
-            int userId = Integer.parseInt(JwtUtils.getId(token));
+            int userId = JwtUtils.getId(request);
             List<Word> words = wordService.RandomSelectWordByNumber(userId, number);
             return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,words);
         }catch (Exception e) {
@@ -49,8 +51,7 @@ public class WordController {
     }
 
     /**
-     *
-     *
+     *获取单词选项
      * @param wordId 单词id
      * @return WordOptionVo
      */
@@ -65,19 +66,58 @@ public class WordController {
         }
     }
 
-
+    /**
+     *
+     * @param words 完成单词列表
+     * @param request request
+     * @return ResultObj
+     */
     @RequestMapping("/learnComplete")
     public ResultObj learnComplete(@RequestBody List<Word> words,HttpServletRequest request){
         if(words.size() == 0){
             return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
         }
         try {
-            String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
-            int userId = Integer.parseInt(JwtUtils.getId(token));
+            int userId = JwtUtils.getId(request);
             wordService.learnComplete(words, userId);
             return new ResultObj(Constant.OK,Constant.ADD_SUCCESS);
         }catch(Exception e) {
             return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
         }
+    }
+
+    /**
+     * 获取用户学习完成的单词数量
+     * @param request request
+     * @return
+     */
+    @RequestMapping("/getCompleteWordCount")
+    public ResultObj getCompleteWordCount(HttpServletRequest request){
+        try {
+            int userId = JwtUtils.getId(request);
+            int count = wordService.getCompleteWordCount(userId);
+            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,count);
+        } catch (Exception e) {
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getAllCompleteWord")
+    public ResultObj getAllCompleteWord(@RequestParam(required = false, defaultValue = "", name = "word") String word,
+                                        @RequestParam(required = false, defaultValue = "10", name = "limit") Integer pageSize,
+                                        @RequestParam(required = false, defaultValue = "1", name = "page") Integer pageNum,
+                                        HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            PageInfo<Word> pageInfo = wordService.getAllCompleteWord(word, pageSize, pageNum,userId);
+            if (pageInfo != null) {
+                return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
+            } else {
+                return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            }
+        }catch (Exception e) {
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+
     }
 }

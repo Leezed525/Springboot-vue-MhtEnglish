@@ -1,5 +1,7 @@
 package com.lee.mht.business.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.dao.WordDao;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
@@ -36,6 +38,23 @@ public class WordServiceImpl implements WordService {
     @Override
     public void learnComplete(List<Word> words, int userId) {
         wordDao.learnComplete(words, userId);
+    }
+
+    @Override
+    public int getCompleteWordCount(int userId) {
+        return wordDao.getCompleteWordCount(userId);
+    }
+
+    @Override
+    public PageInfo<Word> getAllCompleteWord(String word, Integer pageSize, Integer pageNum, int userId) {
+        try {
+            PageHelper.startPage(pageNum, pageSize);
+            List<Word> adminWords = wordDao.getAllCompleteWord(word,userId);
+            return new PageInfo<>(adminWords);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

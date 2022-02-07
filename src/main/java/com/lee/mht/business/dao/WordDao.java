@@ -16,4 +16,9 @@ public interface WordDao {
 
     void learnComplete(@Param("words") List<Word> words,
                        @Param("uId") int userId);
+
+    int getCompleteWordCount(@Param("uId") int userId);
+
+    List<Word> getAllCompleteWord(@Param("word") String word,
+                                  @Param("uId") int userId);
 }

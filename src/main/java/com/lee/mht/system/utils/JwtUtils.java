@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -90,7 +91,7 @@ public class JwtUtils {
     }
 
     /**
-     * 获取用户id
+     * 获取用户id 从token中
      */
     public static String getId(String token) {
         String userId = null;
@@ -101,6 +102,16 @@ public class JwtUtils {
             log.error("error={}", e);
         }
         return userId;
+    }
+
+    /**
+     * 从request中获取token在获取id
+     * @param request request
+     * @return id
+     */
+    public static int getId(HttpServletRequest request){
+        String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
+        return Integer.parseInt(JwtUtils.getId(token));
     }
 
     /**

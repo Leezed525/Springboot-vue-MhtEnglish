@@ -43,4 +43,27 @@
         </foreach>
     </insert>
 
+    <select id="getCompleteWordCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM complete_word
+        WHERE u_id = #{uId}
+    </select>
+    <select id="getAllCompleteWord" resultType="com.lee.mht.business.entity.Word">
+        SELECT w.id,
+               w.word,
+               w.symbols,
+               w.part,
+               w.mean,
+               w.ex,
+               w.tran
+        from complete_word as c
+        LEFT JOIN words as w ON c.w_id = w.id
+        <where>
+            <if test="word != null and ! &quot;&quot;.equals(word)">
+                <bind name="myWord" value="'%' + word  + '%'"/>
+                word like #{myWord}
+            </if>
+            AND c.u_id = #{uId}
+        </where>
+    </select>
 </mapper>

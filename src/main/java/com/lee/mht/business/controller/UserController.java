@@ -24,7 +24,6 @@ public class UserController {
 
     @RequestMapping("/getUserInfo")
     public ResultObj getUserInfo(HttpServletRequest request){
-
         try{
             //获取token
             String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
@@ -35,4 +34,6 @@ public class UserController {
             return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
         }
     }
+
+
 }
