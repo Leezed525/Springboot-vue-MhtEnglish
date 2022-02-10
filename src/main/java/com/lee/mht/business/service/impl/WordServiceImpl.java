@@ -6,10 +6,10 @@ import com.lee.mht.business.dao.WordDao;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
 import com.lee.mht.business.vo.WordOptionsVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +17,7 @@ import java.util.List;
  * @date 2022/02/01 15:07
  **/
 @Service
+@Slf4j
 public class WordServiceImpl implements WordService {
 
     @Autowired(required = false)
@@ -54,6 +55,31 @@ public class WordServiceImpl implements WordService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void forgetWord(Word word, int userId) {
+        wordDao.deleteCompleteWordByUserIdAndWordId(word.getId(),userId);
+    }
+
+    @Override
+    public List<Word> RandomSelectReviewWordByNumber(int userId, int number) {
+        return wordDao.RandomSelectReviewWordByNumber(userId, number);
+    }
+
+    @Override
+    public void reviewComplete(int userId, int reviewCount) {
+        int lastCount = wordDao.getTodayReviewCount(userId);
+        if(lastCount == 0){
+            log.info(String.valueOf(userId));
+            log.info(String.valueOf(reviewCount));
+            wordDao.createTodayReviewWord(userId,reviewCount);
+        }else{
+            reviewCount += lastCount;
+            log.info(String.valueOf(userId));
+            log.info(String.valueOf(reviewCount));
+            wordDao.updateTodayReviewWord(userId,reviewCount);
         }
     }
 

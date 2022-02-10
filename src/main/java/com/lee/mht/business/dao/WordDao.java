@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface WordDao {
-    List<Word> RandomSelectWordByNumber(@Param("userId") int userId,
+    List<Word> RandomSelectWordByNumber(@Param("uId") int userId,
                                         @Param("number") int number);
 
     WordOptionsVo getRightOption(@Param("id") int wordId);
@@ -21,4 +21,17 @@ public interface WordDao {
 
     List<Word> getAllCompleteWord(@Param("word") String word,
                                   @Param("uId") int userId);
+
+    void deleteCompleteWordByUserIdAndWordId(@Param("wId") int wordId,
+                                             @Param("uId") int userId);
+
+    List<Word> RandomSelectReviewWordByNumber(@Param("uId") int userId,
+                                              @Param("number") int number);
+
+    int getTodayReviewCount(@Param("uId") int userId);
+
+    void createTodayReviewWord(@Param("uId") int userId,
+                               @Param("count") int reviewCount);
+
+    void updateTodayReviewWord(@Param("uId")int userId,@Param("count") int reviewCount);
 }

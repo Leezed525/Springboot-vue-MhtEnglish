@@ -14,13 +14,23 @@
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <select id="RandomSelectWordByNumber" resultType="com.lee.mht.business.entity.Word" useCache="false">
-        SELECT *
+        SELECT id, word, symbols, part, mean, ex, tran
         FROM `words`
         WHERE id not in
-              (SELECT w_id FROM `complete_word` where u_id = #{userId})
+              (SELECT w_id FROM `complete_word` where u_id = #{uId})
         ORDER BY RAND()
         LIMIT #{number}
     </select>
+
+    <select id="RandomSelectReviewWordByNumber" resultType="com.lee.mht.business.entity.Word">
+        SELECT id, word, symbols, part, mean, ex, tran
+        FROM `words`
+        WHERE id in
+              (SELECT w_id FROM `complete_word` where u_id = #{uId})
+        ORDER BY RAND()
+        LIMIT #{number}
+    </select>
+
     <select id="getRightOption" resultType="com.lee.mht.business.vo.WordOptionsVo">
         SELECT CONCAT(part, mean) AS mean, 1 AS 'right'
         FROM words
@@ -43,6 +53,7 @@
         </foreach>
     </insert>
 
+
     <select id="getCompleteWordCount" resultType="java.lang.Integer">
         SELECT COUNT(1)
         FROM complete_word
@@ -50,12 +61,12 @@
     </select>
     <select id="getAllCompleteWord" resultType="com.lee.mht.business.entity.Word">
         SELECT w.id,
-               w.word,
-               w.symbols,
-               w.part,
-               w.mean,
-               w.ex,
-               w.tran
+        w.word,
+        w.symbols,
+        w.part,
+        w.mean,
+        w.ex,
+        w.tran
         from complete_word as c
         LEFT JOIN words as w ON c.w_id = w.id
         <where>
@@ -66,4 +77,31 @@
             AND c.u_id = #{uId}
         </where>
     </select>
+
+    <delete id="deleteCompleteWordByUserIdAndWordId">
+        DELETE
+        FROM complete_word
+        WHERE u_id = #{uId}
+          AND W_id = #{wId}
+    </delete>
+
+    <select id="getTodayReviewCount" resultType="java.lang.Integer">
+        SELECT IFNULL(max(review_count), 0)
+        FROM review_word
+        WHERE u_id = #{uId}
+          AND TO_DAYS(create_date) = TO_DAYS(NOW())
+    </select>
+
+    <insert id="createTodayReviewWord">
+        INSERT INTO  review_word(u_id, review_count, create_date)
+            VALUES (#{uId}, #{count}, NOW())
+    </insert>
+
+    <update id="updateTodayReviewWord">
+        UPDATE review_word
+        SET review_count = #{count}
+        WHERE u_id = #{uId}
+          AND TO_DAYS(create_date) = TO_DAYS(NOW())
+    </update>
+
 </mapper>

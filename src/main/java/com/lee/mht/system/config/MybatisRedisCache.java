@@ -60,13 +60,13 @@ public class MybatisRedisCache implements Cache
 
     /////////////////////// 解决缓存雪崩，具体范围根据业务需要设置合理值 //////////////////////////
     /**
-     * 缓存最小有效期
+     * 缓存最小有效期(s)
      */
     private int minExpireMinutes = 60;
     /**
-     * 缓存最大有效期
+     * 缓存最大有效期(s)
      */
-    private int maxExpireMinutes = 120;
+    private int maxExpireMinutes = 12*60*60;
 
     /**
      * MyBatis给每个表空间初始化的时候要用到

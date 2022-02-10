@@ -30,78 +30,90 @@ public class WordController {
 
     /**
      * 获取学习的单词
-     * @param number 请求数
+     *
+     * @param number  请求数
      * @param request request
      * @return List<Word>
      */
     @RequestMapping("/getWordsByNumber")
     public ResultObj getWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
                                       HttpServletRequest request) {
-        if(number > 50 || number <= 0){
-            return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
+        if (number > 50 || number <= 0) {
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
         try {
             int userId = JwtUtils.getId(request);
             List<Word> words = wordService.RandomSelectWordByNumber(userId, number);
-            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,words);
-        }catch (Exception e) {
-            return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, words);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
-
     }
 
     /**
-     *获取单词选项
+     * 获取单词选项
+     *
      * @param wordId 单词id
      * @return WordOptionVo
      */
     @RequestMapping("/getWordOptions")
-    public ResultObj getWordOptions(@RequestParam(name = "wordId")int wordId){
+    public ResultObj getWordOptions(@RequestParam(name = "wordId") int wordId) {
         try {
             List<WordOptionsVo> options = wordService.getWordOptions(wordId);
             log.info(options.toString());
-            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,options);
-        }catch (Exception e) {
-            return new ResultObj(Constant.SERVER_ERROR,Constant.QUERY_ERROR);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, options);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
     }
 
     /**
-     *
-     * @param words 完成单词列表
+     * @param words   完成单词列表
      * @param request request
      * @return ResultObj
      */
     @RequestMapping("/learnComplete")
-    public ResultObj learnComplete(@RequestBody List<Word> words,HttpServletRequest request){
-        if(words.size() == 0){
+    public ResultObj learnComplete(@RequestBody List<Word> words, HttpServletRequest request) {
+        if (words.size() == 0) {
             return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
         }
         try {
             int userId = JwtUtils.getId(request);
             wordService.learnComplete(words, userId);
-            return new ResultObj(Constant.OK,Constant.ADD_SUCCESS);
-        }catch(Exception e) {
+            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
         }
     }
 
     /**
      * 获取用户学习完成的单词数量
+     *
      * @param request request
      * @return
      */
     @RequestMapping("/getCompleteWordCount")
-    public ResultObj getCompleteWordCount(HttpServletRequest request){
+    public ResultObj getCompleteWordCount(HttpServletRequest request) {
         try {
             int userId = JwtUtils.getId(request);
             int count = wordService.getCompleteWordCount(userId);
-            return new ResultObj(Constant.OK,Constant.QUERY_SUCCESS,count);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
         } catch (Exception e) {
+            log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
     }
 
+    /**
+     * @param word     模糊查询单词
+     * @param pageSize 查询数量
+     * @param pageNum  查询页数
+     * @param request  request
+     * @return List<word>
+     */
     @RequestMapping("/getAllCompleteWord")
     public ResultObj getAllCompleteWord(@RequestParam(required = false, defaultValue = "", name = "word") String word,
                                         @RequestParam(required = false, defaultValue = "10", name = "limit") Integer pageSize,
@@ -109,15 +121,61 @@ public class WordController {
                                         HttpServletRequest request) {
         try {
             int userId = JwtUtils.getId(request);
-            PageInfo<Word> pageInfo = wordService.getAllCompleteWord(word, pageSize, pageNum,userId);
+            PageInfo<Word> pageInfo = wordService.getAllCompleteWord(word, pageSize, pageNum, userId);
             if (pageInfo != null) {
                 return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
             } else {
                 return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
+    }
 
+    /**
+     * @param word    word实体类
+     * @param request request
+     * @return 无关紧要
+     */
+    @RequestMapping("/forgetWord")
+    public ResultObj forgetWord(@RequestBody Word word, HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            wordService.forgetWord(word, userId);
+            return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR);
+        }
+    }
+
+    @RequestMapping("/getReviewWordsByNumber")
+    public ResultObj getReviewWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
+                                            HttpServletRequest request) {
+        if (number > 50 || number <= 0) {
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+        try {
+            int userId = JwtUtils.getId(request);
+            List<Word> words = wordService.RandomSelectReviewWordByNumber(userId, number);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, words);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/reviewComplete")
+    public ResultObj reviewComplete(@RequestParam(name = "reviewCount") int reviewCount,
+                                    HttpServletRequest request) {
+        int userId = JwtUtils.getId(request);
+        try {
+            wordService.reviewComplete(userId, reviewCount);
+            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+        }
     }
 }

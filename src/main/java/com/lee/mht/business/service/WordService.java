@@ -20,4 +20,10 @@ public interface WordService {
     int getCompleteWordCount(int userId);
 
     PageInfo<Word> getAllCompleteWord(String word, Integer pageSize, Integer pageNum, int userId);
+
+    void forgetWord(Word word, int userId);
+
+    List<Word> RandomSelectReviewWordByNumber(int userId, int number);
+
+    void reviewComplete(int userId, int reviewCount);
 }
