@@ -82,10 +82,10 @@ public class WordController {
         try {
             int userId = JwtUtils.getId(request);
             wordService.learnComplete(words, userId);
-            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
+            return new ResultObj(Constant.OK, Constant.LEARN_COMPLETE);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.LEARN_FAIL);
         }
     }
 
@@ -172,10 +172,10 @@ public class WordController {
         int userId = JwtUtils.getId(request);
         try {
             wordService.reviewComplete(userId, reviewCount);
-            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
+            return new ResultObj(Constant.OK, Constant.LEARN_COMPLETE);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR, Constant.LEARN_FAIL);
         }
     }
 }

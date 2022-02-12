@@ -113,4 +113,14 @@ public class Constant {
     public static final String ROLENAME_UNIQUE = "角色名唯一";
     public static final String ROLENAME_NOT_UNIQUE = "角色名不唯一";
 
+    //business部分
+    public static final String LEARN_COMPLETE = "学习完成";
+    public static final String LEARN_FAIL = "学习失败";
+
+    public static final String SIGNIN_SUCCESS = "签到成功";
+    public static final String SIGNIN_FAIL = "签到失败";
+    public static final String SIGNIN_DUPLICATE = "您今天已经签到过了";
+
+
+
 }

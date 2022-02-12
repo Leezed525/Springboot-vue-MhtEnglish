@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mht.business.dao.SigninDao">
+    <cache type="com.lee.mht.system.config.MybatisRedisCache"/>
+    <resultMap id="baseResultMap" type="com.lee.mht.business.entity.Signin">
+        <id column="u_id" property="uId"/>
+        <result column="sign_in_date" property="signInDate" javaType="Date"/>
+        <result column="days" property="days" javaType="integer"/>
+    </resultMap>
+    <select id="getTodaySignDays" resultType="java.lang.Integer">
+        SELECT IFNULL(MAX(days), 0)
+        FROM signin
+        WHERE u_id = #{uId}
+          AND TO_DAYS(sign_in_date) = TO_DAYS(NOW())
+    </select>
+    <select id="getYesterdaySignDays" resultType="java.lang.Integer">
+        SELECT IFNULL(MAX(days), 0)
+        FROM signin
+        WHERE u_id = #{uId}
+          AND TO_DAYS(NOW()) - TO_DAYS(sign_in_date) = 1
+    </select>
+
+    <insert id="signinToday">
+        INSERT INTO signin(u_id, sign_in_date, days)
+        VALUES (#{uId}, NOW(),#{days})
+    </insert>
+
+</mapper>
