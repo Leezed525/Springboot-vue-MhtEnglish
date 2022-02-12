@@ -1,5 +1,6 @@
 package com.lee.mht;
 
+import com.lee.mht.business.service.BusinessService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminUser;
@@ -31,6 +32,9 @@ class MhtApplicationTests {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    BusinessService businessService;
 
     @Test
     void testUpdateAdminUser(){

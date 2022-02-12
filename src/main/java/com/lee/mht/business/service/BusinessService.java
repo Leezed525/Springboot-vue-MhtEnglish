@@ -4,4 +4,6 @@ import com.lee.mht.business.entity.User;
 
 public interface BusinessService {
     String login(User user);
+
+    void updateTimeForCetFromPath();
 }

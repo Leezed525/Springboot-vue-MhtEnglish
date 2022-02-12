@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Value("${LeeMht.AppSecret}")
     private String APP_SECRET;
+
+    @Value("${LeeMht.pathToTomeForCet}")
+    private String pathToTomeForCet;
 
     @Autowired(required = false)
     private UserDao userDao;
@@ -56,6 +61,27 @@ public class BusinessServiceImpl implements BusinessService {
         String accessToken = JwtUtils.generateMhtToken(String.valueOf(user.getId()), user.getNickname(), Constant.JWT_USER_TYPE_BUSINESS);
         redisService.setAdminUserLoginToken(user.getId(), accessToken,Constant.JWT_USER_TYPE_BUSINESS);
         return accessToken;
+    }
+
+    @Override
+    public void updateTimeForCetFromPath() {
+        String path = pathToTomeForCet;
+        String jsonStr = "";
+        try {
+            File jsonFile = new File(path);
+            Reader reader = new InputStreamReader(new FileInputStream(jsonFile), StandardCharsets.UTF_8);
+            int ch = 0;
+            StringBuilder sb = new StringBuilder();
+            while ((ch = reader.read()) != -1) {
+                sb.append((char) ch);
+            }
+            reader.close();
+            jsonStr = sb.toString();
+            Map<String, Object> map = JacksonUtils.readValue(jsonStr, Map.class);
+            Constant.timeForCet = (String) map.get(Constant.HEADER_FILE_MAP_TIEMFORCET);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
     //通过前端的code获得openId

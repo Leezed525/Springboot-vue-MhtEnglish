@@ -20,8 +20,8 @@ public class JacksonUtils {
      *      转换为Map：readValue(json,Map.class)
      *      我们使用泛型，得到的也是泛型
      *
-     * @param content   要转换的JavaBean类型
-     * @param valueType  原始json字符串数据
+     * @param content   原始json字符串数据
+     * @param valueType  要转换的JavaBean类型(.class)
      * @return           JavaBean对象
      */
     public static <T> T readValue(String content, Class<T> valueType) {

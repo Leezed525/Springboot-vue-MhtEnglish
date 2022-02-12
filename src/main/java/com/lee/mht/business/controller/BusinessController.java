@@ -38,11 +38,23 @@ public class BusinessController {
     public ResultObj login(@RequestBody User user) {
         try {
             String token = businessService.login(user);
-            return new ResultObj(Constant.OK,Constant.LOGIN_SUCCESS,token);
-        }catch (Exception e) {
-            return new ResultObj(Constant.OK,Constant.LOGIN_ERROR);
+            return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, token);
+        } catch (Exception e) {
+            return new ResultObj(Constant.OK, Constant.LOGIN_ERROR);
         }
     }
 
-
+    /**
+     * 获取四六级考试时间
+     * @return 考试时间字符串（YYYY-MM-dd）
+     */
+    @RequestMapping("/getTimeForCet")
+    public ResultObj getTimeForCet(){
+        try {
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, Constant.timeForCet);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
 }

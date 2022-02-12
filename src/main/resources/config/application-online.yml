@@ -85,7 +85,10 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
-#自定义配置
+#自定义配置(以下线上环境配置还没有进行修改和配置，上线前记得修改)
 LeeMht:
+  AppID: ${CMJ_APP_ID}
+  AppSecret: ${CMJ_APP_SECRET}
   redisHost: ${ALI_LEE_REDIS_HOST}
-    redisPassword: ${ALI_LEE_REDIS_PASSWORD}
+  redisPassword: ${ALI_LEE_REDIS_PASSWORD}
+  pathToTomeForCet: F:\leezed\project\IDEAproject\SpringBootVueMht\extraInfo.json

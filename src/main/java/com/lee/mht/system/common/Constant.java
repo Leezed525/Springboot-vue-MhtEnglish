@@ -14,6 +14,10 @@ public class Constant {
     public static final int TOKEN_ERROR = 403;
     public static final int PERMISSION_ERROR = 401;
 
+    //从外部文件读取的四六级考试时间
+    public static String timeForCet = "2022-06-15";
+    public static final String HEADER_FILE_MAP_TIEMFORCET = "timeforCet";
+
     //shiro 相关
 
     //jwtToken中获取username的key
