@@ -1,5 +1,6 @@
 package com.lee.mht.business.controller;
 
+import com.lee.mht.business.entity.Signin;
 import com.lee.mht.business.service.SigninService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author FucXing
@@ -69,6 +71,7 @@ public class SigninController {
 
     /**
      * 获取当前签到状态
+     *
      * @param request request
      * @return 今天已签到返回true，未签到返回false
      */
@@ -79,6 +82,18 @@ public class SigninController {
             boolean flag = signinService.isSigninToday(userId);
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, flag);
         } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getSignInfo")
+    public ResultObj getSignInfo(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            List<Signin> list = signinService.getSigninList(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
+        }catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }

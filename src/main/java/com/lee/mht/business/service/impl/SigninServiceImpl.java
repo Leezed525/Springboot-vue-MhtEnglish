@@ -1,9 +1,12 @@
 package com.lee.mht.business.service.impl;
 
 import com.lee.mht.business.dao.SigninDao;
+import com.lee.mht.business.entity.Signin;
 import com.lee.mht.business.service.SigninService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author FucXing
@@ -52,5 +55,10 @@ public class SigninServiceImpl implements SigninService {
             //今天没签到过，返回昨天的
             return signinDao.getYesterdaySignDays(userId);
         }
+    }
+
+    @Override
+    public List<Signin> getSigninList(int userId) {
+        return signinDao.getSigninList(userId);
     }
 }

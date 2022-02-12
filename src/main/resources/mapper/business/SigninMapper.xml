@@ -23,7 +23,13 @@
 
     <insert id="signinToday">
         INSERT INTO signin(u_id, sign_in_date, days)
-        VALUES (#{uId}, NOW(),#{days})
+        VALUES (#{uId}, NOW(), #{days})
     </insert>
+
+    <select id="getSigninList" resultType="com.lee.mht.business.entity.Signin">
+        SELECT u_id, sign_in_date, days
+        FROM signin
+        WHERE u_id = #{uId}
+    </select>
 
 </mapper>

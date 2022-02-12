@@ -1,5 +1,9 @@
 package com.lee.mht.business.service;
 
+import com.lee.mht.business.entity.Signin;
+
+import java.util.List;
+
 public interface SigninService {
     boolean isSigninToday(int userId);
 
@@ -7,4 +11,5 @@ public interface SigninService {
 
     int getSigninDays(int userId);
 
+    List<Signin> getSigninList(int userId);
 }

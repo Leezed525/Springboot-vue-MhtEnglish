@@ -1,6 +1,9 @@
 package com.lee.mht.business.dao;
 
+import com.lee.mht.business.entity.Signin;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author FucXing
@@ -13,4 +16,6 @@ public interface SigninDao {
 
     void signinToday(@Param("uId") int userId,
                      @Param("days") int days);
+
+    List<Signin> getSigninList(@Param("uId") int userId);
 }
