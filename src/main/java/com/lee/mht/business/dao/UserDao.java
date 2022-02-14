@@ -11,4 +11,6 @@ public interface UserDao {
     User getUserByOpenId(@Param("openId") String openId);
 
     User getUserById(@Param("id") int id);
+
+    void updateUserInfo(@Param("user") User user);
 }

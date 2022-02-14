@@ -52,5 +52,31 @@
         WHERE id = #{id}
     </select>
 
+    <update id="updateUserInfo">
+        UPDATE user
+        <set>
+            <if test="user.nickname != null and ! &quot;&quot;.equals(user.nickname)">
+                nickname = #{user.nickname},
+            </if>
+            <if test="user.avatarUrl != null and ! &quot;&quot;.equals(user.avatarUrl)">
+                avatar_url = #{user.avatarUrl},
+            </if>
+            <if test="user.gender != null" >
+                gender = #{user.gender},
+            </if>
+            <if test="user.country != null and ! &quot;&quot;.equals(user.country)">
+                country = #{user.country}
+            </if>
+            <if test="user.province != null and ! &quot;&quot;.equals(user.province)">
+                province = #{user.province}
+            </if>
+            <if test="user.city != null and ! &quot;&quot;.equals(user.city)">
+                city = #{user.city}
+            </if>
+        </set>
+        WHERE
+        id = #{user.id};
+    </update>
+
 
 </mapper>

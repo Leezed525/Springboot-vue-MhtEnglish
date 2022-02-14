@@ -4,4 +4,6 @@ import com.lee.mht.business.entity.User;
 
 public interface UserService {
     User getUserInfoById(int id);
+
+    void updateUserInfo(User user);
 }
