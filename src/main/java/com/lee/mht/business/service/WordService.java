@@ -2,6 +2,7 @@ package com.lee.mht.business.service;
 
 import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.entity.Word;
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
 
 import java.util.List;
@@ -26,4 +27,12 @@ public interface WordService {
     List<Word> RandomSelectReviewWordByNumber(int userId, int number);
 
     void reviewComplete(int userId, int reviewCount);
+
+    List<WordCountVo> getRecentWeekCompleteWordCount(int userId);
+
+    int getSumWeekCompleteWordCount(int userId);
+
+    List<WordCountVo> getRecentWeekReviewWordCount(int userId);
+
+    int getSumWeekReviewCount(int userId);
 }

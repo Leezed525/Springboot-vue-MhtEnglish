@@ -93,8 +93,8 @@
     </select>
 
     <insert id="createTodayReviewWord">
-        INSERT INTO  review_word(u_id, review_count, create_date)
-            VALUES (#{uId}, #{count}, NOW())
+        INSERT INTO review_word(u_id, review_count, create_date)
+        VALUES (#{uId}, #{count}, NOW())
     </insert>
 
     <update id="updateTodayReviewWord">
@@ -103,5 +103,41 @@
         WHERE u_id = #{uId}
           AND TO_DAYS(create_date) = TO_DAYS(NOW())
     </update>
+
+    <select id="getRecentWeekCompleteWordCount" resultType="com.lee.mht.business.vo.WordCountVo">
+        SELECT a.click_date as date, ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 LEFT JOIN
+             (SELECT DATE(createtime) date, count(1) AS count
+              FROM complete_word
+              WHERE DATEDIFF(now(), createtime) &lt;= 7
+                and u_id = #{uId}
+              GROUP BY date) as b
+             ON a.click_date = b.date;
+    </select>
+    <select id="getSumWeekCompleteWordCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM complete_word
+        WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(createtime)
+          AND u_id = 30;
+    </select>
+    <select id="getRecentWeekReviewWordCount" resultType="com.lee.mht.business.vo.WordCountVo">
+        SELECT a.click_date as date, ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 LEFT JOIN
+             (SELECT create_date as date, review_count as count
+              FROM review_word
+              WHERE DATEDIFF(now(), create_date) &lt;= 7
+                and u_id = #{uId}
+              ) as b
+             ON a.click_date = b.date;
+    </select>
+    <select id="getSumWeekReviewCount" resultType="java.lang.Integer">
+        SELECT sum(review_count)
+        FROM review_word
+        WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_date)
+          AND u_id = #{uId};
+    </select>
+
 
 </mapper>

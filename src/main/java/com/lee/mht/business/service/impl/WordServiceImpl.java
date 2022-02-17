@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.dao.WordDao;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,26 @@ public class WordServiceImpl implements WordService {
             log.info(String.valueOf(reviewCount));
             wordDao.updateTodayReviewWord(userId,reviewCount);
         }
+    }
+
+    @Override
+    public List<WordCountVo> getRecentWeekCompleteWordCount(int userId) {
+        return wordDao.getRecentWeekCompleteWordCount(userId);
+    }
+
+    @Override
+    public int getSumWeekCompleteWordCount(int userId) {
+        return wordDao.getSumWeekCompleteWordCount(userId);
+    }
+
+    @Override
+    public List<WordCountVo> getRecentWeekReviewWordCount(int userId) {
+        return wordDao.getRecentWeekReviewWordCount(userId);
+    }
+
+    @Override
+    public int getSumWeekReviewCount(int userId) {
+        return wordDao.getSumWeekReviewCount(userId);
     }
 
 

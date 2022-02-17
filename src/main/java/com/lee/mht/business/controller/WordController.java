@@ -3,6 +3,7 @@ package com.lee.mht.business.controller;
 import com.github.pagehelper.PageInfo;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
 import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
@@ -150,6 +151,11 @@ public class WordController {
         }
     }
 
+    /**
+     * @param number  查询数量默认10
+     * @param request reqyest
+     * @return List<word>
+     */
     @RequestMapping("/getReviewWordsByNumber")
     public ResultObj getReviewWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
                                             HttpServletRequest request) {
@@ -166,16 +172,68 @@ public class WordController {
         }
     }
 
+    /**
+     * @param reviewCount 复习个数
+     * @param request     request
+     * @return resultObj
+     */
     @RequestMapping("/reviewComplete")
     public ResultObj reviewComplete(@RequestParam(name = "reviewCount") int reviewCount,
                                     HttpServletRequest request) {
-        int userId = JwtUtils.getId(request);
         try {
+            int userId = JwtUtils.getId(request);
             wordService.reviewComplete(userId, reviewCount);
             return new ResultObj(Constant.OK, Constant.LEARN_COMPLETE);
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.LEARN_FAIL);
+        }
+    }
+
+    @RequestMapping("/getRecentWeekCompleteWordCount")
+    public ResultObj getRecentWeekCompleteWordCount(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            List<WordCountVo> list = wordService.getRecentWeekCompleteWordCount(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getSumWeekCompleteWordCount")
+    public ResultObj getSumWeekCompleteWordCount(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            int sum = wordService.getSumWeekCompleteWordCount(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, sum);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getRecentWeekReviewWordCount")
+    public ResultObj getRecentWeekReviewWordCount(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            List<WordCountVo> list = wordService.getRecentWeekReviewWordCount(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+    @RequestMapping("/getSumWeekReviewCount")
+    public ResultObj getSumWeekReviewCount(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            int sum = wordService.getSumWeekReviewCount(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, sum);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
     }
 }

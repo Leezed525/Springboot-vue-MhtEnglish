@@ -1,6 +1,7 @@
 package com.lee.mht.business.dao;
 
 import com.lee.mht.business.entity.Word;
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,12 @@ public interface WordDao {
                                @Param("count") int reviewCount);
 
     void updateTodayReviewWord(@Param("uId")int userId,@Param("count") int reviewCount);
+
+    List<WordCountVo> getRecentWeekCompleteWordCount(@Param("uId") int userId);
+
+    int getSumWeekCompleteWordCount(@Param("uId")int userId);
+
+    List<WordCountVo> getRecentWeekReviewWordCount(@Param("uId")int userId);
+
+    int getSumWeekReviewCount(@Param("uId")int userId);
 }
