@@ -98,6 +98,12 @@ public class RedisUtils {
         }
     }
 
+    public void del(List<String> keys) {
+        if (keys != null && keys.size() > 0) {
+                redisTemplate.delete(keys);
+        }
+    }
+
     /**
      * scan
      * @param matchKey 要匹配的key的模糊表达式，例如 hpfm:lov:*
@@ -105,7 +111,7 @@ public class RedisUtils {
      *              private static final int SCAN_COUNT = 1000;
      * @return 所匹配到的key的Set集合
      */
-    private Set<String> scan(String matchKey, Integer count) {
+    public Set<String> scan(String matchKey, Integer count) {
         Set<String> keys = new HashSet<>();
         try {
             keys = redisTemplate.execute((RedisCallback<Set<String>>) connection -> {
@@ -675,4 +681,6 @@ public class RedisUtils {
             return false;
         }
     }
+
+
 }

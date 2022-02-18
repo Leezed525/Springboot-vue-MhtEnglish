@@ -35,4 +35,8 @@ public interface WordService {
     List<WordCountVo> getRecentWeekReviewWordCount(int userId);
 
     int getSumWeekReviewCount(int userId);
+
+    int getTodayCompleteWordCount(int userId);
+
+    int getAllLearnTime(int userId);
 }

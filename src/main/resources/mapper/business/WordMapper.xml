@@ -22,7 +22,7 @@
         LIMIT #{number}
     </select>
 
-    <select id="RandomSelectReviewWordByNumber" resultType="com.lee.mht.business.entity.Word">
+    <select id="RandomSelectReviewWordByNumber" resultType="com.lee.mht.business.entity.Word" useCache="false">
         SELECT id, word, symbols, part, mean, ex, tran
         FROM `words`
         WHERE id in
@@ -129,7 +129,7 @@
               FROM review_word
               WHERE DATEDIFF(now(), create_date) &lt;= 7
                 and u_id = #{uId}
-              ) as b
+             ) as b
              ON a.click_date = b.date;
     </select>
     <select id="getSumWeekReviewCount" resultType="java.lang.Integer">
@@ -138,6 +138,25 @@
         WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_date)
           AND u_id = #{uId};
     </select>
+    <select id="getTodayCompleteWordCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM complete_word
+        WHERE u_id = #{uId}
+          AND to_days(createtime) = to_days(now());
+    </select>
+    <select id="getAllLearnTime" resultType="java.lang.Integer">
+        SELECT SUM(time)
+        FROM learn_time
+        WHERE u_id = #{uId}
+    </select>
+
+    <insert id="saveLearnTime">
+        INSERT INTO learn_time(u_id, date, time) VALUES
+        <foreach collection="learnTimes" item="learnTime" separator=",">
+            (#{learnTime.uId},#{learnTime.date},#{learnTime.time})
+        </foreach>
+    </insert>
+
 
 
 </mapper>

@@ -13,14 +13,23 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
-public class updateTimeForCetSchedule {
+public class BusinessSchedule {
     @Autowired
     private BusinessService businessService;
+
+    @Autowired
+    private RedisService redisService;
+
 
     // cron表达式，秒 分 时 日 月 周
     @Scheduled(cron = "0 0 1 * * ?")
     public void updateTimeForCetFromPath(){
         //定时读取文件更新四六级考试时间
         businessService.updateTimeForCetFromPath();
+    }
+
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void saveLearnTimeToDatabase(){
+        redisService.saveLearnTimeToDatabase();
     }
 }

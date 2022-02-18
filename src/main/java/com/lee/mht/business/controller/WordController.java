@@ -8,6 +8,7 @@ import com.lee.mht.business.vo.WordOptionsVo;
 import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +29,9 @@ public class WordController {
 
     @Autowired
     private WordService wordService;
+
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 获取学习的单词
@@ -109,6 +113,8 @@ public class WordController {
     }
 
     /**
+     * 获取所有学习完成的单词
+     *
      * @param word     模糊查询单词
      * @param pageSize 查询数量
      * @param pageNum  查询页数
@@ -135,6 +141,8 @@ public class WordController {
     }
 
     /**
+     * 遗忘单词
+     *
      * @param word    word实体类
      * @param request request
      * @return 无关紧要
@@ -152,6 +160,8 @@ public class WordController {
     }
 
     /**
+     * 获取复习单词
+     *
      * @param number  查询数量默认10
      * @param request reqyest
      * @return List<word>
@@ -190,6 +200,12 @@ public class WordController {
         }
     }
 
+    /**
+     * 获取最近7天学习完成单词数
+     *
+     * @param request request
+     * @return List<WordCountVo>
+     */
     @RequestMapping("/getRecentWeekCompleteWordCount")
     public ResultObj getRecentWeekCompleteWordCount(HttpServletRequest request) {
         try {
@@ -202,6 +218,12 @@ public class WordController {
         }
     }
 
+    /**
+     * 获取最近7天单词学习总数
+     *
+     * @param request request
+     * @return sum
+     */
     @RequestMapping("/getSumWeekCompleteWordCount")
     public ResultObj getSumWeekCompleteWordCount(HttpServletRequest request) {
         try {
@@ -214,6 +236,12 @@ public class WordController {
         }
     }
 
+    /**
+     * 获取最近七天复习单词数
+     *
+     * @param request request
+     * @return List<WordCountVo>
+     */
     @RequestMapping("/getRecentWeekReviewWordCount")
     public ResultObj getRecentWeekReviewWordCount(HttpServletRequest request) {
         try {
@@ -225,6 +253,13 @@ public class WordController {
             return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }
     }
+
+    /**
+     * 获取最近七天复习单词总数
+     *
+     * @param request request
+     * @return sum
+     */
     @RequestMapping("/getSumWeekReviewCount")
     public ResultObj getSumWeekReviewCount(HttpServletRequest request) {
         try {
@@ -232,6 +267,64 @@ public class WordController {
             int sum = wordService.getSumWeekReviewCount(userId);
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, sum);
         } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    /**
+     * 获取今天学习的单词数
+     *
+     * @param request request
+     * @return sum
+     */
+    @RequestMapping("/getTodayCompleteWordCount")
+    public ResultObj getTodayCompleteWordCount(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            int count = wordService.getTodayCompleteWordCount(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/setLearnTimeToday")
+    public ResultObj setLearnTimeToday(@RequestParam("time") int time,
+                                       HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            redisService.setLearnTimeToday(time, userId);
+            return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+        }
+
+    }
+
+    @RequestMapping("/getLearnTimeToday")
+    public ResultObj getLearnTimeToday(HttpServletRequest request) {
+
+        try {
+            int userId = JwtUtils.getId(request);
+            int time = redisService.getLearnTimeToday(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, time);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getAllLearnTime")
+    public ResultObj getAllLearnTime(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            int dayTime = redisService.getLearnTimeToday(userId);
+            int allTime = wordService.getAllLearnTime(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS,dayTime + allTime);
+        }catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
         }

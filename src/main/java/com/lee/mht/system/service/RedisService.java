@@ -1,7 +1,6 @@
 package com.lee.mht.system.service;
 
 import com.lee.mht.system.entity.AdminLog;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author FucXing
@@ -21,4 +20,10 @@ public interface RedisService {
     void saveLogFromRedisToMysql();
 
     void deleteUserLoginCache( Integer id);
+
+    void setLearnTimeToday(Integer time, int userId);
+
+    int getLearnTimeToday(int userId);
+
+    void saveLearnTimeToDatabase();
 }

@@ -87,6 +87,9 @@ public class Constant {
 
     public static final String LOG_RESULT_FAIL = "fail";
 
+    //business缓存key部分
+    public static final String LEARN_TIME_HEAD = "MHT:Business:learnTime:";
+
 
     //业务常量
     public static final String LOGIN_SUCCESS = "登陆成功";

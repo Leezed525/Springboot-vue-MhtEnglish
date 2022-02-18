@@ -1,5 +1,6 @@
 package com.lee.mht.business.dao;
 
+import com.lee.mht.business.entity.LearnTime;
 import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
@@ -34,13 +35,19 @@ public interface WordDao {
     void createTodayReviewWord(@Param("uId") int userId,
                                @Param("count") int reviewCount);
 
-    void updateTodayReviewWord(@Param("uId")int userId,@Param("count") int reviewCount);
+    void updateTodayReviewWord(@Param("uId") int userId, @Param("count") int reviewCount);
 
     List<WordCountVo> getRecentWeekCompleteWordCount(@Param("uId") int userId);
 
-    int getSumWeekCompleteWordCount(@Param("uId")int userId);
+    int getSumWeekCompleteWordCount(@Param("uId") int userId);
 
-    List<WordCountVo> getRecentWeekReviewWordCount(@Param("uId")int userId);
+    List<WordCountVo> getRecentWeekReviewWordCount(@Param("uId") int userId);
 
-    int getSumWeekReviewCount(@Param("uId")int userId);
+    int getSumWeekReviewCount(@Param("uId") int userId);
+
+    int getTodayCompleteWordCount(@Param("uId") int userId);
+
+    int getAllLearnTime(@Param("uId") int userId);
+
+    void saveLearnTime(@Param("learnTimes")List<LearnTime> learnTimeList);
 }

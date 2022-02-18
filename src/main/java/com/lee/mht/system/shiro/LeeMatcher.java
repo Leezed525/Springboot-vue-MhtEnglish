@@ -56,7 +56,7 @@ public class LeeMatcher extends HashedCredentialsMatcher {
         if(!redisUtils.hasKey(tokenKey)){//过期了
             return true;
         }else{
-            return false;
+            return !redisUtils.get(tokenKey).equals(token);
         }
     }
 }

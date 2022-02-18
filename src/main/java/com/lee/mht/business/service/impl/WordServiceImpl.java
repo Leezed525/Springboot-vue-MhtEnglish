@@ -104,5 +104,15 @@ public class WordServiceImpl implements WordService {
         return wordDao.getSumWeekReviewCount(userId);
     }
 
+    @Override
+    public int getTodayCompleteWordCount(int userId) {
+        return wordDao.getTodayCompleteWordCount(userId);
+    }
+
+    @Override
+    public int getAllLearnTime(int userId) {
+        return wordDao.getAllLearnTime(userId);
+    }
+
 
 }
