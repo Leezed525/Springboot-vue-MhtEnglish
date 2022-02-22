@@ -32,7 +32,7 @@ public class AdminRoleController {
         if (adminRoles != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, adminRoles);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -44,7 +44,7 @@ public class AdminRoleController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, adminRoles);
         }
         else{
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -61,7 +61,7 @@ public class AdminRoleController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         }else{
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -75,7 +75,7 @@ public class AdminRoleController {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         }
         else{
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -85,7 +85,7 @@ public class AdminRoleController {
         if(count == 0){
             return new ResultObj(Constant.OK, Constant.ROLENAME_UNIQUE,null);
         }else{
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ROLENAME_NOT_UNIQUE,null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ROLENAME_NOT_UNIQUE,null);
         }
     }
 
@@ -98,7 +98,7 @@ public class AdminRoleController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR, null);
         }
     }
 
@@ -111,7 +111,7 @@ public class AdminRoleController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR, null);
         }
     }
 
@@ -124,7 +124,7 @@ public class AdminRoleController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR, null);
         }
     }
 }

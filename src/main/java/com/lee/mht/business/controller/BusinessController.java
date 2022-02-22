@@ -4,22 +4,11 @@ import com.lee.mht.business.entity.User;
 import com.lee.mht.business.service.BusinessService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
-import com.lee.mht.system.shiro.JwtToken;
-import com.lee.mht.system.utils.JacksonUtils;
-import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author FucXing
@@ -54,7 +43,7 @@ public class BusinessController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, Constant.timeForCet);
         }catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 }

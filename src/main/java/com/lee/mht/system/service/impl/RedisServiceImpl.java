@@ -197,4 +197,16 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
+    @Override
+    public boolean isLimitExceeded(int userId) {
+        String key = Constant.MHT_REQUEST_LIMIT_KEY + userId;
+        long count = redisUtils.incr(key,1);
+        if(count == 1){
+            redisUtils.expire(key, Constant.MHT_REQUEST_LIMIT_TIME);
+        }else if(count > Constant.MHT_REQUEST_LIMIT_COUNT){
+            return true;
+        }
+        return false;
+    }
+
 }

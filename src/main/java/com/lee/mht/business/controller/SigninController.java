@@ -43,11 +43,11 @@ public class SigninController {
                 return new ResultObj(Constant.OK, Constant.SIGNIN_SUCCESS);
             } else {
                 //签到过了
-                return new ResultObj(Constant.SERVER_ERROR, Constant.SIGNIN_DUPLICATE);
+                return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.SIGNIN_DUPLICATE);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.SIGNIN_FAIL);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.SIGNIN_FAIL);
         }
     }
 
@@ -65,7 +65,7 @@ public class SigninController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, days);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -83,7 +83,7 @@ public class SigninController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, flag);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -95,7 +95,7 @@ public class SigninController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
         }catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 }

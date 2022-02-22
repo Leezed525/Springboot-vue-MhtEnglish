@@ -26,4 +26,6 @@ public interface RedisService {
     int getLearnTimeToday(int userId);
 
     void saveLearnTimeToDatabase();
+
+    boolean isLimitExceeded(int userId);
 }

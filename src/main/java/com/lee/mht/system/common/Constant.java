@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
  **/
 public class Constant {
     public static final int OK = 200;
-    public static final int SERVER_ERROR = -1;
-    public static final int TOKEN_ERROR = 403;
-    public static final int PERMISSION_ERROR = 401;
+    public static final int SERVER_ERROR_CODE = -1;
+    public static final int TOKEN_ERROR_CODE = 403;
+    public static final int PERMISSION_ERROR_CODE = 401;
+    public static final int LIMIT_EXCEEDED_CODE = -2;
+
+    public static final String LIMIT_EXCEEDED_MSG = "请求次数过于频繁，稍后再试";
+
 
     //从外部文件读取的四六级考试时间
     public static String timeForCet = "2022-06-15";
@@ -73,6 +77,16 @@ public class Constant {
 
     //锁key
     public static final String MHT_LOCK_HEAD_KEY = "MHT:Lock:";
+
+    //请求次数限制key
+    public static final String MHT_REQUEST_LIMIT_KEY = "MHT:Limit:";
+
+    //请求次数限制时间
+    public static final long MHT_REQUEST_LIMIT_TIME = 1;
+
+    //请求次数限制次数
+    public static final long MHT_REQUEST_LIMIT_COUNT = 20;
+
 
 
 

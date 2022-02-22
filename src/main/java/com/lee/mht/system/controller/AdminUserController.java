@@ -55,7 +55,7 @@ public class AdminUserController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -68,7 +68,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -81,7 +81,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR, null);
         }
     }
 
@@ -94,7 +94,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR, null);
         }
     }
 
@@ -107,7 +107,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.RESET_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.RESET_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.RESET_ERROR, null);
         }
     }
 
@@ -121,7 +121,7 @@ public class AdminUserController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR, null);
         }
     }
 
@@ -132,7 +132,7 @@ public class AdminUserController {
         if (count == 0) {
             return new ResultObj(Constant.OK, Constant.USERNAME_UNIQUE, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.USERNAME_NOT_UNIQUE, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.USERNAME_NOT_UNIQUE, null);
 
         }
     }
@@ -145,14 +145,14 @@ public class AdminUserController {
         AdminUser adminUser = adminUserDao.getAdminUserById(userId);
         if (!PasswordUtils.matches(adminUser.getSalt(), oldPassword, adminUser.getPassword())) {
             //如果密码不匹配
-            return new ResultObj(Constant.SERVER_ERROR, "原密码错误");
+            return new ResultObj(Constant.SERVER_ERROR_CODE, "原密码错误");
         }
         //密码匹配的话去修改密码
         boolean flag = adminUserService.changePassWord(userId, newPassword);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR,Constant.UPDATE_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE,Constant.UPDATE_ERROR);
         }
     }
 

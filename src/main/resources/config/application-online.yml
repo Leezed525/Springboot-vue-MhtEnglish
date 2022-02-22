@@ -96,4 +96,4 @@ LeeMht:
   AppSecret: ${CMJ_APP_SECRET}
   redisHost: 127.0.0.1:6379
   redisPassword: ${ALI_LEE_REDIS_PASSWORD}
-  pathToTomeForCet: \www\wwwroot\mht\extraInfo.json
+  pathToTomeForCet: /www/wwwroot/mht/extraInfo.json

@@ -5,13 +5,11 @@ import com.lee.mht.business.entity.Word;
 import com.lee.mht.business.service.WordService;
 import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.business.vo.WordOptionsVo;
-import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +42,7 @@ public class WordController {
     public ResultObj getWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
                                       HttpServletRequest request) {
         if (number > 50 || number <= 0) {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
         try {
             int userId = JwtUtils.getId(request);
@@ -52,7 +50,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, words);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -70,7 +68,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, options);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -82,7 +80,7 @@ public class WordController {
     @RequestMapping("/learnComplete")
     public ResultObj learnComplete(@RequestBody List<Word> words, HttpServletRequest request) {
         if (words.size() == 0) {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR);
         }
         try {
             int userId = JwtUtils.getId(request);
@@ -90,7 +88,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.LEARN_COMPLETE);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.LEARN_FAIL);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.LEARN_FAIL);
         }
     }
 
@@ -108,7 +106,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -132,11 +130,11 @@ public class WordController {
             if (pageInfo != null) {
                 return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
             } else {
-                return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+                return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -155,7 +153,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR);
         }
     }
 
@@ -170,7 +168,7 @@ public class WordController {
     public ResultObj getReviewWordsByNumber(@RequestParam(name = "number", required = false, defaultValue = "10") int number,
                                             HttpServletRequest request) {
         if (number > 50 || number <= 0) {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
         try {
             int userId = JwtUtils.getId(request);
@@ -178,7 +176,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, words);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -196,7 +194,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.LEARN_COMPLETE);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.LEARN_FAIL);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.LEARN_FAIL);
         }
     }
 
@@ -214,7 +212,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -232,7 +230,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, sum);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -250,7 +248,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, list);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -268,7 +266,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, sum);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -286,7 +284,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -299,7 +297,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR);
         }
 
     }
@@ -313,7 +311,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, time);
         }catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -326,7 +324,7 @@ public class WordController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS,dayTime + allTime);
         }catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 }

@@ -5,17 +5,14 @@ import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminLog;
-import com.lee.mht.system.entity.AdminPermission;
 import com.lee.mht.system.service.AdminLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author FucXing
@@ -45,7 +42,7 @@ public class AdminLogController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
 
@@ -58,7 +55,7 @@ public class AdminLogController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR, null);
         }
     }
 

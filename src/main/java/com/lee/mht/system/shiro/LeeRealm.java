@@ -1,8 +1,10 @@
 package com.lee.mht.system.shiro;
 
+import com.lee.mht.business.service.UserService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.exception.SystemException;
 import com.lee.mht.system.service.AdminPermissionService;
+import com.lee.mht.system.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -65,7 +67,7 @@ public class LeeRealm extends AuthorizingRealm {
             return new SimpleAuthenticationInfo(principal,credential, getName());
 
         } catch (Exception e) {
-            throw new SystemException(Constant.TOKEN_ERROR, Constant.ILLEAGEL_TOKEN);
+            throw new SystemException(Constant.TOKEN_ERROR_CODE, Constant.ILLEAGEL_TOKEN);
         }
     }
 

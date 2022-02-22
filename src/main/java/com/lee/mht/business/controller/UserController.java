@@ -1,7 +1,6 @@
 package com.lee.mht.business.controller;
 
 import com.lee.mht.business.entity.User;
-import com.lee.mht.business.service.BusinessService;
 import com.lee.mht.business.service.UserService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
@@ -35,7 +34,7 @@ public class UserController {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, user);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -47,7 +46,7 @@ public class UserController {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
         }catch (Exception e){
             log.error(e.getMessage());
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR);
         }
     }
 

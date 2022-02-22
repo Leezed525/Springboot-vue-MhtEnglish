@@ -43,7 +43,7 @@ public class LeeMatcher extends HashedCredentialsMatcher {
         }
         //判断token是否过期
         if(isTokenExpired(tokenKey,accessToken)){
-            throw new SystemException(Constant.TOKEN_ERROR,Constant.TOKEN_EXPIRED);
+            throw new SystemException(Constant.TOKEN_ERROR_CODE,Constant.TOKEN_EXPIRED);
         }
         else{
             redisUtils.set(tokenKey,accessToken,Constant.TOKEN_EXPIRE_TIME);

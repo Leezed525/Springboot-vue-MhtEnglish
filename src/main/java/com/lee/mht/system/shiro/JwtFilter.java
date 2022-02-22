@@ -5,13 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.exception.SystemException;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.utils.JacksonUtils;
+import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.util.AntPathMatcher;
-import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -20,15 +25,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author FucXing
  * @date 2021/12/27 21:57
  **/
 @Slf4j
+@Component
 public class JwtFilter extends BasicHttpAuthenticationFilter {
     //@Autowired
     //private RedisUtil redisUtil;
+
+    @Autowired
+    private RedisService redisService;
 
     private static final ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -55,18 +65,20 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             executeLogin(request, response);
             return true;
         }catch (SystemException e) {
-            CommonRsponse(e.getCode(),e.getDefaultMessage(),response);
+            CommonResponse(e.getCode(),e.getCode(),e.getDefaultMessage(),response);
             return false;
         } catch (AuthenticationException e){//如果抓到这个错误
             if(e.getCause() instanceof SystemException){
                 SystemException exception= (SystemException) e.getCause();
-                CommonRsponse(exception.getCode(),exception.getDefaultMessage(),response);
+                CommonResponse(exception.getCode(),exception.getCode(),exception.getDefaultMessage(),response);
             }else {
-                CommonRsponse(Constant.SERVER_ERROR,Constant.SHIRO_AUTHENTICATION_ERROR,response);
+                CommonResponse(Constant.SERVER_ERROR_CODE,Constant.SERVER_ERROR_CODE,Constant.SHIRO_AUTHENTICATION_ERROR,response);
             }
             return false;
         }
     }
+
+
 
     /**
      * 判断用户是否是登入,检测headers里是否包含token字段
@@ -108,25 +120,30 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         }
         return super.preHandle(request, response);
     }
+    private boolean isLimitExceeded(ServletRequest request) {
+        int userId = JwtUtils.getId((HttpServletRequest) request);
+        return redisService.isLimitExceeded(userId);
+    }
+
 
     /**
      * 自定义错误响应
      * filter的错误比自定义的错误先判，所以要在这里单独写一个判断
      */
-    private void CommonRsponse(int code, String msg, ServletResponse resp) {
+    private void CommonResponse(int statusCode,int code, String msg, ServletResponse resp) {
         // 自定义异常的类，用户返回给客户端相应的JSON格式的信息
         try {
             HttpServletResponse response = (HttpServletResponse) resp;
             ResultObj result = new ResultObj(code, msg, null);
             response.setContentType("application/json; charset=utf-8");
             response.setCharacterEncoding("UTF-8");
-            response.setStatus(code);
+            response.setStatus(statusCode);
             String userJson = JacksonUtils.toJson(result);
             OutputStream out = response.getOutputStream();
-            out.write(userJson.getBytes("UTF-8"));
+            out.write(userJson.getBytes(StandardCharsets.UTF_8));
             out.flush();
         } catch (IOException e) {
-            log.error("eror={}", e);
+            log.error("error={}", e.getMessage());
         }
     }
 }

@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -51,10 +50,10 @@ public class SystemServiceImpl implements SystemService {
         //检查密码是否正确
         boolean passwordFlag = PasswordUtils.matches(user.getSalt(), password, user_password);
         if (userId == 0 || !passwordFlag) {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.USERNAME_PASSWORD_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.USERNAME_PASSWORD_ERROR, null);
         }
         if (!user.getAvailable()) {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADMINUSER_NOT_AVAILABLE, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADMINUSER_NOT_AVAILABLE, null);
         }
         //到这里就算登录通过，生成accessToken
         String accessToken = JwtUtils.generateMhtToken(String.valueOf(userId), user.getUsername(), Constant.JWT_USER_TYPE_ADMIN);

@@ -5,7 +5,6 @@ import com.lee.mht.business.entity.Word;
 import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
-import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminWordService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author FucXing
@@ -45,7 +43,7 @@ public class AdminWordController {
         if (pageInfo != null) {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, pageInfo);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.QUERY_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
     }
 
@@ -57,13 +55,13 @@ public class AdminWordController {
     @MhtLog(action="单词编辑",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj updateAdminWord(@RequestBody Word word) {
         if(!verifyWord(word)){
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR);
         }
         boolean flag = adminWordService.updateAdminWord(word);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.UPDATE_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR);
         }
     }
 
@@ -73,13 +71,13 @@ public class AdminWordController {
     @MhtLog(action="单词添加",type = Constant.LOG_TYPE_SYSTEM)
     public ResultObj addAdminWord(@RequestBody Word word) {
         if(!verifyWord(word)){
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR);
         }
         boolean flag = adminWordService.addAdminWord(word);
         if (flag) {
             return new ResultObj(Constant.OK, Constant.ADD_SUCCESS);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.ADD_ERROR);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR);
         }
     }
 
@@ -92,7 +90,7 @@ public class AdminWordController {
         if (flag) {
             return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS, null);
         } else {
-            return new ResultObj(Constant.SERVER_ERROR, Constant.DELETE_ERROR, null);
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR, null);
         }
     }
 
