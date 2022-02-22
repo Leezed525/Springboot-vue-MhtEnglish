@@ -33,3 +33,5 @@ build/
 .vscode/
 
 *.log
+/src/main/resources/*.pfx
+/src/main/resources/*.txt

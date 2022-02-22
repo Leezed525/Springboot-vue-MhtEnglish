@@ -1,6 +1,11 @@
 #开发环境
 server:
   port: 8088
+  ssl:
+    key-alias: alias
+    key-store: ${ALI_LEE_SSL_STORE}
+    key-store-type: PKCS12
+    key-store-password: ${ALI_LEE_SSL_PASSWORD}
   servlet:
     context-path: /mhtEnglish
 spring:
@@ -89,6 +94,6 @@ pagehelper:
 LeeMht:
   AppID: ${CMJ_APP_ID}
   AppSecret: ${CMJ_APP_SECRET}
-  redisHost: ${ALI_LEE_REDIS_HOST}
+  redisHost: 127.0.0.1:6379
   redisPassword: ${ALI_LEE_REDIS_PASSWORD}
-  pathToTomeForCet: F:\leezed\project\IDEAproject\SpringBootVueMht\extraInfo.json
+  pathToTomeForCet: \www\wwwroot\mht\extraInfo.json
