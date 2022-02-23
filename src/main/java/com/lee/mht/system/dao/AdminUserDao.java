@@ -12,6 +12,8 @@ public interface AdminUserDao {
 
     AdminUser getAdminUserById(@Param("id")Integer id);
 
+    AdminUser getBasicUserInfoById(@Param("id")Integer id);
+
     AdminUser login(@Param("username")String username);
 
     String getpasswordByUsername(@Param("username") String username);

@@ -25,6 +25,13 @@
         WHERE id = #{id}
     </select>
 
+    <select id="getBasicUserInfoById" resultType="com.lee.mht.system.entity.AdminUser">
+        SELECT id,username,nickname
+        FROM admin_user
+        WHERE id = #{id}
+    </select>
+
+
     <select id="login" parameterType="String" resultMap="baseResultMap">
         <!-- IFNULL(MAX( id ),0) 用来防止mybatis查询查不到结果时报错的问题 -->
         SELECT IFNULL(MAX( id ),0) AS id,username,password,nickname,available ,salt FROM admin_user
