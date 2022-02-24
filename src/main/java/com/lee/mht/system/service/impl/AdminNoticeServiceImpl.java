@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,5 +45,10 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     @Override
     public void addNotice(AdminNotice notice) {
         adminNoticeDao.addNotice(notice);
+    }
+
+    @Override
+    public boolean deleteAdminNoticeByIds(ArrayList<Integer> ids) {
+        return adminNoticeDao.deleteAdminNoticeByIds(ids);
     }
 }

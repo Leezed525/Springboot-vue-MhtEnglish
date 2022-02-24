@@ -70,5 +70,14 @@
                 #{notice.createtime}, #{notice.updateTime})
     </insert>
 
+    <delete id="deleteAdminNoticeByIds">
+        DELETE FROM notice
+        WHERE id in
+        <foreach collection="ids" item="id" index="no" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
 
 </mapper>

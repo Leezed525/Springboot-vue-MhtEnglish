@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -16,4 +17,6 @@ public interface AdminNoticeService {
     void updateNotice(AdminNotice notice);
 
     void addNotice(AdminNotice notice);
+
+    boolean deleteAdminNoticeByIds(ArrayList<Integer> ids);
 }

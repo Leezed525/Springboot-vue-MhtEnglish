@@ -1,17 +1,20 @@
 package com.lee.mht.system.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -59,7 +62,7 @@ public class AdminNoticeContoller {
     }
 
     @PostMapping("/addNotice")
-    public ResultObj addNotice(@RequestBody AdminNotice notice,HttpServletRequest request) {
+    public ResultObj addNotice(@RequestBody AdminNotice notice, HttpServletRequest request) {
         try {
             int authorId = JwtUtils.getId(request);
             notice.setAuthorId(authorId);
@@ -72,6 +75,22 @@ public class AdminNoticeContoller {
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.ADD_ERROR);
+        }
+    }
+
+    //删
+    @RequestMapping("/deleteAdminNoticeByIds")
+    public ResultObj deleteAdminNoticeByIds(@RequestBody ArrayList<Integer> ids) {
+        try {
+            boolean flag = adminNoticeService.deleteAdminNoticeByIds(ids);
+            if (flag) {
+                return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS);
+            } else {
+                return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR);
         }
     }
 }

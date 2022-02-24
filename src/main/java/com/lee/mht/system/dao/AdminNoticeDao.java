@@ -4,6 +4,7 @@ import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface AdminNoticeDao {
     void updateNotice(@Param("notice") AdminNotice notice);
 
     void addNotice(@Param("notice") AdminNotice notice);
+
+    boolean deleteAdminNoticeByIds(ArrayList<Integer> ids);
 }
