@@ -6,16 +6,16 @@
         <id column="id" property="id"/>
         <result column="title" property="title" javaType="string"/>
         <result column="content" property="content" javaType="string"/>
-        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
-        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <result column="is_cancel" property="cancel" javaType="Boolean"/>
         <result column="available" property="available" javaType="Boolean"/>
         <result column="type" property="type" javaType="string"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <association property="author" column="author_id"
                      select="com.lee.mht.system.dao.AdminUserDao.getBasicUserInfoById"/>
     </resultMap>
     <select id="getAllNotice" resultMap="baseResultMap">
-        SELECT n.id, n.title, n.content, n.publish_time, n.update_time, n.is_cancel, n.available, n.type, n.author_id
+        SELECT n.id, n.title, n.content, n.publish_time, n.update_time,n.createtime, n.available, n.type, n.author_id
         FROM notice as n
         LEFT JOIN admin_user as u
         ON n.author_id = u.id
@@ -63,5 +63,12 @@
             </if>
         </set>
     </update>
+
+    <insert id="addNotice">
+        INSERT INTO notice(title, content, type, author_id, available, createtime, update_time)
+        VALUES (#{notice.title}, #{notice.content}, #{notice.type}, #{notice.authorId}, #{notice.available},
+                #{notice.createtime}, #{notice.updateTime})
+    </insert>
+
 
 </mapper>

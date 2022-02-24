@@ -21,4 +21,6 @@ public interface AdminNoticeDao {
                                    @Param("updateEndTime") Date updateEndTime);
 
     void updateNotice(@Param("notice") AdminNotice notice);
+
+    void addNotice(@Param("notice") AdminNotice notice);
 }

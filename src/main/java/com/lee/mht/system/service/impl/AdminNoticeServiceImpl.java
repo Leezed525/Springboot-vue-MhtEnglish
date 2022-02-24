@@ -40,4 +40,9 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
         //更新信息
         adminNoticeDao.updateNotice(notice);
     }
+
+    @Override
+    public void addNotice(AdminNotice notice) {
+        adminNoticeDao.addNotice(notice);
+    }
 }

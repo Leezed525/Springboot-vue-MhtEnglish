@@ -21,16 +21,24 @@ public class AdminNotice {
     private String title;
     private String content;
 
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
-    private Date publishTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
-    //当前公告是否被撤回
-    private Boolean cancel;
     //当前公告是否已被发布
     private Boolean available;
     private String type;
 
+    private Integer authorId;
+
     private AdminUser author;
+
+
+    //创建时间
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
+    private Date createtime;
+
+    //发布时间
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
+    private Date publishTime;
+
+    //更新时间
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 }
