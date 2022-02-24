@@ -12,4 +12,6 @@ import java.util.Date;
  **/
 public interface AdminNoticeService {
     PageInfo<AdminNotice> getAllNotice(String authorUserName, String title, String type, Date publishBeginTime, Date publishEndTime, Date updateBeginTime, Date updateEndTime, Integer pageSize, Integer pageNum);
+
+    void updateNotice(AdminNotice notice);
 }

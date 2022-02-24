@@ -20,13 +20,9 @@
         LEFT JOIN admin_user as u
         ON n.author_id = u.id
         <where>
-            <if test="username != null and ! &quot;&quot;.equals(username)">
-                <bind name="myUsername" value="'%' + username  + '%'"/>
-                u.username like #{myUsername}
-            </if>
             <if test="title != null and ! &quot;&quot;.equals(title)">
                 <bind name="myTitle" value="'%' + (title)  + '%'"/>
-                AND n.title like #{myTitle}
+                n.title like #{myTitle}
             </if>
             <if test="type != null and ! &quot;&quot;.equals(type)">
                 AND n.type = #{type}
@@ -35,20 +31,37 @@
                 AND n.publish_time &gt;= #{publishBeginTime} AND n.publish_time &lt;= #{publishEndTime}
             </if>
             <if test="(publishBeginTime == null ) and publishEndTime != null ">
-                and n.publish_time &lt;= #{publishEndTime}
+                AND n.publish_time &lt;= #{publishEndTime}
             </if>
             <if test="publishBeginTime != null and publishEndTime == null">
-                and n.publish_time &gt;= #{publishBeginTime}
+                AND n.publish_time &gt;= #{publishBeginTime}
             </if>
             <if test="updateBeginTime != null and updateEndTime != null">
                 AND n.update_time &gt;= #{updateBeginTime} AND n.update_time &lt;= #{publishEndTime}
             </if>
             <if test="(updateBeginTime == null ) and updateEndTime != null ">
-                and n.update_time &lt;= #{publishEndTime}
+                AND n.update_time &lt;= #{publishEndTime}
             </if>
             <if test="updateBeginTime != null and updateEndTime == null">
-                and n.update_time &gt;= #{updateBeginTime}
+                AND n.update_time &gt;= #{updateBeginTime}
+            </if>
+            <if test="username != null and ! &quot;&quot;.equals(username)">
+                <bind name="myUsername" value="'%' + username  + '%'"/>
+                AND u.username like #{myUsername}
             </if>
         </where>
     </select>
+
+    <update id="updateNotice">
+        UPDATE notice
+        <set>
+            <if test="notice.title != null and ! &quot;&quot;.equals(notice.title)">
+                title = #{notice.title},
+            </if>
+            <if test="notice.content != null and ! &quot;&quot;.equals(notice.content)">
+                content = #{notice.content},
+            </if>
+        </set>
+    </update>
+
 </mapper>

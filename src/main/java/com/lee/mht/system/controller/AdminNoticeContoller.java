@@ -3,14 +3,12 @@ package com.lee.mht.system.controller;
 import com.github.pagehelper.PageInfo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
-import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -20,12 +18,13 @@ import java.util.Date;
  **/
 @RestController
 @RequestMapping("/admin/notice")
+@Slf4j
 public class AdminNoticeContoller {
 
     @Autowired
     private AdminNoticeService adminNoticeService;
 
-    //查询日志列表
+    //查询公告列表
     @RequestMapping("/getAllNotice")
     public ResultObj getAllNotice(@RequestParam(required = false, defaultValue = "", name = "authorUserName") String authorUserName,
                                @RequestParam(required = false, defaultValue = "", name = "title") String title,
@@ -43,5 +42,19 @@ public class AdminNoticeContoller {
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR, null);
         }
     }
+
+    //更新公告
+    @PostMapping("/updateNotice")
+    public ResultObj updateNotice(@RequestBody AdminNotice notice) {
+        try {
+            log.info(notice.toString());
+            adminNoticeService.updateNotice(notice);
+            return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.UPDATE_ERROR);
+        }
+    }
+
 
 }

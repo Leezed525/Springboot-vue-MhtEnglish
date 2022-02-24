@@ -19,4 +19,6 @@ public interface AdminNoticeDao {
                                    @Param("publishEndTime") Date publishEndTime,
                                    @Param("updateBeginTime") Date updateBeginTime,
                                    @Param("updateEndTime") Date updateEndTime);
+
+    void updateNotice(@Param("notice") AdminNotice notice);
 }
