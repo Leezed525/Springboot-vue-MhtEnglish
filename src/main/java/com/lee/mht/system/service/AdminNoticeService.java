@@ -1,11 +1,12 @@
 package com.lee.mht.system.service;
 
 import com.github.pagehelper.PageInfo;
-import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
+import com.lee.mht.system.vo.NoticeVo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author FucXing
@@ -23,4 +24,8 @@ public interface AdminNoticeService {
     void publishNotice(AdminNotice notice);
 
     void cancelNotice(AdminNotice notice);
+
+    List<NoticeVo> getAdminNoticeById(int userId);
+
+    void confirmAdminNotice(Integer noticeId, int userId);
 }

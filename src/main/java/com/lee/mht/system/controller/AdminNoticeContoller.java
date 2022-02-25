@@ -6,6 +6,7 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
 import com.lee.mht.system.utils.JwtUtils;
+import com.lee.mht.system.vo.NoticeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author FucXing
@@ -127,9 +129,33 @@ public class AdminNoticeContoller {
         try {
             adminNoticeService.cancelNotice(notice);
             return new ResultObj(Constant.OK, Constant.CANCEL_SUCCESS);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.CANCEL_ERROR);
+        }
+    }
+
+    @RequestMapping("/getAdminNoticeById")
+    public ResultObj getAdminNoticeById(HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            List<NoticeVo> noticeVoList = adminNoticeService.getAdminNoticeById(userId);
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, noticeVoList);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/confirmNotice")
+    public ResultObj confirmNotice(@RequestBody AdminNotice notice, HttpServletRequest request) {
+        try {
+            int userId = JwtUtils.getId(request);
+            adminNoticeService.confirmAdminNotice(notice.getId(), userId);
+            return new ResultObj(Constant.OK, Constant.CONFIRM_SUCCESS);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.CONFIRM_ERROR);
         }
     }
 }

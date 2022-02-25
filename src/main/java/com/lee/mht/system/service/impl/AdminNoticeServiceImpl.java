@@ -6,9 +6,11 @@ import com.lee.mht.system.dao.AdminNoticeDao;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
+import com.lee.mht.system.vo.NoticeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,9 +62,24 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     }
 
     @Override
+    @Transactional
     public void cancelNotice(AdminNotice notice) {
         //数据库更新状态
         adminNoticeDao.cancelNotice(notice);
+        //删除所有该公告的阅读状态
+        adminNoticeDao.deleteRelationToNotice(notice);
         //推送给所有在线的用户
     }
+
+    @Override
+    public List<NoticeVo> getAdminNoticeById(int userId) {
+        return adminNoticeDao.getAdminNoticeById(userId);
+    }
+
+    @Override
+    public void confirmAdminNotice(Integer noticeId, int userId) {
+        adminNoticeDao.confirmAdminNotice(noticeId, userId);
+    }
+
+
 }

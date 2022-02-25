@@ -2,6 +2,7 @@ package com.lee.mht.system.dao;
 
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
+import com.lee.mht.system.vo.NoticeVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -30,4 +31,10 @@ public interface AdminNoticeDao {
     void publishNotice(@Param("notice") AdminNotice notice);
 
     void cancelNotice(@Param("notice") AdminNotice notice);
+
+    List<NoticeVo> getAdminNoticeById(@Param("uId") int userId);
+
+    void deleteRelationToNotice(@Param("notice")AdminNotice notice);
+
+    void confirmAdminNotice(@Param("nId")Integer noticeId, @Param("uId")int userId);
 }

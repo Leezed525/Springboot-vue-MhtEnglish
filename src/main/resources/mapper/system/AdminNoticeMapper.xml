@@ -14,6 +14,15 @@
         <association property="author" column="author_id"
                      select="com.lee.mht.system.dao.AdminUserDao.getBasicUserInfoById"/>
     </resultMap>
+    <resultMap id="noticeVoMap" type="com.lee.mht.system.vo.NoticeVo">
+        <id column="id" property="id"/>
+        <result column="title" property="title" javaType="string"/>
+        <result column="content" property="content" javaType="string"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" javaType="Integer"/>
+        <association property="author" column="author_id"
+                     select="com.lee.mht.system.dao.AdminUserDao.getBasicUserInfoById"/>
+    </resultMap>
     <select id="getAllNotice" resultMap="baseResultMap">
         SELECT n.id, n.title, n.content, n.publish_time, n.update_time,n.createtime, n.available, n.type, n.author_id
         FROM notice as n
@@ -100,6 +109,26 @@
         </where>
     </update>
 
+    <select id="getAdminNoticeById" resultMap="noticeVoMap">
+        SELECT n.id, n.title, n.content, n.author_id, n.publish_time, IFNULL(c.u_id, 0) as status
+        from notice n
+                 LEFT JOIN notice_confirm c
+                           on n.id = c.n_id
+        WHERE (n.type = 'all' OR n.type = 'adminUsers')
+          AND (c.u_id = #{uId} or c.u_id IS NULL)
+          AND n.available = 1
+        ORDER BY n.publish_time DESC
+    </select>
 
+    <delete id="deleteRelationToNotice">
+        DELETE
+        FROM notice_confirm
+        WHERE n_id = #{notice.id}
+    </delete>
+
+    <insert id="confirmAdminNotice">
+        INSERT INTO notice_confirm(n_id, u_id, confirm_time)
+        VALUES (#{nId}, #{uId}, NOW())
+    </insert>
 
 </mapper>

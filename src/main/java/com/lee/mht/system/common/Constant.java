@@ -144,6 +144,9 @@ public class Constant {
     public static final String CANCEL_SUCCESS = "撤销成功";
     public static final String CANCEL_ERROR = "撤销失败";
 
+    public static final String CONFIRM_SUCCESS = "公告确认成功";
+    public static final String CONFIRM_ERROR = "公告确认失败";
+
 
 
 
