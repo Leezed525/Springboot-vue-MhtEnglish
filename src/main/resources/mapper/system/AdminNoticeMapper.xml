@@ -78,6 +78,28 @@
         </foreach>
     </delete>
 
+    <update id="publishNotice">
+        UPDATE notice
+        <set>
+            available = 1,
+            publish_time = NOW()
+        </set>
+        <where>
+            id = #{notice.id}
+        </where>
+    </update>
+
+    <update id="cancelNotice">
+        UPDATE notice
+        <set>
+            available = 0,
+            publish_time = null
+        </set>
+        <where>
+            id = #{notice.id}
+        </where>
+    </update>
+
 
 
 </mapper>

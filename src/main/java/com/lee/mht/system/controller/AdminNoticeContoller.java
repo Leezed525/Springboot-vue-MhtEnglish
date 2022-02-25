@@ -1,14 +1,12 @@
 package com.lee.mht.system.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.lee.mht.system.annotation.MhtLog;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
 import com.lee.mht.system.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +59,13 @@ public class AdminNoticeContoller {
         }
     }
 
+    /**
+     * 新增公告
+     *
+     * @param notice  公告
+     * @param request request
+     * @return ResultObj
+     */
     @PostMapping("/addNotice")
     public ResultObj addNotice(@RequestBody AdminNotice notice, HttpServletRequest request) {
         try {
@@ -78,6 +83,12 @@ public class AdminNoticeContoller {
         }
     }
 
+    /**
+     * 删除公告
+     *
+     * @param ids 要删除的id
+     * @return ResultObj
+     */
     //删
     @RequestMapping("/deleteAdminNoticeByIds")
     public ResultObj deleteAdminNoticeByIds(@RequestBody ArrayList<Integer> ids) {
@@ -91,6 +102,34 @@ public class AdminNoticeContoller {
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.DELETE_ERROR);
+        }
+    }
+
+    @RequestMapping("/publishNotice")
+    public ResultObj publishNotice(@RequestBody AdminNotice notice) {
+        if (notice.getAvailable()) {
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.NOTICE_IS_PUBLISHED);
+        }
+        try {
+            adminNoticeService.publishNotice(notice);
+            return new ResultObj(Constant.OK, Constant.PUBLISH_SUCCESS);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.PUBLISH_ERROR);
+        }
+    }
+
+    @RequestMapping("/cancelNotice")
+    public ResultObj cancelNotice(@RequestBody AdminNotice notice) {
+        if (!notice.getAvailable()) {
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.NOTICE_ISNOT_PUBLISHED);
+        }
+        try {
+            adminNoticeService.cancelNotice(notice);
+            return new ResultObj(Constant.OK, Constant.CANCEL_SUCCESS);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.CANCEL_ERROR);
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2022/02/22 21:21
  **/
 public interface AdminNoticeDao {
-    List<AdminNotice> getAllNotice(@Param("username")String authorUserName,
+    List<AdminNotice> getAllNotice(@Param("username") String authorUserName,
                                    @Param("title") String title,
                                    @Param("type") String type,
                                    @Param("publishBeginTime") Date publishBeginTime,
@@ -25,5 +25,9 @@ public interface AdminNoticeDao {
 
     void addNotice(@Param("notice") AdminNotice notice);
 
-    boolean deleteAdminNoticeByIds(ArrayList<Integer> ids);
+    boolean deleteAdminNoticeByIds(@Param("ids") ArrayList<Integer> ids);
+
+    void publishNotice(@Param("notice") AdminNotice notice);
+
+    void cancelNotice(@Param("notice") AdminNotice notice);
 }

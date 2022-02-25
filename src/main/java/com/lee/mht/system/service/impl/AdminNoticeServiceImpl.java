@@ -51,4 +51,18 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     public boolean deleteAdminNoticeByIds(ArrayList<Integer> ids) {
         return adminNoticeDao.deleteAdminNoticeByIds(ids);
     }
+
+    @Override
+    public void publishNotice(AdminNotice notice) {
+        //数据库更新状态
+        adminNoticeDao.publishNotice(notice);
+        //推送给所有在线的用户
+    }
+
+    @Override
+    public void cancelNotice(AdminNotice notice) {
+        //数据库更新状态
+        adminNoticeDao.cancelNotice(notice);
+        //推送给所有在线的用户
+    }
 }

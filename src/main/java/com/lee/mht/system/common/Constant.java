@@ -134,6 +134,20 @@ public class Constant {
     public static final String ROLENAME_UNIQUE = "角色名唯一";
     public static final String ROLENAME_NOT_UNIQUE = "角色名不唯一";
 
+    public static final String NOTICE_IS_PUBLISHED = "公告已被发布，请先撤销公告";
+    public static final String NOTICE_ISNOT_PUBLISHED = "当前公告还未发布，无须撤销";
+
+
+    public static final String PUBLISH_SUCCESS = "发布成功";
+    public static final String PUBLISH_ERROR = "发布失败";
+
+    public static final String CANCEL_SUCCESS = "撤销成功";
+    public static final String CANCEL_ERROR = "撤销失败";
+
+
+
+
+
     //business部分
     public static final String LEARN_COMPLETE = "学习完成";
     public static final String LEARN_FAIL = "学习失败";

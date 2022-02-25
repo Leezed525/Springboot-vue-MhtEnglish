@@ -19,4 +19,8 @@ public interface AdminNoticeService {
     void addNotice(AdminNotice notice);
 
     boolean deleteAdminNoticeByIds(ArrayList<Integer> ids);
+
+    void publishNotice(AdminNotice notice);
+
+    void cancelNotice(AdminNotice notice);
 }
