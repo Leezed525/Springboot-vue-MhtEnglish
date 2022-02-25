@@ -97,7 +97,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/business/login","anon");
         filterChainDefinitionMap.put("/admin/system/login","anon");
         //放行websocket请求
-        filterChainDefinitionMap.put("/noticeSocket/**", "anon");
+        filterChainDefinitionMap.put("/adminNoticeSocket/**", "anon");
         //下面这一行是为了防止请求druid时报错，虽然无伤大雅，但是看着不爽（druid能打开，但是会在控制台输出错误，因为这个请求进了jwtFilter）
         filterChainDefinitionMap.put("/favicon.ico","anon");
 

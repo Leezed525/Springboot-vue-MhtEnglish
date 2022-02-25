@@ -147,6 +147,12 @@ public class Constant {
     public static final String CONFIRM_SUCCESS = "公告确认成功";
     public static final String CONFIRM_ERROR = "公告确认失败";
 
+    //公告类型
+    public static final String NOTICE_TYPE_ALL = "all";
+    public static final String NOTICE_TYPE_ADMIN_USER = "adminUsers";
+    public static final String NOTICE_TYPE_USER = "users";
+
+
 
 
 

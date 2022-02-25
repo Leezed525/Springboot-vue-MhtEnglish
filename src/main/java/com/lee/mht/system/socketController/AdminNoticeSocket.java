@@ -9,13 +9,13 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint("/noticeSocket/{username}")
+@ServerEndpoint("/adminNoticeSocket/{username}")
 @Slf4j
 @Component
-public class WebSocket {
+public class AdminNoticeSocket {
 
     private static int onlineCount = 0;
-    private static Map<String, WebSocket> clients = new ConcurrentHashMap<String, WebSocket>();
+    private static Map<String, AdminNoticeSocket> clients = new ConcurrentHashMap<String, AdminNoticeSocket>();
     private Session session;
     private String username;
 
@@ -23,7 +23,7 @@ public class WebSocket {
     public void onOpen(@PathParam("username") String username, Session session) {
         this.username = username;
         this.session = session;
-        WebSocket.onlineCount++;
+        AdminNoticeSocket.onlineCount++;
         clients.put(username, this);
         log.info("{}登录进来了", username);
     }
@@ -32,20 +32,22 @@ public class WebSocket {
     public void onClose() {
         clients.remove(username);
         log.info("{}登出了",username);
-        WebSocket.onlineCount--;
+        AdminNoticeSocket.onlineCount--;
     }
 
     @OnMessage
-    public void onMessage(String message) {}
+    public void onMessage(String message) {
+
+    }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
         log.error("WebSocket发生错误：" + throwable.getMessage());
     }
-    public static void sendMessage(String message) {
+    public static void sendMessageToAll(String message) {
         // 向所有连接websocket的客户端发送消息
         // 可以修改为对某个客户端发消息
-        for (WebSocket item : clients.values()) {
+        for (AdminNoticeSocket item : clients.values()) {
             item.session.getAsyncRemote().sendText(message);
         }
     }
