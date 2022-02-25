@@ -30,11 +30,12 @@ public class HitCountInterceptor implements HandlerInterceptor {
     private RedisService redisService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        int userId = JwtUtils.getId(request);
-        if (redisService.isLimitExceeded(userId)) {
-            CommonResponse(Constant.OK,Constant.LIMIT_EXCEEDED_CODE,Constant.LIMIT_EXCEEDED_MSG,response);
-            return false;
-        }
+        //log.info(String.valueOf(request.getRequestURL()));
+        //int userId = JwtUtils.getId(request);
+        //if (redisService.isLimitExceeded(userId)) {
+        //    CommonResponse(Constant.OK,Constant.LIMIT_EXCEEDED_CODE,Constant.LIMIT_EXCEEDED_MSG,response);
+        //    return false;
+        //}
         return true;
     }
     /**

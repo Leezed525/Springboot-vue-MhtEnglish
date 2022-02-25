@@ -23,10 +23,13 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册 MyHandler 拦截器
-        InterceptorRegistration addInterceptor = registry.addInterceptor(getHitCountInterceptor());
+        InterceptorRegistration hitCountInterceptor = registry.addInterceptor(getHitCountInterceptor());
         //  /**表示拦截所有请求
-        addInterceptor.addPathPatterns("/**");
+        hitCountInterceptor.addPathPatterns("/**");
         // 放行下面的请求，一般是静态资源
-        addInterceptor.excludePathPatterns("/druid/**","/business/login","/admin/system/login");
+        hitCountInterceptor.excludePathPatterns("/druid/**",
+                                            "/business/login",
+                                            "/admin/system/login",
+                                            "/noticeSocket/**");
     }
 }

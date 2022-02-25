@@ -9,7 +9,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint("/webSocket/{username}")
+@ServerEndpoint("/noticeSocket/{username}")
 @Slf4j
 @Component
 public class WebSocket {
@@ -25,11 +25,13 @@ public class WebSocket {
         this.session = session;
         WebSocket.onlineCount++;
         clients.put(username, this);
+        log.info("{}登录进来了", username);
     }
 
     @OnClose
     public void onClose() {
         clients.remove(username);
+        log.info("{}登出了",username);
         WebSocket.onlineCount--;
     }
 
@@ -40,7 +42,6 @@ public class WebSocket {
     public void onError(Session session, Throwable throwable) {
         log.error("WebSocket发生错误：" + throwable.getMessage());
     }
-
     public static void sendMessage(String message) {
         // 向所有连接websocket的客户端发送消息
         // 可以修改为对某个客户端发消息
