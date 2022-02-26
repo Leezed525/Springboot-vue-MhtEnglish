@@ -118,21 +118,23 @@ public class RedisServiceImpl implements RedisService {
     @Override
     @Transactional
     public void saveLogFromRedisToMysql() {
+        //如果有日志被缓存
         if (redisUtils.hasKey(MhtLogKey)) {
-            if (redisUtils.hasKey(logLockKey)) {//有锁加一
-                redisUtils.incr(logLockKey, 1);
-            } else {//没锁创造锁
-                redisUtils.set(logLockKey, 1);
-            }
+            redisUtils.set(logLockKey, 1,10);//创建锁
             List<Object> logs = redisUtils.lGet(MhtLogKey, 0, -1);
             List<AdminLog> adminLogs = new ArrayList<>();
             for (Object object : logs) {
                 AdminLog adminLog = (AdminLog) object;
                 adminLogs.add(adminLog);
             }
-            boolean flag = adminLogDao.batchSaveLogs(adminLogs);
-            if (flag) {
-                redisUtils.del(MhtLogKey);
+            try{
+                boolean flag = adminLogDao.batchSaveLogs(adminLogs);
+                if (flag) {//保存成功删除锁
+                    redisUtils.del(MhtLogKey);
+                }
+            }catch (Exception e) {
+                log.error("日志保存失败");
+                log.error(e.getMessage());
             }
             //释放锁
             redisUtils.decr(logLockKey, 1);

@@ -52,7 +52,6 @@ public class AdminNoticeContoller {
     @PostMapping("/updateNotice")
     public ResultObj updateNotice(@RequestBody AdminNotice notice) {
         try {
-            log.info(notice.toString());
             adminNoticeService.updateNotice(notice);
             return new ResultObj(Constant.OK, Constant.UPDATE_SUCCESS);
         } catch (Exception e) {

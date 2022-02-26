@@ -71,6 +71,7 @@
                 content = #{notice.content},
             </if>
         </set>
+        where id = #{notice.id}
     </update>
 
     <insert id="addNotice">
