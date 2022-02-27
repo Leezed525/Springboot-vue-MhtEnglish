@@ -57,5 +57,12 @@ public class SystemController {
         return new ResultObj(Constant.OK, Constant.ALLOW_ACCESS);
     }
 
+    @GetMapping("/toNotice")
+    @RequiresPermissions("notice:query")
+    public ResultObj toNotice() {
+        return new ResultObj(Constant.OK, Constant.ALLOW_ACCESS);
+    }
+
+
 
 }

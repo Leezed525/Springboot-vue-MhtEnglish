@@ -22,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,10 +133,16 @@ public class MhtLogAspect {
     //从point中获取参数名和参数值
     private String getArgsNameAndValue(ProceedingJoinPoint point) {
         Object[] args = point.getArgs();
+
         String[] parameterNames = ((MethodSignature) (point.getSignature())).getParameterNames();
+
         Map<String, Object> argsMap = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
-            argsMap.put(parameterNames[i], args[i]);
+            if("request".equals(parameterNames[i])){
+                argsMap.put("operator", JwtUtils.getId((HttpServletRequest) args[i]));
+            }else{
+                argsMap.put(parameterNames[i], args[i]);
+            }
         }
         return JacksonUtils.toJson(argsMap);
     }
