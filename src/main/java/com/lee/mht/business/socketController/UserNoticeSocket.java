@@ -1,4 +1,4 @@
-package com.lee.mht.system.socketController;
+package com.lee.mht.business.socketController;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,32 +11,32 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author FucXing
- * @date 2022/02/20
+ * @date 2022/02/27 00:05
  **/
-@ServerEndpoint("/adminNoticeSocket/{username}")
+@ServerEndpoint("/userNoticeSocket/{id}")
 @Slf4j
 @Component
-public class AdminNoticeSocket {
+public class UserNoticeSocket {
 
     private static int onlineCount = 0;
-    private static Map<String, AdminNoticeSocket> clients = new ConcurrentHashMap<String, AdminNoticeSocket>();
+    private static Map<Integer, UserNoticeSocket> clients = new ConcurrentHashMap<Integer, UserNoticeSocket>();
     private Session session;
-    private String username;
+    private Integer id;
 
     @OnOpen
-    public void onOpen(@PathParam("username") String username, Session session) {
-        this.username = username;
+    public void onOpen(@PathParam("id") Integer id, Session session) {
+        this.id = id;
         this.session = session;
-        AdminNoticeSocket.onlineCount++;
-        clients.put(username, this);
-        log.info("{}登录进来了", username);
+        UserNoticeSocket.onlineCount++;
+        clients.put(id, this);
+        log.info("{}登录进来了", id);
     }
 
     @OnClose
     public void onClose() {
-        clients.remove(username);
-        log.info("{}登出了",username);
-        AdminNoticeSocket.onlineCount--;
+        clients.remove(id);
+        log.info("{}登出了",id);
+        UserNoticeSocket.onlineCount--;
     }
 
     @OnMessage
@@ -51,7 +51,7 @@ public class AdminNoticeSocket {
     public static void sendMessageToAll(String message) {
         // 向所有连接websocket的客户端发送消息
         // 可以修改为对某个客户端发消息
-        for (AdminNoticeSocket item : clients.values()) {
+        for (UserNoticeSocket item : clients.values()) {
             item.session.getAsyncRemote().sendText(message);
         }
     }

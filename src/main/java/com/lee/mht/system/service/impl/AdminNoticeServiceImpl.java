@@ -2,9 +2,9 @@ package com.lee.mht.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lee.mht.business.socketController.UserNoticeSocket;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.dao.AdminNoticeDao;
-import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminNotice;
 import com.lee.mht.system.service.AdminNoticeService;
 import com.lee.mht.system.socketController.AdminNoticeSocket;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,8 +53,26 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     }
 
     @Override
-    public boolean deleteAdminNoticeByIds(ArrayList<Integer> ids) {
-        return adminNoticeDao.deleteAdminNoticeByIds(ids);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteAdminNoticeByIds(AdminNotice notice) {
+        try {
+            adminNoticeDao.deleteAdminNotice(notice);
+            //删除所有该公告的阅读状态
+            adminNoticeDao.deleteRelationToNotice(notice);
+            //推送给所有在线的用户
+            SocketNoticeVo msg = new SocketNoticeVo("cancel", notice);
+            String noticeType = notice.getType();
+            //如果是类型是系统用户公告
+            if (Constant.NOTICE_TYPE_ADMIN_USER.equals(noticeType)) {
+                AdminNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
+            } else if (Constant.NOTICE_TYPE_USER.equals(noticeType)) {
+                UserNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
+            }
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
     @Override
@@ -67,13 +84,17 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
         SocketNoticeVo msg = new SocketNoticeVo("publish", notice);
         String noticeType = notice.getType();
         //如果是类型是系统用户公告
-        if(Constant.NOTICE_TYPE_ALL.equals(noticeType) || Constant.NOTICE_TYPE_ADMIN_USER.equals(noticeType)){
+        if(Constant.NOTICE_TYPE_ADMIN_USER.equals(noticeType)){
             AdminNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
+        }
+        //如果是用户公告
+        if (Constant.NOTICE_TYPE_USER.equals(noticeType)) {
+            UserNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
         }
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void cancelNotice(AdminNotice notice) {
         //数据库更新状态
         adminNoticeDao.cancelNotice(notice);
@@ -83,8 +104,12 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
         SocketNoticeVo msg = new SocketNoticeVo("cancel", notice);
         String noticeType = notice.getType();
         //如果是类型是系统用户公告
-        if(Constant.NOTICE_TYPE_ALL.equals(noticeType) || Constant.NOTICE_TYPE_ADMIN_USER.equals(noticeType)){
+        if(Constant.NOTICE_TYPE_ADMIN_USER.equals(noticeType)){
             AdminNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
+        }
+        //如果是用户公告
+        if (Constant.NOTICE_TYPE_USER.equals(noticeType)) {
+            UserNoticeSocket.sendMessageToAll(JacksonUtils.toJson(msg));
         }
     }
 

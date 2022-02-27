@@ -22,7 +22,9 @@ public class NoticeVo {
     private String title;
     private String content;
     private Integer status;
-    //发布时间
+    /**
+     * 发布时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss", timezone = "GMT+8")
     private Date publishTime;
 

@@ -80,12 +80,9 @@
                 #{notice.createtime}, #{notice.updateTime})
     </insert>
 
-    <delete id="deleteAdminNoticeByIds">
+    <delete id="deleteAdminNotice">
         DELETE FROM notice
-        WHERE id in
-        <foreach collection="ids" item="id" index="no" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+        WHERE id = #{notice.id}
     </delete>
 
     <update id="publishNotice">
@@ -115,7 +112,7 @@
         from notice n
                  LEFT JOIN notice_confirm c
                            on n.id = c.n_id
-        WHERE (n.type = 'all' OR n.type = 'adminUsers')
+        WHERE n.type = 'adminUsers'
           AND (c.u_id = #{uId} or c.u_id IS NULL)
           AND n.available = 1
         ORDER BY n.publish_time DESC

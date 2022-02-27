@@ -19,7 +19,7 @@ public interface AdminNoticeService {
 
     void addNotice(AdminNotice notice);
 
-    boolean deleteAdminNoticeByIds(ArrayList<Integer> ids);
+    boolean deleteAdminNoticeByIds(AdminNotice notice);
 
     void publishNotice(AdminNotice notice);
 

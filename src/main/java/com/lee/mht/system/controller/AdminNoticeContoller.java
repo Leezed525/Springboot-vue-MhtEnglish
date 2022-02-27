@@ -87,14 +87,13 @@ public class AdminNoticeContoller {
     /**
      * 删除公告
      *
-     * @param ids 要删除的id
+     * @param notice 要删除的公告
      * @return ResultObj
      */
-    //删
-    @RequestMapping("/deleteAdminNoticeByIds")
-    public ResultObj deleteAdminNoticeByIds(@RequestBody ArrayList<Integer> ids) {
+    @RequestMapping("/deleteAdminNotice")
+    public ResultObj deleteAdminNotice(@RequestBody AdminNotice notice) {
         try {
-            boolean flag = adminNoticeService.deleteAdminNoticeByIds(ids);
+            boolean flag = adminNoticeService.deleteAdminNoticeByIds(notice);
             if (flag) {
                 return new ResultObj(Constant.OK, Constant.DELETE_SUCCESS);
             } else {

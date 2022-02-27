@@ -30,6 +30,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         hitCountInterceptor.excludePathPatterns("/druid/**",
                                             "/business/login",
                                             "/admin/system/login",
-                                            "/adminNoticeSocket/**");
+                                            "/adminNoticeSocket/**",
+                                            "/userNoticeSocket/**");
     }
 }

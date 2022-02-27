@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mht.business.dao.UserNoticeDao">
+    <resultMap id="noticeVoMap" type="com.lee.mht.system.vo.NoticeVo">
+        <id column="id" property="id"/>
+        <result column="title" property="title" javaType="string"/>
+        <result column="content" property="content" javaType="string"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" javaType="Integer"/>
+        <association property="author" column="author_id"
+                     select="com.lee.mht.system.dao.AdminUserDao.getBasicUserInfoById"/>
+    </resultMap>
+    <select id="getUserNoticeVoListById" resultMap="noticeVoMap">
+        SELECT n.id, n.title, n.content, n.author_id, n.publish_time, IFNULL(c.u_id, 0) as status
+        from notice n
+                 LEFT JOIN notice_confirm c
+                           on n.id = c.n_id
+        WHERE n.type = 'users'
+          AND (c.u_id = #{uId} or c.u_id IS NULL)
+          AND n.available = 1
+        ORDER BY n.publish_time DESC
+    </select>
+
+    <insert id="confirmUserNotice">
+        INSERT INTO notice_confirm(n_id, u_id, confirm_time)
+        VALUES (#{nId}, #{uId}, NOW())
+    </insert>
+
+</mapper>

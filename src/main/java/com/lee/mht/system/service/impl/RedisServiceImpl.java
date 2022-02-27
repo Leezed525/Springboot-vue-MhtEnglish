@@ -104,7 +104,7 @@ public class RedisServiceImpl implements RedisService {
             if (redisUtils.hasKey(logLockKey) && (redisUtils.get(logLockKey)).equals(1)) {
                 log.info("存入log等待释放锁中");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
