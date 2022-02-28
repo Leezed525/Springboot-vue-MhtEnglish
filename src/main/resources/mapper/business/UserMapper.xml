@@ -61,7 +61,7 @@
             <if test="user.avatarUrl != null and ! &quot;&quot;.equals(user.avatarUrl)">
                 avatar_url = #{user.avatarUrl},
             </if>
-            <if test="user.gender != null" >
+            <if test="user.gender != null">
                 gender = #{user.gender},
             </if>
             <if test="user.country != null and ! &quot;&quot;.equals(user.country)">
@@ -78,5 +78,37 @@
         id = #{user.id};
     </update>
 
+    <select id="getRecentWeekNewUserCount" resultType="com.lee.mht.system.vo.UserCountVo">
+        SELECT a.click_date       AS date,
+               ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 LEFT JOIN (
+            SELECT DATE(createtime) date,
+                   count(id) AS     count
+            FROM user
+            WHERE DATEDIFF(now(), createtime) &lt;= 7
+            GROUP BY date
+        ) AS b ON a.click_date = b.date
+    </select>
+    <select id="getRecentWeekActiveUserCount" resultType="com.lee.mht.system.vo.UserCountVo">
+        SELECT a.click_date       AS date,
+               ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 LEFT JOIN (
+            SELECT DATE(w.createtime)      date,
+                   count(DISTINCT u.id) as count
+            FROM `user` AS u
+                     LEFT JOIN complete_word AS w ON u.id = w.u_id
+            WHERE DATEDIFF(NOW(), w.createtime) &lt;= 7
+            GROUP BY date
+        ) AS b ON a.click_date = b.date;
+    </select>
+    <select id="getRecentWeekAllUserCount" resultType="com.lee.mht.system.vo.UserCountVo">
+        SELECT a.click_date AS date,
+               count(b.id) As count
+        FROM view_last_seven_day AS a
+                 LEFT JOIN `user` AS b ON a.click_date &gt;= DATE(b.createtime)
+        GROUP BY a.click_date
+    </select>
 
 </mapper>

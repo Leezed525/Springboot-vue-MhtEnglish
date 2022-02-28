@@ -1,5 +1,6 @@
 package com.lee.mht.system.service.impl;
 
+import com.lee.mht.business.dao.UserDao;
 import com.lee.mht.business.dao.WordDao;
 import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.system.annotation.CostTime;
@@ -16,6 +17,7 @@ import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
 import com.lee.mht.system.utils.*;
+import com.lee.mht.system.vo.UserCountVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -46,6 +48,9 @@ public class SystemServiceImpl implements SystemService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired(required = false)
+    private UserDao userDao;
 
     @Override
     @CostTime
@@ -98,6 +103,21 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public List<WordCountVo> getAllRecentWeekWordsLearnCount() {
         return adminWordDao.getAllRecentWeekWordsLearnCount();
+    }
+
+    @Override
+    public List<UserCountVo> getRecentWeekNewUserCount() {
+        return userDao.getRecentWeekNewUserCount();
+    }
+
+    @Override
+    public List<UserCountVo> getRecentWeekActiveUserCount() {
+        return userDao.getRecentWeekActiveUserCount();
+    }
+
+    @Override
+    public List<UserCountVo> getRecentWeekAllUserCount() {
+        return userDao.getRecentWeekAllUserCount();
     }
 
     @Async("asyncServiceExecutor")

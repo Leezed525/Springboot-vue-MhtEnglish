@@ -3,6 +3,7 @@ package com.lee.mht.system.service;
 import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.HitCount;
+import com.lee.mht.system.vo.UserCountVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,4 +20,10 @@ public interface SystemService {
     List<HitCount> getRecentWeekHitCount();
 
     List<WordCountVo> getAllRecentWeekWordsLearnCount();
+
+    List<UserCountVo> getRecentWeekNewUserCount();
+
+    List<UserCountVo> getRecentWeekActiveUserCount();
+
+    List<UserCountVo> getRecentWeekAllUserCount();
 }

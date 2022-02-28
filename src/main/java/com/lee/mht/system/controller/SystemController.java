@@ -6,6 +6,7 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.HitCount;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
+import com.lee.mht.system.vo.UserCountVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,11 +115,44 @@ public class SystemController {
     }
 
     @RequestMapping("/getAllRecentWeekWordsLearnCount")
-    public ResultObj getAllRecentWeekWordsLearnCount(){
+    public ResultObj getAllRecentWeekWordsLearnCount() {
         try {
             List<WordCountVo> wordCountVos = systemService.getAllRecentWeekWordsLearnCount();
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, wordCountVos);
-        }catch (Exception e) {
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getRecentWeekNewUserCount")
+    public ResultObj getRecentWeekNewUserCount() {
+        try {
+            List<UserCountVo> newUserCounts = systemService.getRecentWeekNewUserCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, newUserCounts);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getRecentWeekActiveUserCount")
+    public ResultObj getRecentWeekActiveUserCount() {
+        try {
+            List<UserCountVo> activeUserCounts = systemService.getRecentWeekActiveUserCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, activeUserCounts);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getRecentWeekAllUserCount")
+    public ResultObj getRecentWeekAllUserCount() {
+        try {
+            List<UserCountVo> allUserCounts = systemService.getRecentWeekAllUserCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, allUserCounts);
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
