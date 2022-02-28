@@ -1,5 +1,7 @@
 package com.lee.mht.system.service.impl;
 
+import com.lee.mht.business.dao.WordDao;
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.system.annotation.CostTime;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
@@ -91,6 +93,11 @@ public class SystemServiceImpl implements SystemService {
             }
         }
         return hitCounts;
+    }
+
+    @Override
+    public List<WordCountVo> getAllRecentWeekWordsLearnCount() {
+        return adminWordDao.getAllRecentWeekWordsLearnCount();
     }
 
     @Async("asyncServiceExecutor")

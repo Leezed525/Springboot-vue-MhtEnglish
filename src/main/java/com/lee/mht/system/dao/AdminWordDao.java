@@ -1,6 +1,7 @@
 package com.lee.mht.system.dao;
 
 import com.lee.mht.business.entity.Word;
+import com.lee.mht.business.vo.WordCountVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -20,4 +21,6 @@ public interface AdminWordDao {
     boolean deleteAdminWordByIds(@Param("ids")ArrayList<Integer> ids);
 
     int getWordCount();
+
+    List<WordCountVo> getAllRecentWeekWordsLearnCount();
 }

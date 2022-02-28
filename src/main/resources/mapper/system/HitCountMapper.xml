@@ -12,8 +12,8 @@
         FROM view_last_seven_day a
                  left JOIN (SELECT create_date AS date, count
                             FROM hit_count
-                            WHERE DATEDIFF(now(), create_date) &lt;= 7
-                              AND DATEDIFF(NOW(), create_date) >= 1) AS b ON a.click_date = b.date;
+                            WHERE DATEDIFF(now(), create_date) &lt;= 7) AS b
+                            ON a.click_date = b.date;
 
     </select>
 
@@ -23,7 +23,6 @@
             (#{hitCount.createDate},#{hitCount.count})
         </foreach>
     </insert>
-
 
 
 </mapper>

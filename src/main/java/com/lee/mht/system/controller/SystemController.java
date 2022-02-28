@@ -1,5 +1,6 @@
 package com.lee.mht.system.controller;
 
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.HitCount;
@@ -106,6 +107,17 @@ public class SystemController {
         try {
             List<HitCount> hitCounts = systemService.getRecentWeekHitCount();
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, hitCounts);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getAllRecentWeekWordsLearnCount")
+    public ResultObj getAllRecentWeekWordsLearnCount(){
+        try {
+            List<WordCountVo> wordCountVos = systemService.getAllRecentWeekWordsLearnCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, wordCountVos);
         }catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);

@@ -1,5 +1,6 @@
 package com.lee.mht.system.service;
 
+import com.lee.mht.business.vo.WordCountVo;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.entity.HitCount;
 
@@ -16,4 +17,6 @@ public interface SystemService {
     int getWordCount();
 
     List<HitCount> getRecentWeekHitCount();
+
+    List<WordCountVo> getAllRecentWeekWordsLearnCount();
 }

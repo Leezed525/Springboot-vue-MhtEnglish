@@ -73,9 +73,19 @@
     </delete>
 
     <select id="getWordCount" resultType="java.lang.Integer">
-        SELECT count(0) FROM words
+        SELECT count(0)
+        FROM words
     </select>
-
+    <select id="getAllRecentWeekWordsLearnCount" resultType="com.lee.mht.business.vo.WordCountVo">
+        SELECT a.click_date       AS date,
+               ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 LEFT JOIN (SELECT DATE(createtime) date, count(w_id) AS count
+                            FROM complete_word
+                            WHERE DATEDIFF(now(), createtime) &lt;= 7
+                            GROUP BY date
+        ) AS b ON a.click_date = b.date;
+    </select>
 
 
 </mapper>
