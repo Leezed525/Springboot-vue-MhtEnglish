@@ -18,4 +18,6 @@ public interface AdminWordDao {
     boolean addAdminWord(@Param("word")Word word);
 
     boolean deleteAdminWordByIds(@Param("ids")ArrayList<Integer> ids);
+
+    int getWordCount();
 }

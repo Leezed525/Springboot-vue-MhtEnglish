@@ -2,7 +2,9 @@ package com.lee.mht.system.controller;
 
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin/system")
 @RestController
 @CrossOrigin
+@Slf4j
 public class SystemController {
 
     @Autowired
-    SystemService systemService;
+    private SystemService systemService;
+
+    @Autowired
+    private RedisService redisService;
 
     @PostMapping("/login")
     public ResultObj login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request) {
@@ -63,6 +69,35 @@ public class SystemController {
         return new ResultObj(Constant.OK, Constant.ALLOW_ACCESS);
     }
 
+
+    //首页相关
+
+    /**
+     * 获取单词总数
+     *
+     * @return 单词总数
+     */
+    @RequestMapping("/getWordCount")
+    public ResultObj getWordCount() {
+        try {
+            int count = systemService.getWordCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
+
+    @RequestMapping("/getOnlineUserCount")
+    public ResultObj getOnlineUserCount() {
+        try {
+            int count = redisService.getOnlineUserCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, count);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
 
 
 }

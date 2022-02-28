@@ -6,4 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface SystemService {
     ResultObj login(String username, String password, HttpServletRequest request);
+
+    int getWordCount();
 }

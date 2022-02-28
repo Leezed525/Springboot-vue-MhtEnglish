@@ -32,7 +32,6 @@ public class UserNoticeController {
         try {
             int userId = JwtUtils.getId(request);
             List<NoticeVo> noticeVoList = userNoticeService.getUserNoticeVoListById(userId);
-            log.info(noticeVoList.toString());
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, noticeVoList);
         } catch (Exception e) {
             log.error(e.getMessage());

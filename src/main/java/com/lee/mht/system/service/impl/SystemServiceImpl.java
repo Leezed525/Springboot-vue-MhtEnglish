@@ -5,6 +5,7 @@ import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
+import com.lee.mht.system.dao.AdminWordDao;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminUser;
 import com.lee.mht.system.service.AdminPermissionService;
@@ -28,13 +29,16 @@ import java.util.*;
 public class SystemServiceImpl implements SystemService {
 
     @Autowired(required = false)
-    AdminUserDao adminUserDao;
+    private AdminUserDao adminUserDao;
 
     @Autowired(required = false)
-    AdminRoleDao adminRoleDao;
+    private AdminRoleDao adminRoleDao;
+
+    @Autowired(required = false)
+    private AdminWordDao adminWordDao;
 
     @Autowired
-    AdminPermissionService adminPermissionService;
+    private AdminPermissionService adminPermissionService;
 
     @Autowired
     private RedisService redisService;
@@ -46,9 +50,9 @@ public class SystemServiceImpl implements SystemService {
         Long beginTime = System.currentTimeMillis();
         AdminUser user = adminUserDao.login(username);
         int userId = user.getId();
-        String user_password = user.getPassword();
+        String userPassword = user.getPassword();
         //检查密码是否正确
-        boolean passwordFlag = PasswordUtils.matches(user.getSalt(), password, user_password);
+        boolean passwordFlag = PasswordUtils.matches(user.getSalt(), password, userPassword);
         if (userId == 0 || !passwordFlag) {
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.USERNAME_PASSWORD_ERROR, null);
         }
@@ -61,7 +65,14 @@ public class SystemServiceImpl implements SystemService {
         redisService.setAdminUserLoginToken(userId, accessToken,Constant.JWT_USER_TYPE_ADMIN);
         //记录登录日志
         saveLoginLog(userId,username, request, beginTime);
+        //增加点击量
+        redisService.addHitCount();
         return new ResultObj(Constant.OK, Constant.LOGIN_SUCCESS, accessToken);
+    }
+
+    @Override
+    public int getWordCount() {
+        return adminWordDao.getWordCount();
     }
 
     @Async("asyncServiceExecutor")
