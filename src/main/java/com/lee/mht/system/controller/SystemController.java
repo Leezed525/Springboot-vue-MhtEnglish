@@ -2,6 +2,7 @@ package com.lee.mht.system.controller;
 
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.entity.HitCount;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author FucXing
@@ -99,5 +101,14 @@ public class SystemController {
         }
     }
 
-
+    @RequestMapping("/getRecentWeekHitCount")
+    public ResultObj getRecentWeekHitCount() {
+        try {
+            List<HitCount> hitCounts = systemService.getRecentWeekHitCount();
+            return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, hitCounts);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
+        }
+    }
 }

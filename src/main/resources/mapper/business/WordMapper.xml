@@ -156,7 +156,4 @@
             (#{learnTime.uId},#{learnTime.date},#{learnTime.time})
         </foreach>
     </insert>
-
-
-
 </mapper>

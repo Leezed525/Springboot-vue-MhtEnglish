@@ -6,8 +6,10 @@ import com.lee.mht.system.common.ResultObj;
 import com.lee.mht.system.dao.AdminRoleDao;
 import com.lee.mht.system.dao.AdminUserDao;
 import com.lee.mht.system.dao.AdminWordDao;
+import com.lee.mht.system.dao.HitCountDao;
 import com.lee.mht.system.entity.AdminLog;
 import com.lee.mht.system.entity.AdminUser;
+import com.lee.mht.system.entity.HitCount;
 import com.lee.mht.system.service.AdminPermissionService;
 import com.lee.mht.system.service.RedisService;
 import com.lee.mht.system.service.SystemService;
@@ -37,8 +39,8 @@ public class SystemServiceImpl implements SystemService {
     @Autowired(required = false)
     private AdminWordDao adminWordDao;
 
-    @Autowired
-    private AdminPermissionService adminPermissionService;
+    @Autowired(required = false)
+    private HitCountDao hitCountDao;
 
     @Autowired
     private RedisService redisService;
@@ -73,6 +75,22 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public int getWordCount() {
         return adminWordDao.getWordCount();
+    }
+
+    @Override
+    public List<HitCount> getRecentWeekHitCount() {
+        List<HitCount> hitCounts = hitCountDao.getRecentWeekHitCount();
+        int index = 0;
+        for (HitCount item : hitCounts) {
+            int inBaseCount = item.getCount();
+            int inCacheCount = redisService.getCacheHitCount(item);
+            item.setCount(inBaseCount + inCacheCount);
+            index += 1;
+            if (index == 2) {
+                break;
+            }
+        }
+        return hitCounts;
     }
 
     @Async("asyncServiceExecutor")

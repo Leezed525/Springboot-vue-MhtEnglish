@@ -672,13 +672,13 @@ public class RedisUtils {
         }
     }
 
-    public boolean pfCount(String key){
+    public Long pfCount(String key){
         try {
-            redisTemplate.opsForHyperLogLog().size(key);
-            return true;
+
+            return redisTemplate.opsForHyperLogLog().size(key);
         }catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0L;
         }
     }
 

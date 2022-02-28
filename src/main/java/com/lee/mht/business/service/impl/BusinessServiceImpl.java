@@ -43,21 +43,24 @@ public class BusinessServiceImpl implements BusinessService {
     private RedisService redisService;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String login(User user) {
+        //增加网站点击量
         //判断是不是新用户
         //获取前端传过来的code(被我存放在openId的位置)
         String code = user.getOpenId();
         String openId = getOpenId(code);
         user.setOpenId(openId);
         int count = userDao.isNewUser(openId);
-        if (count > 0) {//不是新用户
+        //不是新用户
+        if (count > 0) {
             //生成token传回前端
             user = userDao.getUserByOpenId(openId);
-        } else {//是新用户
-            //注册
+        } else {
+            //是新用户的话注册
             userDao.registerUser(user);
         }
+        redisService.addHitCount();
         String accessToken = JwtUtils.generateMhtToken(String.valueOf(user.getId()), user.getNickname(), Constant.JWT_USER_TYPE_BUSINESS);
         redisService.setAdminUserLoginToken(user.getId(), accessToken,Constant.JWT_USER_TYPE_BUSINESS);
         return accessToken;

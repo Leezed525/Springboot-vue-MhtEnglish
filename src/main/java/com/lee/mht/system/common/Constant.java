@@ -87,6 +87,9 @@ public class Constant {
     //请求次数限制次数
     public static final long MHT_REQUEST_LIMIT_COUNT = 20;
 
+    //点击量key
+    public static final String MHT_HIT_COUNT_KEY = "MHT:hitCount:";
+
 
 
 

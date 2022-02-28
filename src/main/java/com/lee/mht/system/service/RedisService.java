@@ -1,6 +1,7 @@
 package com.lee.mht.system.service;
 
 import com.lee.mht.system.entity.AdminLog;
+import com.lee.mht.system.entity.HitCount;
 
 /**
  * @author FucXing
@@ -15,7 +16,7 @@ public interface RedisService {
 
     void pushMhtLogList(AdminLog adminLog);
 
-    void setAdminUserLoginToken(int user_id, String accessToken,String tokenType);
+    void setAdminUserLoginToken(int userId, String accessToken,String tokenType);
 
     void saveLogFromRedisToMysql();
 
@@ -28,4 +29,12 @@ public interface RedisService {
     void saveLearnTimeToDatabase();
 
     boolean isLimitExceeded(int userId);
+
+    int getOnlineUserCount();
+
+    void addHitCount();
+
+    int getCacheHitCount(HitCount item);
+
+    void saveHitCountToDatabase();
 }

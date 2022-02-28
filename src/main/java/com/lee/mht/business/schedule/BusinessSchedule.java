@@ -28,7 +28,11 @@ public class BusinessSchedule {
         businessService.updateTimeForCetFromPath();
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+    /**
+     * 每天00：05把缓存中的学习时间保存
+     * 存在一个bug：用户如果在00：00~00：05这个时间段查询学习时间，会缺少上一天的学习时间
+     */
+    @Scheduled(cron = "0 5 0 * * ?")
     public void saveLearnTimeToDatabase(){
         redisService.saveLearnTimeToDatabase();
     }

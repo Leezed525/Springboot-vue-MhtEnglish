@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Slf4j
-public class SaveLogSchedule {
+public class SystemScheduler {
 
     @Autowired
     private RedisService redisService;
@@ -22,5 +22,14 @@ public class SaveLogSchedule {
     public void saveLogFromRedisToMysql(){
         //定时从redis中获取log批量添加到mysql中
         redisService.saveLogFromRedisToMysql();
+    }
+
+
+    /**
+     * 每天00：05把缓存中的点击量爆粗
+     */
+    @Scheduled(cron = "0 5 0 * * ?")
+    public void saveHitCountToDatabase(){
+        redisService.saveHitCountToDatabase();
     }
 }

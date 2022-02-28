@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mht.system.dao.HitCountDao">
+    <resultMap id="baseResultMap" type="com.lee.mht.system.entity.HitCount">
+        <result column="create_date" property="createDate" javaType="java.sql.Date"/>
+        <result column="count" property="count" javaType="integer"/>
+    </resultMap>
+    <select id="getRecentWeekHitCount" resultMap="baseResultMap">
+        SELECT a.click_date       AS create_date,
+               ifnull(b.count, 0) AS count
+        FROM view_last_seven_day a
+                 left JOIN (SELECT create_date AS date, count
+                            FROM hit_count
+                            WHERE DATEDIFF(now(), create_date) &lt;= 7
+                              AND DATEDIFF(NOW(), create_date) >= 1) AS b ON a.click_date = b.date;
+
+    </select>
+
+    <insert id="saveHitCount">
+        INSERT INTO hit_count( create_date, count) VALUES
+        <foreach collection="hitCounts" item="hitCount" separator=",">
+            (#{hitCount.createDate},#{hitCount.count})
+        </foreach>
+    </insert>
+
+
+
+</mapper>

@@ -4,6 +4,7 @@ import com.lee.mht.business.entity.User;
 import com.lee.mht.business.service.BusinessService;
 import com.lee.mht.system.common.Constant;
 import com.lee.mht.system.common.ResultObj;
+import com.lee.mht.system.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,10 +39,10 @@ public class BusinessController {
      * @return 考试时间字符串（YYYY-MM-dd）
      */
     @RequestMapping("/getTimeForCet")
-    public ResultObj getTimeForCet(){
+    public ResultObj getTimeForCet() {
         try {
             return new ResultObj(Constant.OK, Constant.QUERY_SUCCESS, Constant.timeForCet);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResultObj(Constant.SERVER_ERROR_CODE, Constant.QUERY_ERROR);
         }
