@@ -13,13 +13,16 @@
                      select="com.lee.mht.system.dao.AdminUserDao.getBasicUserInfoById"/>
     </resultMap>
     <select id="getUserNoticeVoListById" resultMap="noticeVoMap">
-        SELECT n.id, n.title, n.content, n.author_id, n.publish_time, IFNULL(c.u_id, 0) as status
-        from notice n
-                 LEFT JOIN notice_confirm c
-                           on n.id = c.n_id
-        WHERE n.type = 'users'
-          AND (c.u_id = #{uId} or c.u_id IS NULL)
-          AND n.available = 1
+        SELECT n.id,
+               n.title,
+               n.content,
+               n.author_id,
+               n.publish_time,
+               IFNULL(b.n_id, 0) AS STATUS
+        FROM notice n
+                 LEFT JOIN (SELECT c.n_id FROM notice_confirm AS c WHERE c.u_id = #{uId}) AS b ON b.n_id = n.id
+        WHERE n.available = 1
+          AND n.type = 'users'
         ORDER BY n.publish_time DESC
     </select>
 
